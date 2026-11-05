@@ -21,7 +21,7 @@ import java.net.URLEncoder
  * Nothing is sent from the TV; the user reads and submits it on their phone.
  */
 object Report {
-    private const val NEW_ISSUE = "https://github.com/HatriGt/flix-launcher/issues/new?template=bug_report.yml"
+    private const val NEW_ISSUE = "https://github.com/minhtamvn/flix-launcher/issues/new?template=bug_report.yml"
     // Short enough for a phone to read the code from the sofa; the oldest log lines go first.
     private const val MAX_URL = 900
 
