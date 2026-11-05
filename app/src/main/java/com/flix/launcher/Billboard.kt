@@ -66,8 +66,8 @@ class Billboard(private val activity: Activity, parent: ViewGroup, private val o
         ellipsize = android.text.TextUtils.TruncateAt.END
         setLineSpacing(0f, 1.15f)
     }
-    val play = button("▶   Play", primary = true)
-    private val more = button("ⓘ   More info", primary = false)
+    val play = button("▶   Phát", primary = true)
+    private val more = button("ⓘ   Thông tin thêm", primary = false)
 
     val view: View = FrameLayout(activity).apply {
         clipToOutline = true
@@ -287,12 +287,12 @@ class Billboard(private val activity: Activity, parent: ViewGroup, private val o
         logo.visibility = View.GONE
         val resuming = pick === resume
         kind.text = when {
-            resuming && pick.progress == 0f -> "UP NEXT"
-            resuming -> "CONTINUE WATCHING"
-            pick.type == "series" -> "SERIES"
-            else -> "FILM"
+            resuming && pick.progress == 0f -> "TIẾP THEO"
+            resuming -> "TIẾP TỤC XEM"
+            pick.type == "series" -> "PHIM BỘ"
+            else -> "PHIM LẺ"
         }
-        play.text = if (resuming) resumeLabel(pick) else "▶   Play"
+        play.text = if (resuming) resumeLabel(pick) else "▶   Phát"
         name.text = pick.name
         name.visibility = View.VISIBLE
         meta.text = android.text.SpannableStringBuilder().apply {
@@ -309,8 +309,8 @@ class Billboard(private val activity: Activity, parent: ViewGroup, private val o
     }
 
     private fun resumeLabel(t: Catalog.Title): String {
-        val verb = if ((t.progress ?: 0f) > 0f) "Resume" else "Play"
-        val left = t.minutesLeft?.takeIf { it > 0 && (t.progress ?: 0f) > 0f }?.let { if (it >= 60) "${it / 60} h ${it % 60} min left" else "$it min left" }
+        val verb = if ((t.progress ?: 0f) > 0f) "Xem tiếp" else "Phát"
+        val left = t.minutesLeft?.takeIf { it > 0 && (t.progress ?: 0f) > 0f }?.let { if (it >= 60) "còn ${it / 60} giờ ${it % 60} phút" else "còn $it phút" }
         return "▶   " + listOfNotNull(verb + (t.episodeLabel?.let { " $it" } ?: ""), left).joinToString("  ·  ")
     }
 

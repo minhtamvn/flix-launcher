@@ -272,7 +272,7 @@ class MainActivity : Activity() {
         pill.setOnClickListener {
             when {
                 !Updater.canInstall(this) -> openFlixSettings()
-                Updater.install(this) -> Toast.makeText(this, "Updating to ${update.version}…", Toast.LENGTH_SHORT).show()
+                Updater.install(this) -> Toast.makeText(this, "Đang cập nhật lên ${update.version}…", Toast.LENGTH_SHORT).show()
                 else -> openFlixSettings()
             }
         }
@@ -461,10 +461,10 @@ class MainActivity : Activity() {
             homeBanner = this
         }
         banner.text = when {
-            canFix -> "⚠  The Home button isn't going to Flix.  Press OK to fix it"
-            state == HomeButton.State.BLOCKED -> "⚠  Android is blocking Flix's Home switch.  Press OK for the fix"
-            !HomeButton.isGoogleTv(this) -> "⚠  The Home button isn't going to Flix.  Press OK to make Flix your home app"
-            else -> "⚠  The Home button isn't going to Flix.  Press OK, then turn on Flix Launcher"
+            canFix -> "⚠  Nút Home không mở Flix. Nhấn OK để khắc phục"
+            state == HomeButton.State.BLOCKED -> "⚠  Android đang chặn phím Home của Flix. Nhấn OK để khắc phục"
+            !HomeButton.isGoogleTv(this) -> "⚠  Nút Home không mở Flix. Nhấn OK để đặt Flix làm ứng dụng trang chủ"
+            else -> "⚠  Nút Home không mở Flix. Nhấn OK, sau đó bật Flix Launcher"
         }
         banner.setOnClickListener {
             if (canFix && state != HomeButton.State.BLOCKED) {
@@ -500,8 +500,8 @@ class MainActivity : Activity() {
             val profiles = runCatching { NuvioAccount.profiles(this) }.getOrNull()
             main.post {
                 if (isFinishing) return@post
-                if (profiles.isNullOrEmpty()) { Toast.makeText(this, "Couldn't reach Nuvio", Toast.LENGTH_SHORT).show(); return@post }
-                OptionsMenu.show(this, "Who's watching?", profiles.sortedByDescending { it.index == current?.index }.map { p ->
+                if (profiles.isNullOrEmpty()) { Toast.makeText(this, "Không thể kết nối với Nuvio", Toast.LENGTH_SHORT).show(); return@post }
+                OptionsMenu.show(this, "Ai đang xem?", profiles.sortedByDescending { it.index == current?.index }.map { p ->
                     (if (p.index == current?.index) "✓  ${p.name}" else "     ${p.name}") to {
                         if (p.index != current?.index) {
                             NuvioAccount.setProfile(this, p)
@@ -645,7 +645,7 @@ class MainActivity : Activity() {
         val intent = (if (details) null else runCatching { title.nuvioStreamIntent() }.getOrNull()?.takeIf { it.resolveActivity(packageManager) != null })
             ?: Intent(Intent.ACTION_VIEW, Uri.parse(title.nuvioUri)).setPackage(MainActivity.NUVIO)
         if (intent.resolveActivity(packageManager) == null) {
-            Toast.makeText(this, "Install Nuvio to watch this", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Hãy cài đặt Nuvio để xem nội dung này", Toast.LENGTH_SHORT).show()
             return
         }
         // Nuvio is a heavy app to start; give it the TV's full attention. Stop the trailer
@@ -659,15 +659,15 @@ class MainActivity : Activity() {
             // last film again), so start its task afresh to make it read this one.
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
                 android.app.ActivityOptions.makeCustomAnimation(this, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
-        }.onFailure { Toast.makeText(this, "Couldn't open that", Toast.LENGTH_SHORT).show() }
+        }.onFailure { Toast.makeText(this, "Không thể mở ứng dụng", Toast.LENGTH_SHORT).show() }
     }
 
     private fun showTitleMenu(title: Catalog.Title) {
         if (title.id == MovieRows.SIGN_IN.id) return openInNuvio(title)
         OptionsMenu.show(this, title, listOf(
-            "Watch in Nuvio" to { openInNuvio(title) },
-            "More info" to { openInNuvio(title, details = true) },
-            "Hide this title" to {
+            "Mở trong Nuvio" to { openInNuvio(title) },
+            "Thông tin thêm" to { openInNuvio(title, details = true) },
+            "Ẩn tựa phim này" to {
                 Catalog.hideTitle(this, title.id)
                 movieRows.refreshHidden()
             },
@@ -788,10 +788,10 @@ class MainActivity : Activity() {
     }
 
     private fun greetingFor(hour: Int) = when (hour) {
-        in 5..11 -> "Good morning"
-        in 12..16 -> "Good afternoon"
-        in 17..21 -> "Good evening"
-        else -> "Good night"
+        in 5..11 -> "Chào buổi sáng"
+        in 12..16 -> "Chào buổi chiều"
+        in 17..21 -> "Chào buổi tối"
+        else -> "Chúc ngủ ngon"
     }
 
     override fun onStart() {
@@ -1102,22 +1102,22 @@ class MainActivity : Activity() {
         if (app.packageName == AppRepository.ALL_APPS_TILE) return
         val isFavorite = app.packageName in repo.favorites
         val actions = buildList<Pair<String, () -> Unit>> {
-            add("Open" to { launch(app) })
-            add((if (isFavorite) "Remove from favourites" else "Add to favourites") to {
+            add("Mở" to { launch(app) })
+            add((if (isFavorite) "Xoá khỏi mục yêu thích" else "Thêm vào mục yêu thích") to {
                 repo.toggleFavorite(app.packageName)
                 bindRows()
             })
             if (isFavorite) {
-                add("Move left" to { moveFavorite(app, -1) })
-                add("Move right" to { moveFavorite(app, 1) })
+                add("Di chuyển sang trái" to { moveFavorite(app, -1) })
+                add("Di chuyển sang phải" to { moveFavorite(app, 1) })
             } else {
-                add("Hide from All apps" to {
+                add("Ẩn khỏi Tất cả ứng dụng" to {
                     repo.hide(app.packageName)
                     loadApps()
                 })
             }
-            add("App info" to { open(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${app.packageName}"))) })
-            add("Uninstall" to { open(Intent(Intent.ACTION_DELETE, Uri.parse("package:${app.packageName}"))) })
+            add("Thông tin ứng dụng" to { open(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${app.packageName}"))) })
+            add("Gỡ cài đặt" to { open(Intent(Intent.ACTION_DELETE, Uri.parse("package:${app.packageName}"))) })
         }
         OptionsMenu.show(this, app, actions)
     }
@@ -1177,7 +1177,7 @@ class MainActivity : Activity() {
         runCatching { startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), options) }
             .onFailure {
                 playReturn()
-                Toast.makeText(this, "Couldn't open that", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Không thể mở ứng dụng", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -1217,7 +1217,7 @@ class MainActivity : Activity() {
         findViewById<TextView>(R.id.weather_temp).text = "${t(report.temperature)}°"
         findViewById<TextView>(R.id.weather_condition).text = report.condition
         findViewById<TextView>(R.id.weather_details).text =
-            "Feels ${t(report.feelsLike)}°"
+            "Cảm giác như ${t(report.feelsLike)}°"
         sunArc.visibility = View.GONE
 
         val forecast = findViewById<LinearLayout>(R.id.forecast)

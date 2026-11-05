@@ -357,7 +357,7 @@ object NuvioAccount {
         val p = prefs(context)
         val token = readToken(context, "access_token")
         if (token != null && System.currentTimeMillis() / 1000 < p.getLong("expires_at", 0) - 60) return token
-        val refresh = readToken(context, "refresh_token") ?: throw IllegalStateException("Not signed in to Nuvio")
+        val refresh = readToken(context, "refresh_token") ?: throw IllegalStateException("Chưa đăng nhập Nuvio")
         val body = try {
             request(context, "$API/auth/v1/token?grant_type=refresh_token",
                 JSONObject().put("refresh_token", refresh).toString(), anonBearer = true)
@@ -369,7 +369,7 @@ object NuvioAccount {
             throw e
         }
         saveSession(context, JSONObject(body))
-        return readToken(context, "access_token") ?: throw IllegalStateException("Not signed in to Nuvio")
+        return readToken(context, "access_token") ?: throw IllegalStateException("Chưa đăng nhập Nuvio")
     }
 
     private fun saveSession(context: Context, session: JSONObject) {
@@ -437,7 +437,7 @@ object NuvioAccount {
         p.getString("anon_key", null)?.let { return it }
         val js = request(context, CONFIG_URL, null, bearer = null, apikey = false)
         val key = Regex("supabaseAnonKey[\"']?\\s*[:=]\\s*[\"']([^\"']+)").find(js)?.groupValues?.get(1)
-            ?: throw IllegalStateException("Couldn't read Nuvio's sign-in settings")
+            ?: throw IllegalStateException("Không thể đọc cài đặt đăng nhập Nuvio")
         p.edit().putString("anon_key", key).apply()
         return key
     }
@@ -479,7 +479,7 @@ object NuvioAccount {
             val text = stream?.use { String(SafeIo.readBytes(it, SafeIo.MAX_JSON)) }.orEmpty()
             if (code !in 200..299) {
                 val message = runCatching { JSONObject(text).let { it.optString("error_description").ifBlank { it.optString("msg") }.ifBlank { it.optString("error") }.ifBlank { it.optString("message") } } }.getOrNull()
-                throw HttpError(code, message?.ifBlank { null } ?: "Nuvio returned $code")
+                throw HttpError(code, message?.ifBlank { null } ?: "Nuvio trả về mã lỗi $code")
             }
             return text
         } finally {

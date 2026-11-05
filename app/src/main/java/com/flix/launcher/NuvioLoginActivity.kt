@@ -113,7 +113,7 @@ class NuvioLoginActivity : Activity() {
     // ---- Way 1: QR, renews itself ----
 
     private fun showQr() {
-        val gen = screen("Sign in to Nuvio", "Point your phone's camera at the code, then tap Approve")
+        val gen = screen("Đăng nhập vào Nuvio", "Hướng camera điện thoại vào mã QR, sau đó nhấn Chấp thuận")
         val qr = ImageView(this).apply {
             background = GradientDrawable().apply { cornerRadius = 18 * dp; setColor(Color.WHITE) }
             setPadding(px(14), px(14), px(14), px(14))
@@ -124,12 +124,12 @@ class NuvioLoginActivity : Activity() {
             addView(qr, FrameLayout.LayoutParams(px(220), px(220)))
             addView(spinner, FrameLayout.LayoutParams(px(36), px(36), Gravity.CENTER))
         }
-        val status = text("Getting a code…", 15f, alpha = 0.9f).apply { setLineSpacing(0f, 1.2f) }
-        val other = button("Use email and password instead", R.drawable.ic_o_keyboard) { showPassword() }
+        val status = text("Đang lấy mã…", 15f, alpha = 0.9f).apply { setLineSpacing(0f, 1.2f) }
+        val other = button("Dùng email và mật khẩu thay thế", R.drawable.ic_o_keyboard) { showPassword() }
         val side = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             addView(status)
-            addView(caption("How it works"))
+            addView(caption("Cách hoạt động"))
             addView(steps())
             addView(View(context), LinearLayout.LayoutParams(1, 0, 1f))
             addView(group(listOf(other)))
@@ -151,13 +151,13 @@ class NuvioLoginActivity : Activity() {
                         qr.setImageBitmap(qrBitmap(l.webUrl, px(192)))
                         spinner.visibility = View.GONE
                         qr.animate().alpha(1f).setDuration(300).start()
-                        status.text = "Waiting for you to approve on your phone\nor open ${l.webUrl.removePrefix("https://")}"
+                        status.text = "Đang chờ bạn xác nhận trên điện thoại\nhoặc truy cập ${l.webUrl.removePrefix("https://")}"
                         poll(gen, l, status)
                         // Swap in a fresh code a little before this one runs out, so it never shows as expired.
                         val renewIn = (l.expiresAtMs - System.currentTimeMillis() - 20_000).coerceAtLeast(30_000)
                         main.postDelayed({ if (gen == generation) { qr.animate().alpha(0.15f).setDuration(200).start(); spinner.visibility = View.VISIBLE; fetch() } }, renewIn)
                     }.onFailure {
-                        status.text = "Can't reach Nuvio right now. Retrying…"
+                        status.text = "Hiện không thể kết nối tới Nuvio. Đang thử lại…"
                         main.postDelayed({ if (gen == generation) fetch() }, 4000)
                     }
                 }
@@ -171,7 +171,7 @@ class NuvioLoginActivity : Activity() {
         orientation = LinearLayout.VERTICAL
         background = GradientDrawable().apply { cornerRadius = 18 * dp; setColor(0x0FFFFFFF); setStroke(px(1), 0x0DFFFFFF) }
         setPadding(px(16), px(10), px(16), px(10))
-        listOf("Open your phone's camera and scan", "Sign in to Nuvio if asked", "Tap Approve — this screen moves on by itself")
+        listOf("Mở camera điện thoại và quét mã QR", "Đăng nhập vào Nuvio nếu được yêu cầu", "Nhấn Chấp thuận — màn hình sẽ tự động chuyển tiếp")
             .forEachIndexed { i, line ->
                 addView(LinearLayout(context).apply {
                     orientation = LinearLayout.HORIZONTAL
@@ -195,7 +195,7 @@ class NuvioLoginActivity : Activity() {
                     if (gen != generation || login !== l) return@runOnUiThread
                     when (state) {
                         "approved", "completed", "authorized" -> {
-                            status.text = "Approved — signing you in…"
+                            status.text = "Đã chấp thuận — đang đăng nhập…"
                             finishCodeLogin(gen, l, status)
                         }
                         else -> poll(gen, l, status) // pending, or expired and about to be replaced
@@ -218,18 +218,18 @@ class NuvioLoginActivity : Activity() {
     // ---- Way 2: email and password on the TV ----
 
     private fun showPassword() {
-        screen("Sign in to Nuvio", "Your password goes straight to Nuvio and isn't stored")
+        screen("Đăng nhập vào Nuvio", "Mật khẩu gửi trực tiếp đến Nuvio và không được lưu lại")
         val email = field("Email", InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
-        val password = field("Password", InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+        val password = field("Mật khẩu", InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
         val error = text("", 13f).apply { setTextColor(0xFFF87171.toInt()) }
         body.addView(email, LinearLayout.LayoutParams(px(FORM_DP), px(52)).apply { topMargin = px(28) })
         body.addView(password, LinearLayout.LayoutParams(px(FORM_DP), px(52)).apply { topMargin = px(10) })
         body.addView(error, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = px(8) })
         lateinit var submit: View
         fun go() {
-            if (email.text.isBlank() || password.text.isEmpty()) { error.text = "Enter your email and password"; return }
+            if (email.text.isBlank() || password.text.isEmpty()) { error.text = "Vui lòng nhập email và mật khẩu"; return }
             error.text = ""
-            (submit as TextView).text = "Signing in…"
+            (submit as TextView).text = "Đang đăng nhập…"
             val e = email.text.toString()
             val p = password.text.toString()
             password.setText("")
@@ -239,17 +239,17 @@ class NuvioLoginActivity : Activity() {
                 runOnUiThread {
                     if (gen != generation) return@runOnUiThread
                     result.onSuccess(::afterSignIn).onFailure {
-                        (submit as TextView).text = "Sign in"
-                        error.text = if (it.message?.contains("Invalid", true) == true) "Email or password is wrong" else (it.message ?: "Couldn't sign in")
+                        (submit as TextView).text = "Đăng nhập"
+                        error.text = if (it.message?.contains("Invalid", true) == true) "Email hoặc mật khẩu không chính xác" else (it.message ?: "Không thể đăng nhập")
                     }
                 }
             }
         }
-        submit = primary("Sign in") { go() }
+        submit = primary("Đăng nhập") { go() }
         password.setOnEditorActionListener { _, action, _ -> if (action == EditorInfo.IME_ACTION_DONE) { go(); true } else false }
         body.addView(submit, LinearLayout.LayoutParams(px(FORM_DP), px(50)).apply { topMargin = px(14) })
         body.addView(View(this), LinearLayout.LayoutParams(1, 0, 1f))
-        body.addView(group(listOf(button("Use my phone instead", R.drawable.ic_o_phone) { showQr() })), LinearLayout.LayoutParams(px(FORM_DP), ViewGroup.LayoutParams.WRAP_CONTENT))
+        body.addView(group(listOf(button("Dùng điện thoại thay thế", R.drawable.ic_o_phone) { showQr() })), LinearLayout.LayoutParams(px(FORM_DP), ViewGroup.LayoutParams.WRAP_CONTENT))
         email.post { email.requestFocus() }
     }
 
@@ -257,7 +257,7 @@ class NuvioLoginActivity : Activity() {
 
     private fun afterSignIn(profiles: List<NuvioAccount.Profile>) {
         if (profiles.size == 1) return choose(profiles[0])
-        val gen = screen("Who's watching?", "Continue watching follows this profile")
+        val gen = screen("Ai đang xem?", "Mục Tiếp tục xem sẽ theo hồ sơ này")
         val grid = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.START; clipChildren = false; clipToPadding = false }
         var first: View? = null
         profiles.forEach { p ->
@@ -265,7 +265,7 @@ class NuvioLoginActivity : Activity() {
             grid.addView(tile)
             if (first == null || p.name.equals(NuvioAccount.profile(this)?.name ?: "Mine", ignoreCase = true)) first = tile
         }
-        body.addView(caption("Profiles"))
+        body.addView(caption("Hồ sơ"))
         body.addView(grid, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = px(8) })
         first?.post { if (gen == generation) first?.requestFocus() }
     }
@@ -275,7 +275,7 @@ class NuvioLoginActivity : Activity() {
             gravity = Gravity.CENTER
             background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(p.color) }
         }
-        val name = text(p.name.ifBlank { "Profile ${p.index}" }, 15f).apply { gravity = Gravity.CENTER; alpha = 0.6f }
+        val name = text(p.name.ifBlank { "Hồ sơ ${p.index}" }, 15f).apply { gravity = Gravity.CENTER; alpha = 0.6f }
         val bg = GradientDrawable().apply { cornerRadius = 18 * dp; setColor(Color.TRANSPARENT) }
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -308,7 +308,7 @@ class NuvioLoginActivity : Activity() {
 
     /** A check mark that pops in, then the panel closes on its own. */
     private fun success(name: String) {
-        screen("You're all set", "Continue watching from “$name” is on your home screen")
+        screen("Hoàn tất thiết lập", "Mục Tiếp tục xem từ “$name” đã có trên màn hình chính")
         val check = FrameLayout(this).apply {
             background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(0xFF16A34A.toInt()) }
             addView(ImageView(context).apply { setImageResource(R.drawable.ic_check); setColorFilter(Color.WHITE) },
@@ -322,18 +322,18 @@ class NuvioLoginActivity : Activity() {
 
     private fun showAccount() {
         val profile = NuvioAccount.profile(this)
-        screen("Nuvio", "Connected · Continue watching from “${profile?.name ?: "?"}”")
-        val change = button("Switch profile", R.drawable.ic_o_user, "Choose whose Continue watching shows") {
+        screen("Nuvio", "Đã kết nối · Tiếp tục xem từ “${profile?.name ?: "?"}”")
+        val change = button("Đổi hồ sơ", R.drawable.ic_o_user, "Chọn hồ sơ hiển thị mục Tiếp tục xem") {
             val gen = generation
             thread {
                 val result = runCatching { NuvioAccount.profiles(this) }
                 runOnUiThread { if (gen == generation) result.onSuccess(::afterSignIn) }
             }
         }
-        val out = button("Sign out", R.drawable.ic_o_logout, "Remove Continue watching from the home screen") {
+        val out = button("Đăng xuất", R.drawable.ic_o_logout, "Xoá mục Tiếp tục xem khỏi màn hình chính") {
             NuvioAccount.signOut(this); changed(); finish()
         }
-        body.addView(caption("Account"))
+        body.addView(caption("Tài khoản"))
         body.addView(group(listOf(change, out)), LinearLayout.LayoutParams(px(FORM_DP), ViewGroup.LayoutParams.WRAP_CONTENT))
         change.post { change.requestFocus() }
     }
@@ -435,7 +435,7 @@ class NuvioLoginActivity : Activity() {
             })
             addView(View(context).apply { setBackgroundColor(0x33FFFFFF) },
                 LinearLayout.LayoutParams(px(1), px(22)).apply { marginStart = px(16); marginEnd = px(16) })
-            addView(text("Settings", 20f, alpha = 0.55f).apply { typeface = Typeface.create("sans-serif-light", Typeface.NORMAL) })
+            addView(text("Cài đặt", 20f, alpha = 0.55f).apply { typeface = Typeface.create("sans-serif-light", Typeface.NORMAL) })
             addView(text("›", 20f, alpha = 0.4f).apply { setPadding(px(10), 0, px(10), 0) })
             addView(text(page, 20f, alpha = 0.9f).apply { typeface = Typeface.create("sans-serif-light", Typeface.NORMAL) })
         }

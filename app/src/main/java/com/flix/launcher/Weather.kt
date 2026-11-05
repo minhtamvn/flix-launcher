@@ -50,7 +50,7 @@ object Weather {
             val day = forecast.getJSONObject(i)
             val midday = day.getJSONArray("hourly").let { it.getJSONObject(minOf(4, it.length() - 1)) }
             Day(
-                name = if (i == 0) "Today" else dayName.format(parse.parse(day.getString("date"))!!),
+                name = if (i == 0) "Hôm nay" else dayName.format(parse.parse(day.getString("date"))!!),
                 icon = icon(midday.getInt("weatherCode")),
                 high = day.getInt("maxtempC"),
                 low = day.getInt("mintempC"),
@@ -100,7 +100,7 @@ object Weather {
         val dayName = SimpleDateFormat("EEE", Locale.getDefault())
         val days = (0 until dates.length()).map { i ->
             Day(
-                name = if (i == 0) "Today" else dayName.format(parse.parse(dates.getString(i))!!),
+                name = if (i == 0) "Hôm nay" else dayName.format(parse.parse(dates.getString(i))!!),
                 icon = wmoIcon(daily.getJSONArray("weather_code").getInt(i)),
                 high = Math.round(daily.getJSONArray("temperature_2m_max").getDouble(i)).toInt(),
                 low = Math.round(daily.getJSONArray("temperature_2m_min").getDouble(i)).toInt(),
@@ -138,17 +138,17 @@ object Weather {
     }
 
     private fun wmoText(code: Int): String = when (code) {
-        0 -> "Clear"
-        1 -> "Mostly clear"
-        2 -> "Partly cloudy"
-        3 -> "Overcast"
-        45, 48 -> "Fog"
-        51, 53, 55, 56, 57 -> "Drizzle"
-        61, 63, 66, 80, 81 -> "Rain"
-        65, 67, 82 -> "Heavy rain"
-        71, 73, 75, 77, 85, 86 -> "Snow"
-        95, 96, 99 -> "Thunderstorm"
-        else -> "Fair"
+        0 -> "Quang đãng"
+        1 -> "Trời quang"
+        2 -> "Có mây rải rác"
+        3 -> "U ám"
+        45, 48 -> "Sương mù"
+        51, 53, 55, 56, 57 -> "Mưa phùn"
+        61, 63, 66, 80, 81 -> "Mưa"
+        65, 67, 82 -> "Mưa to"
+        71, 73, 75, 77, 85, 86 -> "Tuyết"
+        95, 96, 99 -> "Dông bão"
+        else -> "Thời tiết đẹp"
     }
 
     /** Maps WorldWeatherOnline condition codes (used by wttr.in) to an emoji. */

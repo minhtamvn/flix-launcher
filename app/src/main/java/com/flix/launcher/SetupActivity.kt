@@ -42,7 +42,7 @@ class SetupActivity : Activity() {
                 orientation = LinearLayout.VERTICAL
                 setPadding(px(96), 0, px(96), 0)
                 gravity = Gravity.CENTER_VERTICAL
-                addView(text("FLIX LAUNCHER  ·  SETUP", 12f, bold = true, alpha = 0.55f).apply { letterSpacing = 0.25f })
+                addView(text("FLIX LAUNCHER  ·  THIẾT LẬP", 12f, bold = true, alpha = 0.55f).apply { letterSpacing = 0.25f })
                 number = text("", 15f, bold = true, color = 0xFFE50914.toInt()).also { addView(it, lp(top = 36)) }
                 title = text("", 38f, bold = true).also { addView(it, lp(top = 6)) }
                 body = text("", 17f, alpha = 0.72f).apply { setLineSpacing(0f, 1.25f) }.also { addView(it, LinearLayout.LayoutParams(px(720), -2).apply { topMargin = px(14) }) }
@@ -69,50 +69,50 @@ class SetupActivity : Activity() {
     }
 
     private fun show() {
-        number.text = "STEP ${step + 1} OF 3"
+        number.text = "BƯỚC ${step + 1} / 3"
         when (step) {
             0 -> {
                 val signedIn = NuvioAccount.isSignedIn(this)
-                title.text = "Pick up where you left off"
-                body.text = "Connect your Nuvio account and what you were watching waits on the home screen, one press from playing. " +
-                    "Your addons' films and shows fill the rows below. You'll scan a code with your phone; no typing on the TV."
-                status(if (signedIn) "✓  Signed in as ${NuvioAccount.profile(this)?.name.orEmpty()}" else null)
-                primary(if (signedIn) "Next" else "Connect Nuvio") {
+                title.text = "Tiếp tục xem nội dung dở dang"
+                body.text = "Kết nối tài khoản Nuvio để nội dung đang xem hiển thị ngay trên màn hình chính, chỉ cần một nút bấm là phát. " +
+                    "Các hàng phim và chương trình từ addon sẽ xuất hiện bên dưới. Bạn chỉ cần quét mã QR bằng điện thoại; không cần nhập liệu trên TV."
+                status(if (signedIn) "✓  Đã đăng nhập dưới tên ${NuvioAccount.profile(this)?.name.orEmpty()}" else null)
+                primary(if (signedIn) "Tiếp tục" else "Kết nối Nuvio") {
                     if (signedIn) next() else startActivity(Intent(this, NuvioLoginActivity::class.java))
                 }
-                secondary(if (signedIn) null else "Skip for now") { next() }
+                secondary(if (signedIn) null else "Bỏ qua lúc này") { next() }
             }
             1 -> {
                 val rows = Addons.rows(this).count { it.enabled }
-                title.text = "Choose what's on"
-                body.text = "Pick the film and series rows you actually want to browse, and their order. " +
-                    "Your Nuvio addons' catalogues are listed for you; everything else stays off the screen."
-                status(if (rows > 0) "✓  $rows rows on the home screen" else null)
-                primary("Choose rows") { startActivity(Intent(this, RowsActivity::class.java)) }
-                secondary("Next") { next() }
+                title.text = "Tuỳ chọn nội dung hiển thị"
+                body.text = "Chọn các hàng phim lẻ và phim bộ mà bạn thực sự muốn xem cùng thứ tự sắp xếp của chúng. " +
+                    "Danh mục từ addon Nuvio sẽ được liệt kê sẵn; những thứ khác sẽ được ẩn đi."
+                status(if (rows > 0) "✓  $rows hàng trên màn hình chính" else null)
+                primary("Chọn hàng") { startActivity(Intent(this, RowsActivity::class.java)) }
+                secondary("Tiếp tục") { next() }
             }
             else -> {
                 // Each TV gets its own way to send Home to Flix (see HomeButton).
                 val state = HomeButton.state(this)
                 val on = HomeButton.works(this)
                 val googleTv = HomeButton.isGoogleTv(this)
-                title.text = "One press to your show"
+                title.text = "Một nút bấm để xem ngay"
                 body.text = when {
-                    state == HomeButton.State.BLOCKED -> "Flix Launcher is switched on in Accessibility, but this TV won't start it. " +
-                        "Android does this for apps installed from a downloaded APK. There's a one-time fix."
-                    googleTv -> "Google TV sends the Home button to its own screen, full of things to buy. Switch on \"Flix Launcher\" in " +
-                        "Accessibility and Home brings you back to what you watch instead. It only listens for the Home key."
-                    else -> "Make Flix your home app and the Home button brings you straight back to what you watch. " +
-                        "Choose Flix Launcher, then Always."
+                    state == HomeButton.State.BLOCKED -> "Flix Launcher đã được bật trong Trợ năng, nhưng TV này chưa khởi chạy. " +
+                        "Android có thể hạn chế đối với ứng dụng cài từ file APK ngoài. Bạn có thể khắc phục nhanh chóng."
+                    googleTv -> "Google TV chuyển hướng nút Home về màn hình mặc định có nhiều quảng cáo. Bật \"Flix Launcher\" trong " +
+                        "Trợ năng để nút Home đưa bạn thẳng về màn hình xem phim. Ứng dụng chỉ lắng nghe duy nhất phím Home."
+                    else -> "Đặt Flix làm ứng dụng trang chủ mặc định để nút Home đưa bạn thẳng về nội dung đang xem. " +
+                        "Chọn Flix Launcher, sau đó chọn Luôn chọn."
                 }
-                status(if (on) "✓  Home opens Flix: you're ready to watch" else null)
+                status(if (on) "✓  Nút Home đã mở Flix: bạn đã sẵn sàng thưởng thức" else null)
                 when {
-                    on -> primary("Finish") { finishSetup() }
-                    state == HomeButton.State.BLOCKED -> primary("Show me the fix") { HomeButton.showBlockedHelp(this) }
-                    googleTv -> primary("Open Accessibility") { HomeButton.openAccessibility(this) }
-                    else -> primary("Make Flix the home app") { HomeButton.chooseDefault(this) }
+                    on -> primary("Hoàn tất") { finishSetup() }
+                    state == HomeButton.State.BLOCKED -> primary("Xem cách khắc phục") { HomeButton.showBlockedHelp(this) }
+                    googleTv -> primary("Mở Trợ năng") { HomeButton.openAccessibility(this) }
+                    else -> primary("Đặt Flix làm màn hình chính") { HomeButton.chooseDefault(this) }
                 }
-                secondary(if (on) null else "Finish") { finishSetup() }
+                secondary(if (on) null else "Hoàn tất") { finishSetup() }
             }
         }
         dots.removeAllViews()

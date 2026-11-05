@@ -97,7 +97,7 @@ class AppRepository(private val context: Context) {
     /** The tile at the end of the favourites row that opens the All apps page. */
     fun allAppsTile(): AppEntry = AppEntry(
         packageName = ALL_APPS_TILE,
-        label = "All apps",
+        label = "Tất cả ứng dụng",
         banner = null,
         icon = context.getDrawable(R.drawable.ic_apps)!!,
         launchIntent = Intent(context, AllAppsActivity::class.java),

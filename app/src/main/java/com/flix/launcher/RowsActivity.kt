@@ -61,14 +61,14 @@ class RowsActivity : Activity() {
         val side = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(px(54), px(6), px(16), px(28))
-            addView(text("Addons & rows", 28f, bold = true))
-            addView(text("Choose and order the rows on your home screen", 13f, alpha = 0.55f).apply { setPadding(0, px(4), 0, 0) })
-            addView(caption("Remote"))
+            addView(text("Addon & hàng phim", 28f, bold = true))
+            addView(text("Chọn và sắp xếp các hàng trên màn hình chính", 13f, alpha = 0.55f).apply { setPadding(0, px(4), 0, 0) })
+            addView(caption("Điều khiển"))
             addView(card().apply {
                 setPadding(px(14), px(10), px(14), px(10))
-                addView(keyHint("OK", "turns a row on or off"))
-                addView(keyHint("◀ ▶", "moves a row on the home screen"))
-                addView(keyHint("Menu", "more options"))
+                addView(keyHint("OK", "bật hoặc tắt hàng"))
+                addView(keyHint("◀ ▶", "di chuyển hàng trên màn hình"))
+                addView(keyHint("Menu", "tuỳ chọn khác"))
             })
         }
         qr = ImageView(this).apply {
@@ -76,7 +76,7 @@ class RowsActivity : Activity() {
             setPadding(px(6), px(6), px(6), px(6))
         }
         qrCaption = text("", 12f, alpha = 0.6f)
-        side.addView(caption("Phone"))
+        side.addView(caption("Điện thoại"))
         side.addView(card().apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
@@ -127,10 +127,10 @@ class RowsActivity : Activity() {
         if (address != null) {
             qr.setImageBitmap(qrBitmap(address, px(84)))
             qr.visibility = View.VISIBLE
-            qrCaption.text = "Scan to manage\nfrom your phone"
+            qrCaption.text = "Quét mã để quản lý\ntừ điện thoại"
         } else {
             qr.visibility = View.GONE
-            qrCaption.text = "Connect to Wi-Fi to use your phone"
+            qrCaption.text = "Kết nối Wi-Fi để dùng điện thoại"
         }
     }
 
@@ -156,19 +156,19 @@ class RowsActivity : Activity() {
         list.removeAllViews()
         rowViews.clear()
         looks.clear()
-        val add = actionRow("Add an addon by URL", "Paste a Stremio-style manifest link", R.drawable.ic_o_plus) { askForUrl() }
-        list.addView(caption("Addons", top = 0))
+        val add = actionRow("Thêm addon bằng URL", "Dán liên kết manifest chuẩn Stremio", R.drawable.ic_o_plus) { askForUrl() }
+        list.addView(caption("Addon", top = 0))
         list.addView(group(listOf(add)))
 
         val rows = Addons.rows(this)
         val on = rows.filter { it.enabled }
-        list.addView(caption("On your home screen · ${on.size}"))
-        if (on.isEmpty()) list.addView(text("Nothing yet — switch on a row below.", 13f, alpha = 0.55f).apply { setPadding(px(12), px(2), 0, px(4)) })
+        list.addView(caption("Trên màn hình chính · ${on.size}"))
+        if (on.isEmpty()) list.addView(text("Chưa có gì — hãy bật một hàng bên dưới.", 13f, alpha = 0.55f).apply { setPadding(px(12), px(2), 0, px(4)) })
         else list.addView(group(on.mapIndexed { i, row -> rowView(row, position = i + 1, count = on.size) }))
 
         val off = rows.filter { !it.enabled }.groupBy { it.manifest }
         if (off.isNotEmpty()) {
-            list.addView(caption("More from your addons"))
+            list.addView(caption("Thêm từ các addon của bạn"))
             val items = mutableListOf<View>()
             for ((manifest, group) in off) {
                 val open = manifest in expanded
@@ -266,12 +266,12 @@ class RowsActivity : Activity() {
 
     private fun rowMenu(row: Addons.Row) {
         val actions = buildList<Pair<String, () -> Unit>> {
-            add((if (row.enabled) "Remove from home screen" else "Show on home screen") to { Addons.setEnabled(this@RowsActivity, row.key, !row.enabled) })
-            if (row.enabled) add("Move to top" to {
+            add((if (row.enabled) "Xoá khỏi màn hình chính" else "Hiển thị trên màn hình chính") to { Addons.setEnabled(this@RowsActivity, row.key, !row.enabled) })
+            if (row.enabled) add("Đưa lên đầu" to {
                 val rows = Addons.rows(this@RowsActivity)
                 repeat(rows.indexOfFirst { it.key == row.key }) { Addons.moveEnabled(this@RowsActivity, row.key, -1) }
             })
-            add("Delete row" to { Addons.rows(this@RowsActivity).indexOfFirst { it.key == row.key }.let { Addons.remove(this@RowsActivity, it) } })
+            add("Xoá hàng này" to { Addons.rows(this@RowsActivity).indexOfFirst { it.key == row.key }.let { Addons.remove(this@RowsActivity, it) } })
         }
         AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
             .setTitle(row.title)
@@ -282,7 +282,7 @@ class RowsActivity : Activity() {
     private fun addonMenu(manifest: String, name: String) {
         AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
             .setTitle(name)
-            .setItems(arrayOf("Remove this addon and all its rows")) { _, _ ->
+            .setItems(arrayOf("Xoá addon này và tất cả các hàng của nó")) { _, _ ->
                 Addons.removeAddon(this, manifest); changed(); render()
             }.show()
     }
@@ -294,22 +294,22 @@ class RowsActivity : Activity() {
             setSingleLine()
         }
         AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-            .setTitle("Addon manifest URL")
-            .setMessage("Tip: scanning the QR code lets you paste it from your phone.")
+            .setTitle("Địa chỉ URL manifest của Addon")
+            .setMessage("Mẹo: quét mã QR để dán liên kết nhanh từ điện thoại của bạn.")
             .setView(input)
-            .setPositiveButton("Add") { _, _ -> addUrl(input.text.toString()) }
-            .setNegativeButton("Cancel", null)
+            .setPositiveButton("Thêm") { _, _ -> addUrl(input.text.toString()) }
+            .setNegativeButton("Huỷ", null)
             .show()
     }
 
     private fun addUrl(url: String) {
         if (url.isBlank()) return
-        Toast.makeText(this, "Reading addon…", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Đang đọc thông tin addon…", Toast.LENGTH_SHORT).show()
         thread {
             val result = runCatching { Addons.add(this, url) }
             runOnUiThread {
-                result.onSuccess { Toast.makeText(this, "Added $it rows", Toast.LENGTH_SHORT).show(); changed(); render() }
-                    .onFailure { Toast.makeText(this, it.message ?: "Couldn't add that addon", Toast.LENGTH_LONG).show() }
+                result.onSuccess { Toast.makeText(this, "Đã thêm $it hàng", Toast.LENGTH_SHORT).show(); changed(); render() }
+                    .onFailure { Toast.makeText(this, it.message ?: "Không thể thêm addon này", Toast.LENGTH_LONG).show() }
             }
         }
     }
@@ -330,7 +330,7 @@ class RowsActivity : Activity() {
             })
             addView(View(context).apply { setBackgroundColor(0x33FFFFFF) },
                 LinearLayout.LayoutParams(px(1), px(22)).apply { marginStart = px(16); marginEnd = px(16) })
-            addView(text("Settings", 20f, alpha = 0.55f).apply { typeface = Typeface.create("sans-serif-light", Typeface.NORMAL) })
+            addView(text("Cài đặt", 20f, alpha = 0.55f).apply { typeface = Typeface.create("sans-serif-light", Typeface.NORMAL) })
             addView(text("›", 20f, alpha = 0.4f).apply { setPadding(px(10), 0, px(10), 0) })
             addView(text(page, 20f, alpha = 0.9f).apply { typeface = Typeface.create("sans-serif-light", Typeface.NORMAL) })
         }

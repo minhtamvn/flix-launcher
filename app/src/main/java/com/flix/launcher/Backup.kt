@@ -36,7 +36,7 @@ object Backup {
 
     /** Writes a backup and returns it; also copies it to Download/FlixLauncher where possible. */
     fun save(context: Context): Saved {
-        val dir = folder(context) ?: error("TV storage isn't available")
+        val dir = folder(context) ?: error("Bộ nhớ TV không khả dụng")
         val now = Date()
         val name = "flix-backup-" + SimpleDateFormat("yyyyMMdd-HHmm", Locale.US).format(now) + ".json"
         val json = JSONObject()
@@ -60,8 +60,8 @@ object Backup {
     /** Replaces the current settings with those in [backup]. Returns how many settings were restored. */
     fun restore(context: Context, backup: Saved): Int {
         val root = JSONObject(backup.file.readText())
-        require(root.optString("app") == "Flix Launcher") { "That file isn't a Flix backup" }
-        require(root.optInt("format") <= FORMAT) { "That backup is from a newer Flix" }
+        require(root.optString("app") == "Flix Launcher") { "Tập tin đó không phải là bản sao lưu của Flix" }
+        require(root.optInt("format") <= FORMAT) { "Bản sao lưu này từ phiên bản Flix mới hơn" }
         val prefs = root.getJSONObject("prefs")
         var count = 0
         for (name in FILES) {

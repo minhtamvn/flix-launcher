@@ -40,17 +40,17 @@ object Report {
                 setPadding(pad, pad, pad, pad)
             }, LinearLayout.LayoutParams(size + (24 * dp).toInt(), size + (24 * dp).toInt()))
             addView(TextView(activity).apply {
-                text = "Scan with your phone's camera. It opens a bug report with this TV's details and Flix's recent errors filled in. " +
-                    "Describe what happened, then submit it (you'll need a GitHub account)."
+                text = "Quét mã bằng camera điện thoại. Thao tác này sẽ mở một báo cáo sự cố kèm thông tin của chiếc TV này cùng các nhật ký gần đây của Flix. " +
+                    "Hãy mô tả những gì đã xảy ra và gửi báo cáo (yêu cầu tài khoản GitHub)."
                 textSize = 14f
                 setTextColor(0xCCFFFFFF.toInt())
                 setPadding((24 * dp).toInt(), 0, 0, 0)
             }, LinearLayout.LayoutParams(0, -2, 1f))
         }
         AlertDialog.Builder(activity, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-            .setTitle("Report a problem")
+            .setTitle("Báo cáo sự cố")
             .setView(view)
-            .setPositiveButton("Done", null)
+            .setPositiveButton("Xong", null)
             .show()
             // Alert dialogs are phone-narrow; widen it so the text sits beside the code.
             .window?.setLayout((680 * dp).toInt(), android.view.ViewGroup.LayoutParams.WRAP_CONTENT)

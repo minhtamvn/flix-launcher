@@ -84,13 +84,13 @@ class PhoneRemote(private val context: Context, private val onChanged: () -> Uni
         if (length !in 0..MAX_BODY) return respond(client, 413, "Too large")
         val body = if (method == "POST" && length > 0) readBody(input, length, deadline) ?: return else ""
         val query = params(target.substringAfter('?', "")) + params(body)
-        if (token.isEmpty() || query["t"] != token) return respond(client, 403, "Scan the QR code on the TV again.")
-        if (path != "/" && method != "POST") return respond(client, 405, "Use the buttons on the page.")
+        if (token.isEmpty() || query["t"] != token) return respond(client, 403, "Quét lại mã QR trên TV.")
+        if (path != "/" && method != "POST") return respond(client, 405, "Hãy sử dụng các nút trên trang web.")
         var message = query["m"].orEmpty()
         when (path) {
             "/" -> {}
             "/add" -> message = query["url"]?.takeIf { it.isNotBlank() }?.let { url ->
-                runCatching { "Added ${Addons.add(context, url)} rows" }.getOrElse { it.message ?: "Couldn't add that" }
+                runCatching { "Đã thêm ${Addons.add(context, url)} hàng" }.getOrElse { it.message ?: "Không thể thêm addon này" }
             } ?: ""
             "/move" -> Addons.move(context, query["i"]?.toIntOrNull() ?: -1, query["d"]?.toIntOrNull() ?: 0)
             "/toggle" -> Addons.toggle(context, query["i"]?.toIntOrNull() ?: -1)
@@ -163,14 +163,14 @@ class PhoneRemote(private val context: Context, private val onChanged: () -> Uni
               <div><b>${esc(r.title)}</b><small>${esc(r.addonName)} · ${esc(r.type)}</small></div>
               <nav>
                 <form method="post" action="/move">$t<input type="hidden" name="i" value="$i"><button name="d" value="-1">▲</button><button name="d" value="1">▼</button></form>
-                <form method="post" action="/toggle">$t<input type="hidden" name="i" value="$i"><button>${if (r.enabled) "Hide" else "Show"}</button></form>
-                <form method="post" action="/remove" onsubmit="return confirm('Remove this row?')">$t<input type="hidden" name="i" value="$i"><button class="del">✕</button></form>
+                <form method="post" action="/toggle">$t<input type="hidden" name="i" value="$i"><button>${if (r.enabled) "Ẩn" else "Hiện"}</button></form>
+                <form method="post" action="/remove" onsubmit="return confirm('Xoá hàng này?')">$t<input type="hidden" name="i" value="$i"><button class="del">✕</button></form>
               </nav>
             </li>""".trimIndent()
         }.joinToString("\n")
         return """
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Flix Launcher rows</title>
+<title>Flix Launcher · Hàng phim</title>
 <style>
 :root{color-scheme:dark}body{font:15px system-ui,sans-serif;background:#0b0f14;color:#eef2f6;margin:0;padding:16px;max-width:640px;margin:auto}
 h1{font-size:22px;margin:8px 0 4px}p{color:#9aa7b4;margin:0 0 14px}
@@ -181,10 +181,10 @@ li.off{opacity:.45}li small{display:block;color:#9aa7b4;margin-top:2px}nav{displ
 nav button{padding:8px 10px;border-radius:8px;background:#222c38;color:#fff;font-weight:400}nav button.del{background:#3a1f24}
 .msg{padding:10px 12px;border-radius:10px;background:#1d2a1f;color:#bfe8c4;margin-bottom:12px}
 </style></head><body>
-<h1>Flix Launcher · Addons &amp; rows</h1>
-<p>Paste a Stremio/Nuvio addon manifest URL. Each of its catalogues becomes a row on your TV.</p>
+<h1>Flix Launcher · Addon &amp; hàng phim</h1>
+<p>Dán địa chỉ URL manifest của addon Stremio/Nuvio. Mỗi danh mục sẽ trở thành một hàng phim trên TV.</p>
 ${if (message.isNotBlank()) "<div class=\"msg\">${esc(message)}</div>" else ""}
-<form class="add" method="post" action="/add">$t<input name="url" placeholder="https://…/manifest.json" autocomplete="off" autocapitalize="off"><button>Add</button></form>
+<form class="add" method="post" action="/add">$t<input name="url" placeholder="https://…/manifest.json" autocomplete="off" autocapitalize="off"><button>Thêm</button></form>
 <ul>$items</ul>
 </body></html>
 """.trimIndent()
