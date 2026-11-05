@@ -11,9 +11,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/minhtamvn/flix-launcher/tree/vi"><b>Kho lưu trữ (Nhánh Tiếng Việt)</b></a> ·
-  <a href="https://github.com/HatriGt/flix-launcher"><b>Dự án gốc (HatriGt)</b></a> ·
-  <a href="#hướng-dẫn-cài-đặt"><b>Cài đặt APK</b></a>
+  <a href="https://github.com/minhtamvn/flix-launcher/releases/latest"><b>Tải file APK (Releases)</b></a> ·
+  <a href="https://github.com/minhtamvn/flix-launcher/tree/vi"><b>Mã nguồn (Nhánh Tiếng Việt)</b></a> ·
+  <a href="https://github.com/HatriGt/flix-launcher"><b>Dự án gốc (HatriGt)</b></a>
 </p>
 
 <p align="center">
