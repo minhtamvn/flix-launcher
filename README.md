@@ -1,249 +1,234 @@
 <p align="center">
-  <img src="docs/hero.png" alt="Flix Launcher, a custom launcher for Android TV" width="100%">
+  <img src="docs/hero.png" alt="Flix Launcher Tiếng Việt - Launcher tùy biến cho Android TV" width="100%">
 </p>
 
-<h1 align="center">Flix Launcher</h1>
+<h1 align="center">Flix Launcher (Bản Tiếng Việt)</h1>
 
 <p align="center">
-  <b>An ad-free Android TV launcher made for watching.</b><br>
-  Press Home and you're one click from your film: the episode you're halfway through, films worth starting and your streaming apps, nothing else.<br>
-  Works on Sony BRAVIA, TCL, Hisense, Xiaomi Mi Box, Chromecast with Google TV, NVIDIA Shield and other Android TV devices.
-</p>
-
-<p align="center">
-  <a href="https://hatrigt.github.io/flix-launcher/"><b>Website</b></a> ·
-  <a href="https://github.com/HatriGt/flix-launcher/releases/latest/download/flix-launcher.apk"><b>Download the APK</b></a>
+  <b>Trình khởi chạy (launcher) Android TV không quảng cáo, tối ưu cho trải nghiệm xem phim.</b><br>
+  Nhấn Home để mở phim chỉ với 1 click: tập phim đang xem dở, phim đề xuất hấp dẫn và toàn bộ ứng dụng xem phim của bạn.<br>
+  Hỗ trợ mượt mà trên Sony BRAVIA, TCL, Hisense, Xiaomi Mi Box, Chromecast with Google TV, NVIDIA Shield và các thiết bị Android TV khác.
 </p>
 
 <p align="center">
-  <a href="https://github.com/HatriGt/flix-launcher/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/HatriGt/flix-launcher?style=flat-square&color=E50914"></a>
-  <a href="https://github.com/HatriGt/flix-launcher/actions/workflows/build.yml"><img alt="Build" src="https://img.shields.io/github/actions/workflow/status/HatriGt/flix-launcher/build.yml?style=flat-square&label=build"></a>
+  <a href="https://github.com/minhtamvn/flix-launcher/tree/vi"><b>Kho lưu trữ (Nhánh Tiếng Việt)</b></a> ·
+  <a href="https://github.com/HatriGt/flix-launcher"><b>Dự án gốc (HatriGt)</b></a> ·
+  <a href="#hướng-dẫn-cài-đặt"><b>Cài đặt APK</b></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/minhtamvn/flix-launcher/releases/latest"><img alt="Bản phát hành" src="https://img.shields.io/github/v/release/minhtamvn/flix-launcher?style=flat-square&color=E50914"></a>
   <img alt="Android TV 9+" src="https://img.shields.io/badge/Android%20TV-9%2B-3DDC84?style=flat-square&logo=android&logoColor=white">
   <img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-plain%20Views-7F52FF?style=flat-square&logo=kotlin&logoColor=white">
-  <img alt="APK size" src="https://img.shields.io/badge/APK-~2%20MB-141414?style=flat-square">
+  <img alt="Dung lượng APK" src="https://img.shields.io/badge/Dung%20lượng%20APK-~2%20MB-141414?style=flat-square">
+  <img alt="Ngôn ngữ" src="https://img.shields.io/badge/Ngôn%20ngữ-Tiếng%20Việt%20(100%25)-E50914?style=flat-square">
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/HatriGt/flix-launcher?style=flat-square&color=141414"></a>
 </p>
 
 <p align="center">
-  <a href="#features">Features</a> ·
-  <a href="#install">Install</a> ·
-  <a href="#make-it-your-home-screen">Set as home</a> ·
-  <a href="#settings">Settings</a> ·
-  <a href="#build-from-source">Build</a> ·
-  <a href="#faq">FAQ</a>
+  <a href="#giới-thiệu-về-bản-việt-hóa">Giới thiệu</a> ·
+  <a href="#hình-ảnh-giao-diện">Giao diện</a> ·
+  <a href="#tính-năng-nổi-bật">Tính năng</a> ·
+  <a href="#hướng-dẫn-cài-đặt">Cài đặt</a> ·
+  <a href="#cài-làm-màn-hình-chính-nút-home">Cài nút Home</a> ·
+  <a href="#cài-đặt-tùy-chỉnh">Tùy chỉnh</a> ·
+  <a href="#biên-dịch-từ-mã-nguồn">Build APK</a> ·
+  <a href="#câu-hỏi-thường-gặp">FAQ</a>
 </p>
 
 ---
 
-## Why Flix
+## Giới thiệu về bản Việt hóa
 
-A TV is for watching, but the stock Google TV home screen fills itself with ads and promoted apps, and it's slow on cheap TVs. Flix Launcher is a custom Android TV launcher built around what you actually watch. It replaces the stock one with one calm, fast screen: your favourite apps on top, films and shows underneath, and a moving scenic background when you're not using it.
+Đây là bản fork của **Flix Launcher** được Việt hóa toàn diện 100% giao diện sang tiếng Việt tự nhiên và trực quan (từ màn hình chính, thanh điều hướng, cài đặt, trình quản lý hàng phim, cho đến giao diện thiết lập và Live TV).
 
-It's small (an APK of about 2 MB, with only RecyclerView, ZXing for the sign-in QR code, the profile installer and Media3 for live TV as dependencies) and frugal: about 54 MB of memory on a 2 GB TV, because every icon is redrawn once into a GPU bitmap and artwork only loads for the card you're looking at.
+* **Siêu nhẹ và mượt mà:** File cài đặt APK Release chỉ nặng khoảng **~2 MB**, sử dụng thuần Kotlin Views (không dùng Jetpack Compose hay layout XML cồng kềnh), chiếm chỉ ~54 MB RAM trên TV 2 GB nhờ cơ chế GPU layer và tải artwork theo nhu cầu.
+* **Không quảng cáo:** Loại bỏ hoàn toàn banner quảng cáo và ứng dụng rác của Google TV.
+* **Tích hợp sâu với Nuvio & Stremio Addons:** Tự động lấy danh sách phim hot, Top 10, tiếp tục xem dở và phát trailer nền sống động.
+* **Tab Truyền hình trực tiếp (Live TV):** Đọc danh sách kênh Nuvio+IPTV qua Setup Sync, phát xem trước trực tiếp ở nền và hỗ trợ ẩn kênh nhanh chóng.
 
-## See it
+---
+
+## Hình ảnh giao diện
 
 <p align="center">
-  <img src="docs/home.webp" alt="Flix home screen: your apps on top, Continue watching and Top 10 rows over a scenic background" width="100%">
+  <img src="docs/home.webp" alt="Màn hình chính Flix Launcher" width="100%">
 </p>
 
 <p align="center">
-  <img src="docs/shows.webp" alt="Shows tab: the focused title widens with its artwork, year, length, genres and progress" width="49%">
-  <img src="docs/tv.webp" alt="TV tab: Nuvio+IPTV channels with logos, what's on now and a time bar, the channel playing behind" width="49%">
+  <img src="docs/shows.webp" alt="Tab Phim bộ" width="49%">
+  <img src="docs/tv.webp" alt="Tab Truyền hình TV với Nuvio+IPTV" width="49%">
 </p>
 
 <p align="center">
-  <img src="docs/setup.webp" alt="First-run setup: one step at a time, here making the Home button open Flix" width="49%">
-  <img src="docs/settings.webp" alt="Flix settings: sections, wallpaper list and searching for trailer settings" width="49%">
+  <img src="docs/setup.webp" alt="Thiết lập lần đầu" width="49%">
+  <img src="docs/settings.webp" alt="Màn hình Cài đặt Flix Launcher" width="49%">
 </p>
 
-<p align="center"><sub>Captured on a Sony BRAVIA (Android TV 14, 2 GB). Home, Shows, TV (with Nuvio+IPTV), setup and settings.</sub></p>
+<p align="center"><sub>Giao diện hiển thị trên Sony BRAVIA (Android TV 14, 2 GB RAM). Màn hình chính, Phim bộ, Kênh TV (với Nuvio+IPTV), thiết lập và cài đặt.</sub></p>
 
-## Features
+---
+
+## Tính năng nổi bật
 
 <table>
 <tr>
 <td width="50%" valign="top">
 
-### 🏠 Home
-- **Favourites row** of your apps, in the order you choose
-- **Apps grid** on the home screen itself: no separate page, no wait
-- **Colour glow** on the selected app, taken from its own icon
-- Icon shape, size, app names and focus animation are all adjustable
-- Home key always comes back to Flix, even on Google TV
+### 🏠 Màn hình chính
+- **Hàng ứng dụng yêu thích** tự sắp xếp vị trí theo ý muốn
+- **Lưới tất cả ứng dụng** tích hợp ngay màn hình chính, mở tức thì không cần đợi
+- **Hiệu ứng phát sáng (glow)** theo tông màu của từng biểu tượng ứng dụng
+- Tùy chỉnh kích thước, hình dạng icon (tròn, vuông bo góc, chữ nhật) và hiệu ứng phóng to
+- Nhấn phím Home luôn mở Flix Launcher ngay cả trên Google TV
 
 </td>
 <td width="50%" valign="top">
 
-### 🎬 Films & shows
-- **Featured carousel** of top-rated titles, on or off
-- **Rows from any Stremio-compatible addon**; Cinemeta's popular lists are the default
-- **Top 10** row and genre filter
-- **Continue watching** from your Nuvio account, with progress bars
-- **Trailers** play behind the selected title, with sound and start delay options
-- OK opens the title in [Nuvio](https://nuvio.tv)
+### 🎬 Phim & Chương trình
+- **Banner nổi bật (Billboard)** giới thiệu các tựa phim/chương trình chất lượng cao
+- **Hàng phim từ bất kỳ Addon Stremio nào**; mặc định dùng Cinemeta
+- **Top 10 phim hôm nay** và bộ lọc theo thể loại
+- **Tiếp tục xem** liên kết tài khoản Nuvio với thanh tiến trình % đã xem
+- **Trailer phát nền** phía sau tựa phim được chọn (hỗ trợ bật/tắt tiếng, chỉnh độ trễ)
+- Nhấn OK để mở xem phim ngay qua [Nuvio](https://nuvio.tv)
 
 </td>
 </tr>
 <tr>
 <td valign="top">
 
-### 📺 Live TV (with Nuvio+IPTV)
-- A **TV tab** with your Nuvio+IPTV channels: Recently watched first, then the groups you keep visible
-- Each channel shows its logo and what's on now, with a time bar and what's next
-- Rest on a channel and it plays full screen behind the page, like a trailer; OK watches it in Nuvio+IPTV
-- Hold OK to hide a channel. Read through Nuvio+IPTV's Setup Sync, with your Nuvio sign-in
+### 📺 Truyền hình trực tiếp (Live TV)
+- **Tab TV riêng biệt** với các kênh Nuvio+IPTV của bạn: Kênh đã xem gần đây xếp trước, sau đó là các nhóm kênh được chọn
+- Mỗi kênh hiển thị logo và chương trình đang phát, kèm thanh thời gian và chương trình tiếp theo
+- Dừng lại ở một kênh để phát trực tiếp toàn màn hình phía sau trang, như trailer phim; nhấn OK để xem trong Nuvio+IPTV
+- Nhấn giữ OK để ẩn kênh. Đọc thông qua Đồng bộ thiết lập của Nuvio+IPTV với tài khoản Nuvio sẵn có
 
-### 🌄 Backgrounds
-- **About 270 aerial videos** (Apple TV, Amazon and community aerials): nature, sea, cities, space and art
-- **Photo backgrounds** from the Bing archive: landscapes or cities
-- Streamed when shown, never stored, so they take no space
-- Fades into a full-screen scenery mode when idle
+### 🌄 Hình nền sống động
+- **Hơn 270 video cảnh quay trên không** (Apple TV, Amazon Fire TV): phong cảnh thiên nhiên, đại dương, thành phố, vũ trụ và nghệ thuật
+- **Hình nền ảnh chụp Bing** độ phân giải cao thay đổi mỗi phút
+- Stream trực tiếp khi hiển thị, không lưu vào bộ nhớ trong gây đầy dung lượng TV
+- Tự động chuyển sang chế độ bảo vệ màn hình (screensaver) phong cảnh khi TV không hoạt động
 
 </td>
 <td valign="top">
 
-### ⏰ At a glance
-- Clock in three styles, 12 or 24-hour
-- Greeting, date and sunrise/sunset arc
-- Weather and 3-day forecast (no API key; via wttr.in)
-- **Searchable settings**: type "trailer" or "clock" and jump straight there
-- Add addons from your phone over the home network
+### ⏰ Tiện ích & Thông tin
+- Đồng hồ 3 phong cách hiển thị, định dạng 12h hoặc 24h
+- Lời chào theo buổi, ngày tháng, đồ thị bình minh/hoàng hôn
+- Thời tiết và dự báo 3 ngày bằng tiếng Việt (tìm kiếm thành phố thông minh qua Open-Meteo & wttr.in)
+- **Cài đặt tìm kiếm nhanh**: gõ "trailer", "đồng hồ", "âm thanh" để đến thẳng mục cài đặt
+- Quản lý thêm bớt hàng phim từ điện thoại qua mạng Wi-Fi nội bộ bằng mã QR
 
 </td>
 </tr>
 </table>
 
-## Install
+---
 
-1. Download `flix-launcher-<version>.apk` from the [latest release](https://github.com/HatriGt/flix-launcher/releases/latest).
-2. Install it on the TV, either with a sideloading app (Downloader, Send Files to TV) or over adb:
+## Hướng dẫn cài đặt
+
+1. Tải file `FlixLauncher-vi.apk` từ mục [Releases](https://github.com/minhtamvn/flix-launcher/releases) của repo.
+2. Cài đặt lên Android TV bằng ứng dụng chuyển file (Downloader, Send Files to TV, USB) hoặc qua lệnh **ADB**:
 
    ```bash
-   adb connect <tv-ip>:5555
-   adb install flix-launcher-1.0.19.apk
+   adb connect <dia-chi-ip-tv>:5555
+   adb install FlixLauncher-vi.apk
    ```
 
-**Needs:** Android TV 9 (API 28) or newer. [Nuvio](https://nuvio.tv) is optional and only needed for opening titles and Continue watching.
+**Yêu cầu hệ thống:** Thiết bị chạy Android TV 9.0 (API 28) trở lên. Ứng dụng xem phim [Nuvio](https://nuvio.tv) là tùy chọn (chỉ cần nếu bạn muốn phát trực tiếp nội dung hoặc đồng bộ hàng Tiếp tục xem).
 
-## Make it your home screen
+---
 
-Google TV sends the Home button to its own launcher, whatever the default is. Flix handles this with a small accessibility service that only listens for the Home key.
+## Cài làm màn hình chính (Nút Home)
 
-1. On the TV, open **Settings → Accessibility → Flix Launcher** and switch it on.
-2. *(Recommended)* Let Flix switch that service back on by itself after updates:
+Mặc định Google TV luôn bắt nút Home trỏ về launcher của hãng. Flix Launcher tích hợp sẵn một dịch vụ trợ năng nhẹ chỉ lắng nghe phím Home để mở Flix:
+
+1. Trên TV, vào **Cài đặt → Trợ năng (Accessibility) → Flix Launcher** và gạt bật dịch vụ.
+2. *(Khuyên dùng)* Cấp quyền cho Flix Launcher tự động bật lại dịch vụ này sau mỗi lần TV cập nhật hoặc khởi động lại:
 
    ```bash
    adb shell pm grant com.flix.launcher android.permission.WRITE_SECURE_SETTINGS
    ```
 
-That's it: press Home and Flix opens. Keep the stock Google TV home installed; Google TV shows a recovery screen when it's disabled.
+Như vậy là xong: mỗi khi bấm nút Home trên điều khiển, Flix Launcher sẽ xuất hiện ngay lập tức.
 
-## Settings
+---
 
-Open them from the settings button at the end of the top bar.
+## Cài đặt tùy chỉnh
 
-| Section | What you can change |
+Nhấn biểu tượng bánh răng ở góc phải thanh trên cùng để vào màn hình Cài đặt:
+
+| Danh mục | Nội dung có thể tùy chỉnh |
 |---|---|
-| **Home screen** | Icon shape and size, app names, colour glow, focus animation, All apps tile |
-| **Movies & shows** | Nuvio account, addon rows and order, featured carousel, Continue watching, Top 10, genre, trailers (on/off, delay, sound), backdrop preview, poster size, hidden titles |
-| **Clock & weather** | Clock style and format, greeting, date, sun arc, weather, forecast, units |
-| **Wallpaper** | Photos, aerial video by category, or plain; shuffle, dimming, scene names, idle timer |
-| **About** | Back up and restore every setting, favourite and addon row |
+| **Màn hình chính** | Hình dạng & kích thước biểu tượng, nhãn tên ứng dụng, vệt màu phát sáng, hiệu ứng chuyển động, thẻ Tất cả ứng dụng |
+| **Phim & chương trình** | Tài khoản Nuvio, danh sách addon & sắp xếp hàng phim, carousel nổi bật, Tiếp tục xem, Top 10, thể loại, phát trailer, kích thước áp phích, khôi phục tựa phim đã ẩn |
+| **Đồng hồ & thời tiết** | Kiểu dáng và định dạng giờ, lời chào, ngày tháng, cung mặt trời, thời tiết, tìm kiếm thành phố, đơn vị đo nhiệt độ |
+| **Hình nền** | Ảnh chụp Bing, video trên không theo từng chủ đề hoặc tối giản đơn sắc; xáo trộn ngẫu nhiên, độ sáng tối màn hình, thời gian chờ bảo vệ màn hình |
+| **Giới thiệu** | Sao lưu và khôi phục toàn bộ cài đặt, ứng dụng yêu thích và hàng phim |
 
-## Build from source
+---
+
+## Biên dịch từ mã nguồn
+
+Dự án có thể biên dịch dễ dàng trên máy tính hoặc trực tiếp ngay trong Termux trên Android:
 
 ```bash
-git clone https://github.com/HatriGt/flix-launcher.git
+git clone https://github.com/minhtamvn/flix-launcher.git
 cd flix-launcher
+git checkout vi
 ./gradlew assembleRelease
-# app/build/outputs/apk/release/app-release.apk
+# File APK xuất ra tại: app/build/outputs/apk/release/app-release.apk
 ```
 
-Requirements: JDK 17 and the Android SDK (compile SDK 35). The release build is minified with R8 and ships a baseline profile for a fast first start.
+**Yêu cầu môi trường:** JDK 17 hoặc 21 và Android SDK (compile SDK 35). Bản build Release được tối ưu hóa và làm gọn mã nguồn bằng R8 ProGuard cùng Baseline Profile giúp khởi động siêu nhanh.
+
+---
+
+## Câu hỏi thường gặp
 
 <details>
-<summary><b>Project layout</b></summary>
+<summary><b>Flix Launcher có thu thập dữ liệu cá nhân không?</b></summary>
 
-| File | Role |
-|---|---|
-| `MainActivity.kt` | The home screen: dock, apps grid, rows, idle scenery |
-| `AppRepository.kt` | Lists apps and redraws their icons once into compact GPU bitmaps |
-| `MovieRows.kt`, `PosterAdapter.kt`, `Billboard.kt` | Film and show rows, cards and the featured carousel |
-| `Catalog.kt`, `Addons.kt` | Stremio-compatible catalogue loading, cached for six hours |
-| `NuvioAccount.kt`, `NuvioLoginActivity.kt` | Nuvio sign-in (QR code or email) and Continue watching |
-| `Trailer.kt`, `TrailerService.kt` | Trailer playback in a separate process, so it never costs the home screen memory |
-| `VideoFeed.kt`, `WallpaperFeed.kt`, `SceneryPlayer.kt` | Aerial video and photo backgrounds |
-| `SettingsActivity.kt`, `FlixSettings.kt` | Searchable settings and their stored values |
-| `HomeKeyService.kt`, `HomeGuard.kt` | Bringing the Home key back to Flix on Google TV |
-
-</details>
-
-## FAQ
-
-<details>
-<summary><b>Does Flix collect any data?</b></summary>
-
-No. There are no analytics or ads. It talks only to the services it shows: your addons, Cinemeta, Nuvio (if you sign in), wttr.in for weather, the aerial video lists on GitHub, and YouTube for trailers.
+Hoàn toàn không. Ứng dụng không có mã theo dõi, phân tích người dùng hay quảng cáo. Ứng dụng chỉ kết nối trực tiếp đến các dịch vụ cần hiển thị: Addon Stremio của bạn, Cinemeta, Nuvio (nếu bạn đăng nhập), wttr.in để lấy thời tiết, danh sách video phong cảnh trên GitHub và YouTube để phát trailer.
 </details>
 
 <details>
-<summary><b>What does OK on a title open?</b></summary>
+<summary><b>Nhấn phím OK trên tựa phim sẽ mở ứng dụng gì?</b></summary>
 
-Since 1.0.2, OK on a film opens Nuvio's stream list directly. A series opens its page so you can pick an episode; a Continue watching episode goes straight to its streams.
+Nhấn OK trên một bộ phim lẻ sẽ chuyển thẳng vào danh sách luồng phát của Nuvio. Với phim bộ sẽ mở trang chi tiết để bạn chọn tập; nếu tập phim nằm ở hàng Tiếp tục xem thì sẽ vào thẳng luồng phát của tập đó.
 </details>
 
 <details>
-<summary><b>How much space do video backgrounds take?</b></summary>
+<summary><b>Video hình nền có làm tốn dung lượng bộ nhớ TV không?</b></summary>
 
-None. They stream when shown and are never saved; only a small list of addresses is kept, refreshed weekly.
+Không. Các video này được truyền phát (stream) trực tiếp khi hiển thị và không bao giờ lưu trữ trong máy. Ứng dụng chỉ lưu danh sách liên kết nhẹ và được làm mới hàng tuần.
 </details>
 
 <details>
-<summary><b>How do I move my settings to another TV or a fresh install?</b></summary>
+<summary><b>Làm sao để sao lưu cài đặt sang TV khác?</b></summary>
 
-**Settings → About → Back up settings** saves everything except your Nuvio sign-in to `Android/data/com.flix.launcher/files/backups`, with a copy in `Download/FlixLauncher`. On the other TV, copy the file into that same backups folder (for example `adb push flix-backup-*.json /sdcard/Android/data/com.flix.launcher/files/backups/`) and choose **Restore settings**.
+Vào **Cài đặt → Giới thiệu → Sao lưu cài đặt**. Bản sao lưu sẽ được lưu tại `Android/data/com.flix.launcher/files/backups` và `Download/FlixLauncher`. Trên TV mới, chỉ cần sao chép file sao lưu vào đúng thư mục này và chọn **Khôi phục bản sao lưu**.
 </details>
 
 <details>
-<summary><b>How do I go back to the stock launcher?</b></summary>
+<summary><b>Làm thế nào để gỡ bỏ hoặc quay lại launcher gốc của TV?</b></summary>
 
-Switch off Flix in **Settings → Accessibility**, or uninstall it.
+Tắt dịch vụ trợ năng của Flix trong **Cài đặt → Trợ năng**, hoặc gỡ cài đặt ứng dụng Flix Launcher như một ứng dụng thông thường.
 </details>
 
-<details>
-<summary><b>How do I remove ads from the Google TV home screen?</b></summary>
+---
 
-Install Flix Launcher and make it your home screen (see [Make it your home screen](#make-it-your-home-screen)). The Home button then opens Flix, which has no ads or sponsored rows. The stock launcher stays installed, unused.
-</details>
+## Lời cảm ơn & Nguồn tham khảo
 
-<details>
-<summary><b>Does it work with Nuvio, NuvioPlusIPTV and Stremio addons?</b></summary>
+- Dự án gốc: [HatriGt/flix-launcher](https://github.com/HatriGt/flix-launcher)
+- [Aerial Views](https://github.com/theothernt/AerialViews) danh sách video cảnh quay trên không công khai
+- [Cinemeta](https://v3-cinemeta.strem.io) và giao thức Addon của Stremio
+- [npanuhin/Bing-Wallpaper-Archive](https://github.com/npanuhin/Bing-Wallpaper-Archive) kho lưu trữ ảnh chất lượng cao của Bing
+- [wttr.in](https://wttr.in) cung cấp dữ liệu dự báo thời tiết
 
-Yes. Sign in with your Nuvio account to get Continue watching and your addons' rows on the home screen, and OK on a title opens it in Nuvio. It works with Nuvio from GitHub, the Play Store and the NuvioPlusIPTV fork. Rows come from any Stremio-protocol addon you've added in Nuvio.
-</details>
+Flix Launcher không liên kết với Netflix, Google, Stremio hay Nuvio. Hình ảnh áp phích phim, trailer và hình nền thuộc bản quyền của chủ sở hữu tương ứng.
 
-<details>
-<summary><b>Which TVs does it run on?</b></summary>
+## Giấy phép (License)
 
-Any Android TV device on Android 9 or later: Sony BRAVIA, TCL, Hisense, Philips, Xiaomi Mi Box and Mi TV Stick, Chromecast with Google TV, NVIDIA Shield and Onn boxes. It's tuned for TVs with only 2 GB of memory.
-</details>
-
-<details>
-<summary><b>How does it update?</b></summary>
-
-Flix updates itself from this repository's releases: a new version downloads in the background, and an "Update ready" pill appears on the home screen. It installs while the TV is idle, or when you press OK on the pill.
-</details>
-
-## Acknowledgements
-
-- [Aerial Views](https://github.com/theothernt/AerialViews) for its public aerial video lists
-- [Cinemeta](https://v3-cinemeta.strem.io) and the Stremio addon protocol
-- [npanuhin/Bing-Wallpaper-Archive](https://github.com/npanuhin/Bing-Wallpaper-Archive) for the photo archive
-- [wttr.in](https://wttr.in) for weather
-
-Flix Launcher isn't affiliated with Netflix, Google, Stremio or Nuvio. Film artwork, trailers and wallpapers belong to their owners and are loaded from their sources at run time; the app only bundles small preview thumbnails for the wallpaper list.
-
-## License
-
-[MIT](LICENSE) © HatriGt
+Dự án được phân phối dưới giấy phép [MIT](LICENSE) © HatriGt. Bản Việt hóa được duy trì tại [minhtamvn/flix-launcher](https://github.com/minhtamvn/flix-launcher).
