@@ -202,7 +202,7 @@ class SettingsActivity : Activity() {
             })
             addView(View(context).apply { setBackgroundColor(0x33FFFFFF) },
                 LinearLayout.LayoutParams(px(1), px(22)).apply { marginStart = px(16); marginEnd = px(16) })
-            addView(text("Settings", 20f, alpha = 0.9f).apply { typeface = Typeface.create("sans-serif-light", Typeface.NORMAL) })
+            addView(text("Cài đặt", 20f, alpha = 0.9f).apply { typeface = Typeface.create("sans-serif-light", Typeface.NORMAL) })
         }
         return FrameLayout(this).apply {
             setPadding(px(54), px(26), px(48), px(14))
@@ -220,7 +220,7 @@ class SettingsActivity : Activity() {
     private fun searchBox(): View {
         val icon = ImageView(this).apply { setImageResource(R.drawable.ic_o_search); setColorFilter(0xB3FFFFFF.toInt()) }
         search = EditText(this).apply {
-            hint = "Search settings"
+            hint = "Tìm kiếm cài đặt"
             textSize = 15f
             setTextColor(Color.WHITE)
             setHintTextColor(0x8CFFFFFF.toInt())
@@ -240,7 +240,7 @@ class SettingsActivity : Activity() {
                 }
             })
         }
-        typeHint = text("OK to type", 11f, alpha = 0.55f)
+        typeHint = text("Nhấn OK để nhập", 11f, alpha = 0.55f)
         val bg = GradientDrawable().apply { cornerRadius = 24 * dp; setColor(0x14FFFFFF); setStroke(px(1), 0x24FFFFFF) }
         searchBox = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -352,82 +352,82 @@ class SettingsActivity : Activity() {
             add(Entry(s, group, "$title $sub $extra ${SECTIONS[s].title}") { actionRow(title, sub, icon, onClick) })
 
         // Home screen
-        act(0, "When you press Home", "Home button", HomeButton.describe(this@SettingsActivity), R.drawable.ic_s_home,
-            "home key button remote accessibility default launcher blocked not working fix") {
-            if (HomeButton.works(this@SettingsActivity)) toast("Home already opens Flix") else HomeButton.fix(this@SettingsActivity)
+        act(0, "Khi nhấn nút Home", "Nút Home", HomeButton.describe(this@SettingsActivity), R.drawable.ic_s_home,
+            "home key button remote accessibility default launcher blocked not working fix nut trang chu tro nang mat dinh bi chan") {
+            if (HomeButton.works(this@SettingsActivity)) toast("Nút Home đã mở Flix") else HomeButton.fix(this@SettingsActivity)
         }
-        opt(0, "When you press Home", FlixSettings.HOME_FOCUS, R.drawable.ic_o_resume, "home button start focus resume continue watching apps first")
-        add(Entry(0, "Look", "theme colour color style glass cinema midnight minimal dark apple netflix look") { themePicker() })
-        opt(0, "App tiles", FlixSettings.ICON_SHAPE, R.drawable.ic_o_shape, "icons round square")
-        opt(0, "App tiles", FlixSettings.ICON_SIZE, R.drawable.ic_o_size, "icons big bigger smaller")
-        opt(0, "App tiles", FlixSettings.LABELS, R.drawable.ic_o_text, "names titles text")
-        opt(0, "App tiles", FlixSettings.GLOW, R.drawable.ic_o_glow, "light colour color shine")
-        opt(0, "App tiles", FlixSettings.MOTION, R.drawable.ic_o_motion, "animation bounce speed")
-        opt(0, "All apps", FlixSettings.ALL_APPS, R.drawable.ic_o_grid, "every app list")
-        opt(0, "All apps", FlixSettings.ALL_APPS_TILE, R.drawable.ic_o_tile_plus, "every app button")
-        act(0, "All apps", "Hidden apps", "Bring back apps you hid from All apps", R.drawable.ic_o_eye, "unhide restore show") { showHiddenApps() }
-        act(0, "All apps", "Reset favourites order", "Nuvio, TiviMate and YouTube first", R.drawable.ic_o_reset, "sort order arrange") {
-            repo.resetOrder(); applyToHome(appsOnly = true); toast("Favourites order reset")
+        opt(0, "Khi nhấn nút Home", FlixSettings.HOME_FOCUS, R.drawable.ic_o_resume, "home button start focus resume continue watching apps first nut trang chu tiep tuc xem ung dung")
+        add(Entry(0, "Giao diện", "theme colour color style glass cinema midnight minimal dark apple netflix look giao dien mau sac toi gian rap phim kinh mo") { themePicker() })
+        opt(0, "Biểu tượng ứng dụng", FlixSettings.ICON_SHAPE, R.drawable.ic_o_shape, "icons round square hinh dang bieu tuong tron vuong bo goc")
+        opt(0, "Biểu tượng ứng dụng", FlixSettings.ICON_SIZE, R.drawable.ic_o_size, "icons big bigger smaller kich thuoc bieu tuong lon nho vua")
+        opt(0, "Biểu tượng ứng dụng", FlixSettings.LABELS, R.drawable.ic_o_text, "names titles text ten ung dung hien an")
+        opt(0, "Biểu tượng ứng dụng", FlixSettings.GLOW, R.drawable.ic_o_glow, "light colour color shine hieu ung phat sang anh sang")
+        opt(0, "Biểu tượng ứng dụng", FlixSettings.MOTION, R.drawable.ic_o_motion, "animation bounce speed hieu ung chuyen dong muot ma do nay")
+        opt(0, "Tất cả ứng dụng", FlixSettings.ALL_APPS, R.drawable.ic_o_grid, "every app list tat ca ung dung danh sach")
+        opt(0, "Tất cả ứng dụng", FlixSettings.ALL_APPS_TILE, R.drawable.ic_o_tile_plus, "every app button o tat ca ung dung")
+        act(0, "Tất cả ứng dụng", "Ứng dụng đã ẩn", "Hiện lại các ứng dụng bạn đã ẩn khỏi Tất cả ứng dụng", R.drawable.ic_o_eye, "unhide restore show ung dung da an khoi phuc hien lai") { showHiddenApps() }
+        act(0, "Tất cả ứng dụng", "Đặt lại thứ tự mục yêu thích", "Nuvio, TiviMate và YouTube lên đầu", R.drawable.ic_o_reset, "sort order arrange dat lai thu tu yeu thich") {
+            repo.resetOrder(); applyToHome(appsOnly = true); toast("Đã đặt lại thứ tự mục yêu thích")
         }
 
         // Movies & shows
-        add(Entry(1, null, "Nuvio account sign in login profile continue watching") { nuvioCard() })
+        add(Entry(1, null, "nuvio account sign in login profile continue watching tai khoan dang nhap ho so tiep tuc xem") { nuvioCard() })
         NuvioAccount.profile(this@SettingsActivity)?.takeIf { NuvioAccount.isSignedIn(this@SettingsActivity) }?.let { profile ->
-            add(Entry(1, null, "profile picture avatar face image photo cartoon character") { pictureRow(profile) })
+            add(Entry(1, null, "profile picture avatar face image photo cartoon character anh dai dien ho so hinh anh khuon mat") { pictureRow(profile) })
         }
-        add(Entry(1, null, "Addons rows catalogues order choose") { rowsCard() })
-        opt(1, "On the home screen", FlixSettings.SUGGESTIONS, R.drawable.ic_o_rows, "films movies series")
-        if (LiveTv.installed(this@SettingsActivity)) opt(1, "On the home screen", FlixSettings.LIVE_TV, R.drawable.ic_o_tv, "live tv channels iptv nuvio+iptv guide epg")
-        opt(1, "On the home screen", FlixSettings.BILLBOARD, R.drawable.ic_o_layers, "carousel billboard banner featured hero slideshow poster")
-        opt(1, "On the home screen", FlixSettings.CONTINUE_WATCHING, R.drawable.ic_o_resume, "resume progress")
-        opt(1, "On the home screen", FlixSettings.TOP_TEN, R.drawable.ic_o_rank, "top 10 english popular tamil")
-        opt(1, "On the home screen", FlixSettings.GENRE, R.drawable.ic_o_filter, "category type")
-        opt(1, "Previews", FlixSettings.TRAILERS, R.drawable.ic_o_play, "video preview autoplay")
-        opt(1, "Previews", FlixSettings.TRAILER_DELAY, R.drawable.ic_o_clock, "trailer wait delay time seconds slow fast")
-        opt(1, "Previews", FlixSettings.TRAILER_SOUND, R.drawable.ic_o_sound, "audio volume mute loud")
-        opt(1, "Previews", FlixSettings.BACKDROP, R.drawable.ic_o_image, "artwork background picture")
-        opt(1, "Look", FlixSettings.POSTER_SIZE, R.drawable.ic_o_poster, "big bigger smaller tiles")
-        opt(1, "Look", FlixSettings.RATING_BADGE, R.drawable.ic_o_rank, "imdb score stars rpdb badge")
-        opt(1, "Look", FlixSettings.TYPE_TABS, R.drawable.ic_o_rows, "menu top bar movies shows series hide")
-        act(1, "Look", "Show hidden titles", "Bring back titles you hid from rows", R.drawable.ic_o_eye, "unhide restore films movies") {
-            Catalog.clearHiddenTitles(this@SettingsActivity); applyToHome(); toast("Hidden titles are back")
+        add(Entry(1, null, "addons rows catalogues order choose addon hang phim danh muc sap xep") { rowsCard() })
+        opt(1, "Trên màn hình chính", FlixSettings.SUGGESTIONS, R.drawable.ic_o_rows, "films movies series phim le bo hang phim")
+        if (LiveTv.installed(this@SettingsActivity)) opt(1, "Trên màn hình chính", FlixSettings.LIVE_TV, R.drawable.ic_o_tv, "live tv channels iptv nuvio+iptv guide epg truyen hinh kenh")
+        opt(1, "Trên màn hình chính", FlixSettings.BILLBOARD, R.drawable.ic_o_layers, "carousel billboard banner featured hero slideshow poster bang chuyen noi bat ap phich")
+        opt(1, "Trên màn hình chính", FlixSettings.CONTINUE_WATCHING, R.drawable.ic_o_resume, "resume progress tiep tuc xem tien do")
+        opt(1, "Trên màn hình chính", FlixSettings.TOP_TEN, R.drawable.ic_o_rank, "top 10 english popular tamil pho bien")
+        opt(1, "Trên màn hình chính", FlixSettings.GENRE, R.drawable.ic_o_filter, "category type the loai loc")
+        opt(1, "Xem trước", FlixSettings.TRAILERS, R.drawable.ic_o_play, "video preview autoplay xem truoc trailer tu dong phat")
+        opt(1, "Xem trước", FlixSettings.TRAILER_DELAY, R.drawable.ic_o_clock, "trailer wait delay time seconds slow fast thoi gian cho giay")
+        opt(1, "Xem trước", FlixSettings.TRAILER_SOUND, R.drawable.ic_o_sound, "audio volume mute loud am thanh am luong bat tat")
+        opt(1, "Xem trước", FlixSettings.BACKDROP, R.drawable.ic_o_image, "artwork background picture anh nen xem truoc")
+        opt(1, "Giao diện", FlixSettings.POSTER_SIZE, R.drawable.ic_o_poster, "big bigger smaller tiles kich thuoc ap phich")
+        opt(1, "Giao diện", FlixSettings.RATING_BADGE, R.drawable.ic_o_rank, "imdb score stars rpdb badge huy hieu danh gia diem")
+        opt(1, "Giao diện", FlixSettings.TYPE_TABS, R.drawable.ic_o_rows, "menu top bar movies shows series hide tab phim le phim bo")
+        act(1, "Giao diện", "Hiện các tựa phim đã ẩn", "Khôi phục lại các tựa phim bạn đã ẩn khỏi hàng", R.drawable.ic_o_eye, "unhide restore films movies hien lai tu phuc hoi") {
+            Catalog.clearHiddenTitles(this@SettingsActivity); applyToHome(); toast("Đã khôi phục các tựa phim bị ẩn")
         }
 
         // Clock & weather
-        opt(2, "Clock", FlixSettings.CLOCK_STYLE, R.drawable.ic_o_text, "time font look")
-        opt(2, "Clock", FlixSettings.CLOCK_FORMAT, R.drawable.ic_o_clock, "time am pm 24 12 hour")
-        opt(2, "Clock", FlixSettings.GREETING, R.drawable.ic_o_chat, "hello good morning evening")
-        opt(2, "Clock", FlixSettings.DATE, R.drawable.ic_o_calendar, "day month today")
-        opt(2, "Weather", FlixSettings.WEATHER, R.drawable.ic_o_sun, "forecast rain temperature")
+        opt(2, "Đồng hồ", FlixSettings.CLOCK_STYLE, R.drawable.ic_o_text, "time font look dong ho kieu chu")
+        opt(2, "Đồng hồ", FlixSettings.CLOCK_FORMAT, R.drawable.ic_o_clock, "time am pm 24 12 hour dinh dang gio")
+        opt(2, "Đồng hồ", FlixSettings.GREETING, R.drawable.ic_o_chat, "hello good morning evening chao buoi sang chieu toi loi chao")
+        opt(2, "Đồng hồ", FlixSettings.DATE, R.drawable.ic_o_calendar, "day month today ngay thang hom nay")
+        opt(2, "Thời tiết", FlixSettings.WEATHER, R.drawable.ic_o_sun, "forecast rain temperature thoi tiet nhiet do mua du bao")
         val city = FlixSettings.weatherCity(this@SettingsActivity)
-        act(2, "Weather", "Weather city", city.ifEmpty { "Automatic, from your internet connection" },
-            R.drawable.ic_o_pin, "location place town city weather wrong") { askWeatherCity() }
-        opt(2, "Weather", FlixSettings.UNITS, R.drawable.ic_o_thermo, "celsius fahrenheit degrees")
+        act(2, "Thời tiết", "Thành phố thời tiết", city.ifEmpty { "Tự động, xác định từ kết nối mạng" },
+            R.drawable.ic_o_pin, "location place town city weather wrong vi tri thanh pho thoi tiet") { askWeatherCity() }
+        opt(2, "Thời tiết", FlixSettings.UNITS, R.drawable.ic_o_thermo, "celsius fahrenheit degrees do c do f don vi")
 
         // Wallpaper
         for ((group, words) in listOf(
-            "Photos" to "background wallpaper photo picture nature city cities bing scenery",
-            "Aerial video" to "background wallpaper video aerial apple fire tv ocean sea space earth art landscapes cities scenery",
-            "Plain" to "background wallpaper plain dark black none",
+            "Ảnh chụp" to "background wallpaper photo picture nature city cities bing scenery anh chup thien nhien thanh pho",
+            "Video trên không" to "background wallpaper video aerial apple fire tv ocean sea space earth art landscapes cities scenery video tren khong dai duong phong canh trai dat khong gian",
+            "Đơn sắc" to "background wallpaper plain dark black none don sac toi gian den",
         )) add(Entry(3, group, words, rows = { wallpaperRows(group) }))
-        opt(3, "Picture", FlixSettings.DIM, R.drawable.ic_o_contrast, "dark bright brightness")
-        opt(3, "Picture", FlixSettings.SHUFFLE, R.drawable.ic_o_shuffle, "random change")
-        opt(3, "Picture", FlixSettings.SCENE_NAME, R.drawable.ic_o_pin, "caption place location title")
-        opt(3, "When the TV is idle", FlixSettings.IDLE, R.drawable.ic_o_moon, "screensaver sleep inactive timeout")
+        opt(3, "Hình ảnh", FlixSettings.DIM, R.drawable.ic_o_contrast, "dark bright brightness do toi sang man hinh")
+        opt(3, "Hình ảnh", FlixSettings.SHUFFLE, R.drawable.ic_o_shuffle, "random change xao tron ngau nhien")
+        opt(3, "Hình ảnh", FlixSettings.SCENE_NAME, R.drawable.ic_o_pin, "caption place location title ten dia danh vi tri")
+        opt(3, "Khi TV không hoạt động", FlixSettings.IDLE, R.drawable.ic_o_moon, "screensaver sleep inactive timeout nghi man hinh cho")
 
         // Backup & restore
-        act(4, "Backup & restore", "Back up settings", backupSummary(), R.drawable.ic_o_layers, "backup save export copy keep") { backUp() }
-        act(4, "Backup & restore", "Restore settings", "Bring back settings from a backup", R.drawable.ic_o_reset, "restore import load recover backup") { pickBackup() }
+        act(4, "Sao lưu & khôi phục", "Sao lưu cài đặt", backupSummary(), R.drawable.ic_o_layers, "backup save export copy keep sao luu xuat luu lai") { backUp() }
+        act(4, "Sao lưu & khôi phục", "Khôi phục cài đặt", "Khôi phục lại cài đặt từ bản sao lưu", R.drawable.ic_o_reset, "restore import load recover backup khoi phuc nhap sao luu") { pickBackup() }
 
         // About
-        add(Entry(4, null, "about version app flix launcher") { infoRow("Flix Launcher ${version()}", "A home screen made for watching. Free, open source, no ads", R.drawable.ic_s_info) })
+        add(Entry(4, null, "about version app flix launcher gioi thieu phien ban ung dung") { infoRow("Flix Launcher ${version()}", "Màn hình chính dành riêng cho việc xem phim. Miễn phí, mã nguồn mở, không quảng cáo", R.drawable.ic_s_info) })
         val update = Updater.ready(this@SettingsActivity)
-        act(4, "Updates", if (update != null) "Update to ${update.version}" else "Check for updates",
-            if (update != null) "Downloaded. Installs now; Flix reopens by itself" else "Flix updates itself when the TV is idle",
-            R.drawable.ic_o_reset, "update upgrade new version download install release") { updateNow() }
-        act(4, "Help", "Report a problem", "Scan a code with your phone to send a bug report", R.drawable.ic_o_phone,
-            "bug issue problem help feedback broken crash support logs") { Report.show(this@SettingsActivity) }
-        add(Entry(4, null, "about tv device model") { infoRow("This TV", "${Build.MANUFACTURER.replaceFirstChar { it.uppercase() }} ${Build.MODEL} · Android ${Build.VERSION.RELEASE}", R.drawable.ic_o_tv) })
+        act(4, "Cập nhật", if (update != null) "Cập nhật lên ${update.version}" else "Kiểm tra bản cập nhật",
+            if (update != null) "Đã tải xong. Cài đặt ngay; Flix sẽ tự mở lại" else "Flix tự động cập nhật khi TV không hoạt động",
+            R.drawable.ic_o_reset, "update upgrade new version download install release cap nhat phien ban moi cai dat") { updateNow() }
+        act(4, "Trợ giúp", "Báo cáo sự cố", "Quét mã bằng điện thoại để gửi báo cáo lỗi", R.drawable.ic_o_phone,
+            "bug issue problem help feedback broken crash support logs bao cao su co loi tro giup gop y") { Report.show(this@SettingsActivity) }
+        add(Entry(4, null, "about tv device model thiet bi nay tivi") { infoRow("Thiết bị này", "${Build.MANUFACTURER.replaceFirstChar { it.uppercase() }} ${Build.MODEL} · Android ${Build.VERSION.RELEASE}", R.drawable.ic_o_tv) })
     }
 
     private fun version() = runCatching { packageManager.getPackageInfo(packageName, 0).versionName }.getOrNull() ?: "1.0"
@@ -466,11 +466,11 @@ class SettingsActivity : Activity() {
                 gravity = Gravity.CENTER_HORIZONTAL
                 setPadding(0, px(70), 0, 0)
                 addView(ImageView(context).apply { setImageResource(R.drawable.ic_o_search); alpha = 0.3f }, LinearLayout.LayoutParams(px(44), px(44)))
-                addView(text("Nothing matches “$q”", 18f, bold = true).apply { gravity = Gravity.CENTER; setPadding(0, px(18), 0, px(6)) })
-                addView(text("Try words like trailer, clock, sound or wallpaper", 13f, alpha = 0.5f).apply { gravity = Gravity.CENTER })
+                addView(text("Không có kết quả khớp với “$q”", 18f, bold = true).apply { gravity = Gravity.CENTER; setPadding(0, px(18), 0, px(6)) })
+                addView(text("Thử các từ như trailer, đồng hồ, âm thanh hoặc hình nền", 13f, alpha = 0.5f).apply { gravity = Gravity.CENTER })
             }, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         } else {
-            header("Results", if (found.size == 1) "1 setting matches “$q”" else "${found.size} settings match “$q”")
+            header("Kết quả", if (found.size == 1) "1 cài đặt khớp với “$q”" else "${found.size} cài đặt khớp với “$q”")
             found.groupBy { it.section }.forEach { (s, entries) -> group(SECTIONS[s].title, entries.flatMap { it.views() }) }
         }
         if (animate) rise(stagger = false)
@@ -714,49 +714,49 @@ class SettingsActivity : Activity() {
     private class Wall(val title: String, val about: String, val preview: Int?, val from: Int, val to: Int)
 
     private val WALLS = mapOf(
-        "nature" to Wall("Nature", "A new Bing photo every minute: forests, peaks and coasts", R.drawable.wall_nature, 0xFF1F5130.toInt(), 0xFF0B1F14.toInt()),
-        "cities" to Wall("Cities", "Skylines and landmarks from the same Bing archive", R.drawable.wall_cities, 0xFF5A3A1A.toInt(), 0xFF171019.toInt()),
-        "video" to Wall("Everything", "All 270 aerial films, shuffled", R.drawable.wall_video, 0xFF8A0B12.toInt(), 0xFF1A0507.toInt()),
-        "v_nature" to Wall("Landscapes", "Mountains, deserts and islands from above", R.drawable.wall_v_nature, 0xFF3E5A22.toInt(), 0xFF121A0B.toInt()),
-        "v_sea" to Wall("Oceans", "Waves, reefs and dolphins", R.drawable.wall_v_sea, 0xFF0E4E68.toInt(), 0xFF06141E.toInt()),
-        "v_city" to Wall("Cities", "Flying over Dubai, Hong Kong and San Francisco", R.drawable.wall_v_city, 0xFF2B3566.toInt(), 0xFF0B0E1F.toInt()),
-        "v_space" to Wall("Earth from space", "Filmed from the International Space Station", R.drawable.wall_v_space, 0xFF1A1F4A.toInt(), 0xFF020308.toInt()),
-        "v_art" to Wall("Colour art", "Slow abstract colour from Fire TV", R.drawable.wall_v_art, 0xFF8E2A7A.toInt(), 0xFF1E0A4A.toInt()),
-        "wildlife" to Wall("Wildlife", "Animals in the wild, from foxes to whales", R.drawable.wall_wildlife, 0xFF6B4A1E.toInt(), 0xFF1A1206.toInt()),
-        "beaches" to Wall("Beaches & islands", "Coves, atolls and turquoise water", R.drawable.wall_beaches, 0xFF0F6B78.toInt(), 0xFF051A1F.toInt()),
-        "winter" to Wall("Winter", "Snow, ice and frozen lakes", R.drawable.wall_winter, 0xFF5E7A99.toInt(), 0xFF0E1622.toInt()),
-        "deserts" to Wall("Deserts & canyons", "Dunes, mesas and red rock", R.drawable.wall_deserts, 0xFF9A4E1E.toInt(), 0xFF1F0E05.toInt()),
-        "flowers" to Wall("Flowers", "Tulip fields, lavender and blossom", R.drawable.wall_flowers, 0xFF8E3A6B.toInt(), 0xFF1E0A16.toInt()),
-        "night" to Wall("Night sky", "Auroras, the Milky Way and moonrise", R.drawable.wall_night, 0xFF2A2F6E.toInt(), 0xFF05060F.toInt()),
-        "castles" to Wall("Castles & temples", "Palaces, cathedrals and ancient temples", R.drawable.wall_castles, 0xFF6E5A2E.toInt(), 0xFF171207.toInt()),
-        "v_underwater" to Wall("Underwater", "Reefs, kelp forests, jellyfish and dolphins", R.drawable.wall_v_underwater, 0xFF0A4F7A.toInt(), 0xFF02121F.toInt()),
-        "v_beaches" to Wall("Beaches", "Coasts and clear water from above", R.drawable.wall_v_beaches, 0xFF1A7A84.toInt(), 0xFF061A1D.toInt()),
-        "v_wildlife" to Wall("Wildlife", "Elephants, savannah herds and sea life", R.drawable.wall_v_wildlife, 0xFF6A5A22.toInt(), 0xFF171306.toInt()),
-        "v_snow" to Wall("Snow & aurora", "Iceland, Greenland, the Himalayas and northern lights", R.drawable.wall_v_snow, 0xFF3E6E8E.toInt(), 0xFF07121A.toInt()),
-        "v_deserts" to Wall("Deserts", "Dunes, canyons and Monument Valley", R.drawable.wall_v_deserts, 0xFF9A5A22.toInt(), 0xFF1F1006.toInt()),
-        "v_nightsky" to Wall("Night sky", "Stars, the galaxy and Earth at night", R.drawable.wall_v_nightsky, 0xFF2A225E.toInt(), 0xFF040312.toInt()),
-        "v_fireplace" to Wall("Fireplace", "A warm fire crackling on your TV", R.drawable.wall_v_fireplace, 0xFFA03A12.toInt(), 0xFF200A04.toInt()),
-        "v_calm" to Wall("Calm colour", "Slow gradients and light leaks to relax to", R.drawable.wall_v_calm, 0xFF7A3A8E.toInt(), 0xFF180A22.toInt()),
-        "films" to Wall("Blockbusters", "Backdrops of the most popular films", R.drawable.wall_movies, 0xFF5A1414.toInt(), 0xFF140404.toInt()),
-        "films_scifi" to Wall("Sci-fi films", "Backdrops of the best-rated science fiction", R.drawable.wall_scifi, 0xFF5A1414.toInt(), 0xFF140404.toInt()),
-        "films_action" to Wall("Action films", "Backdrops of the best-rated action films", R.drawable.wall_movies, 0xFF5A1414.toInt(), 0xFF140404.toInt()),
-        "films_animation" to Wall("Animated films", "Backdrops of the best-rated animation", R.drawable.wall_movies, 0xFF5A1414.toInt(), 0xFF140404.toInt()),
-        "films_fantasy" to Wall("Fantasy films", "Backdrops of the best-rated fantasy", R.drawable.wall_castles, 0xFF5A1414.toInt(), 0xFF140404.toInt()),
-        "films_horror" to Wall("Horror films", "Backdrops of the best-rated horror", R.drawable.wall_night, 0xFF5A1414.toInt(), 0xFF140404.toInt()),
-        "v_films" to Wall("Open movies", "Sintel, Tears of Steel and Elephants Dream", R.drawable.wall_movies, 0xFF5A1414.toInt(), 0xFF140404.toInt()),
-        "scifi" to Wall("Sci-fi art", "Spaceships, alien worlds and cyberpunk cities", R.drawable.wall_scifi, 0xFF1A3A6E.toInt(), 0xFF050A18.toInt()),
-        "gaming" to Wall("Gaming art", "The best-loved game wallpapers", R.drawable.wall_gaming, 0xFF4A1A6E.toInt(), 0xFF0E0418.toInt()),
-        "v_scifi" to Wall("Deep space", "Hubble and Webb flying through nebulae and galaxies", R.drawable.wall_v_scifi, 0xFF2A1A5E.toInt(), 0xFF05030F.toInt()),
-        "v_gaming" to Wall("Game trailers", "Trailers for the biggest games, playing quietly", R.drawable.wall_v_gaming, 0xFF1E3A5A.toInt(), 0xFF050C16.toInt()),
-        "gradient" to Wall("Plain dark", "No picture at all; the lightest on the TV", null, 0xFF2A2A2E.toInt(), 0xFF0A0A0C.toInt()),
+        "nature" to Wall("Thiên nhiên", "Ảnh Bing mới mỗi phút: rừng núi, đỉnh núi và bờ biển", R.drawable.wall_nature, 0xFF1F5130.toInt(), 0xFF0B1F14.toInt()),
+        "cities" to Wall("Thành phố", "Đường chân trời và địa danh từ kho lưu trữ Bing", R.drawable.wall_cities, 0xFF5A3A1A.toInt(), 0xFF171019.toInt()),
+        "video" to Wall("Tất cả", "Tất cả 270 cảnh quay trên không, phát ngẫu nhiên", R.drawable.wall_video, 0xFF8A0B12.toInt(), 0xFF1A0507.toInt()),
+        "v_nature" to Wall("Phong cảnh", "Núi non, sa mạc và hải đảo từ trên cao", R.drawable.wall_v_nature, 0xFF3E5A22.toInt(), 0xFF121A0B.toInt()),
+        "v_sea" to Wall("Đại dương", "Sóng biển, rạn san hô và cá heo", R.drawable.wall_v_sea, 0xFF0E4E68.toInt(), 0xFF06141E.toInt()),
+        "v_city" to Wall("Thành phố", "Bay qua Dubai, Hồng Kông và San Francisco", R.drawable.wall_v_city, 0xFF2B3566.toInt(), 0xFF0B0E1F.toInt()),
+        "v_space" to Wall("Trái đất từ không gian", "Quay từ Trạm Vũ trụ Quốc tế (ISS)", R.drawable.wall_v_space, 0xFF1A1F4A.toInt(), 0xFF020308.toInt()),
+        "v_art" to Wall("Nghệ thuật sắc màu", "Màu sắc chuyển động chậm từ Fire TV", R.drawable.wall_v_art, 0xFF8E2A7A.toInt(), 0xFF1E0A4A.toInt()),
+        "wildlife" to Wall("Động vật hoang dã", "Thế giới muôn loài, từ loài cáo đến cá voi", R.drawable.wall_wildlife, 0xFF6B4A1E.toInt(), 0xFF1A1206.toInt()),
+        "beaches" to Wall("Bãi biển & đảo", "Vịnh nhỏ, rạn san hô và làn nước xanh ngọc", R.drawable.wall_beaches, 0xFF0F6B78.toInt(), 0xFF051A1F.toInt()),
+        "winter" to Wall("Mùa đông", "Tuyết trắng, băng giá và hồ nước đóng băng", R.drawable.wall_winter, 0xFF5E7A99.toInt(), 0xFF0E1622.toInt()),
+        "deserts" to Wall("Sa mạc & hẻm núi", "Cồn cát, cao nguyên và vách đá đỏ", R.drawable.wall_deserts, 0xFF9A4E1E.toInt(), 0xFF1F0E05.toInt()),
+        "flowers" to Wall("Các loài hoa", "Cánh đồng tulip, hoa oải hương và hoa xuân nở rộ", R.drawable.wall_flowers, 0xFF8E3A6B.toInt(), 0xFF1E0A16.toInt()),
+        "night" to Wall("Bầu trời đêm", "Cực quang, dải Ngân Hà và mặt trăng mọc", R.drawable.wall_night, 0xFF2A2F6E.toInt(), 0xFF05060F.toInt()),
+        "castles" to Wall("Lâu đài & đền chùa", "Cung điện, nhà thờ cổ kính và đền chùa linh thiêng", R.drawable.wall_castles, 0xFF6E5A2E.toInt(), 0xFF171207.toInt()),
+        "v_underwater" to Wall("Dưới đáy biển", "Rạn san hô, rừng tảo bẹ, sứa biển và cá heo", R.drawable.wall_v_underwater, 0xFF0A4F7A.toInt(), 0xFF02121F.toInt()),
+        "v_beaches" to Wall("Bãi biển", "Bờ biển và làn nước trong xanh nhìn từ trên cao", R.drawable.wall_v_beaches, 0xFF1A7A84.toInt(), 0xFF061A1D.toInt()),
+        "v_wildlife" to Wall("Động vật hoang dã", "Đàn voi, đàn gia súc trên thảo nguyên và sinh vật biển", R.drawable.wall_v_wildlife, 0xFF6A5A22.toInt(), 0xFF171306.toInt()),
+        "v_snow" to Wall("Tuyết & cực quang", "Băng Đảo (Iceland), Greenland, dãy Himalaya và cực quang", R.drawable.wall_v_snow, 0xFF3E6E8E.toInt(), 0xFF07121A.toInt()),
+        "v_deserts" to Wall("Sa mạc", "Cồn cát, hẻm núi hùng vĩ và Thung lũng Tượng đài", R.drawable.wall_v_deserts, 0xFF9A5A22.toInt(), 0xFF1F1006.toInt()),
+        "v_nightsky" to Wall("Bầu trời đêm", "Các vì sao, thiên hà và Trái đất rực sáng về đêm", R.drawable.wall_v_nightsky, 0xFF2A225E.toInt(), 0xFF040312.toInt()),
+        "v_fireplace" to Wall("Lò sưởi ấm cúng", "Ngọn lửa bập bùng ấm áp trên TV của bạn", R.drawable.wall_v_fireplace, 0xFFA03A12.toInt(), 0xFF200A04.toInt()),
+        "v_calm" to Wall("Màu sắc êm dịu", "Chuyển sắc chậm và ánh sáng nhẹ nhàng giúp thư giãn", R.drawable.wall_v_calm, 0xFF7A3A8E.toInt(), 0xFF180A22.toInt()),
+        "films" to Wall("Phim bom tấn", "Hình nền của các bộ phim điện ảnh phổ biến nhất", R.drawable.wall_movies, 0xFF5A1414.toInt(), 0xFF140404.toInt()),
+        "films_scifi" to Wall("Phim viễn tưởng", "Hình nền các bộ phim khoa học viễn tưởng hay nhất", R.drawable.wall_scifi, 0xFF5A1414.toInt(), 0xFF140404.toInt()),
+        "films_action" to Wall("Phim hành động", "Hình nền các bộ phim hành động đặc sắc nhất", R.drawable.wall_movies, 0xFF5A1414.toInt(), 0xFF140404.toInt()),
+        "films_animation" to Wall("Phim hoạt hình", "Hình nền các bộ phim hoạt hình được yêu thích nhất", R.drawable.wall_movies, 0xFF5A1414.toInt(), 0xFF140404.toInt()),
+        "films_fantasy" to Wall("Phim kỳ ảo", "Hình nền các tác phẩm kỳ ảo xuất sắc", R.drawable.wall_castles, 0xFF5A1414.toInt(), 0xFF140404.toInt()),
+        "films_horror" to Wall("Phim kinh dị", "Hình nền các bộ phim kinh dị rùng rợn nhất", R.drawable.wall_night, 0xFF5A1414.toInt(), 0xFF140404.toInt()),
+        "v_films" to Wall("Phim mã nguồn mở", "Sintel, Tears of Steel và Elephants Dream", R.drawable.wall_movies, 0xFF5A1414.toInt(), 0xFF140404.toInt()),
+        "scifi" to Wall("Nghệ thuật viễn tưởng", "Tàu vũ trụ, thế giới người ngoài hành tinh và thành phố cyberpunk", R.drawable.wall_scifi, 0xFF1A3A6E.toInt(), 0xFF050A18.toInt()),
+        "gaming" to Wall("Nghệ thuật trò chơi", "Hình nền những tựa game được yêu thích nhất", R.drawable.wall_gaming, 0xFF4A1A6E.toInt(), 0xFF0E0418.toInt()),
+        "v_scifi" to Wall("Vũ trụ sâu thẳm", "Kính viễn vọng Hubble và Webb bay qua tinh vân và thiên hà", R.drawable.wall_v_scifi, 0xFF2A1A5E.toInt(), 0xFF05030F.toInt()),
+        "v_gaming" to Wall("Trailer trò chơi", "Trailer những tựa game bom tấn phát êm dịu", R.drawable.wall_v_gaming, 0xFF1E3A5A.toInt(), 0xFF050C16.toInt()),
+        "gradient" to Wall("Tối giản đơn sắc", "Không có hình ảnh; nhẹ nhất cho TV", null, 0xFF2A2A2E.toInt(), 0xFF0A0A0C.toInt()),
     )
 
     /** The backgrounds as a list in three groups, each row with its preview and a check on the one in use. */
     private fun wallpaperRows(group: String): List<View> {
         val option = FlixSettings.WALLPAPER
         val ids = when (group) {
-            "Photos" -> listOf("films", "films_scifi", "films_action", "films_animation", "films_fantasy", "films_horror", "nature", "cities", "wildlife", "beaches", "winter", "deserts", "flowers", "night", "castles", "scifi", "gaming")
-            "Aerial video" -> listOf("video", "v_nature", "v_sea", "v_underwater", "v_beaches", "v_wildlife", "v_snow",
+            "Ảnh chụp", "Photos" -> listOf("films", "films_scifi", "films_action", "films_animation", "films_fantasy", "films_horror", "nature", "cities", "wildlife", "beaches", "winter", "deserts", "flowers", "night", "castles", "scifi", "gaming")
+            "Video trên không", "Aerial video" -> listOf("video", "v_nature", "v_sea", "v_underwater", "v_beaches", "v_wildlife", "v_snow",
                 "v_deserts", "v_city", "v_space", "v_scifi", "v_nightsky", "v_gaming", "v_films", "v_fireplace", "v_calm", "v_art")
             else -> listOf("gradient")
         }
@@ -815,8 +815,8 @@ class SettingsActivity : Activity() {
         return heroRow(
             art = art,
             title = "Nuvio",
-            subtitle = if (signedIn) "Continue watching from “${profile ?: "?"}”" else "Sign in to bring Continue watching here",
-            badge = if (signedIn) "Connected" else "Sign in",
+            subtitle = if (signedIn) "Tiếp tục xem từ “${profile ?: "?"}”" else "Đăng nhập để đưa Tiếp tục xem vào đây",
+            badge = if (signedIn) "Đã kết nối" else "Đăng nhập",
             badgeColor = if (signedIn) 0xFF16A34A.toInt() else RED,
         ) { open(NuvioLoginActivity::class.java) }
     }
@@ -896,9 +896,9 @@ class SettingsActivity : Activity() {
         return heroRow(
             art = tile,
             tile = bg,
-            title = "Addons & rows",
-            subtitle = "$addons ${if (addons == 1) "addon" else "addons"} · choose and order what appears",
-            badge = "$shown on home",
+            title = "Addon & hàng phim",
+            subtitle = "$addons addon · chọn và sắp xếp nội dung hiển thị",
+            badge = "$shown trên màn hình chính",
             badgeColor = 0x2EFFFFFF,
         ) { open(RowsActivity::class.java) }
     }
@@ -1043,7 +1043,7 @@ class SettingsActivity : Activity() {
         val notes = update.notes.lineSequence().map { it.trim() }.firstOrNull { it.startsWith("- ") || it.startsWith("* ") }
             ?.drop(2)?.let { Regex("""^\*\*(.+?):?\*\*""").find(it)?.groupValues?.get(1) ?: it.replace("**", "") }
             ?.trimEnd(':', '.')?.let { if (it.length > 90) it.take(88).trimEnd() + "…" else it }
-            ?.let { "New: $it" }
+            ?.let { "Mới: $it" }
         val bg = GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, intArrayOf(0x40E50914, 0x14E50914)).apply {
             cornerRadius = 16 * dp; setStroke(px(1), 0x55E50914)
         }
@@ -1057,9 +1057,9 @@ class SettingsActivity : Activity() {
                 background = GradientDrawable().apply { cornerRadius = 12 * dp; setColor(RED) }
                 addView(ImageView(context).apply { setImageResource(R.drawable.ic_o_reset) }, FrameLayout.LayoutParams(px(22), px(22), Gravity.CENTER))
             }, LinearLayout.LayoutParams(px(44), px(44)).apply { marginEnd = px(16) })
-            addView(textBlock("Flix ${update.version} is ready", notes ?: "Press OK to install. Flix reopens by itself in a few seconds."),
+            addView(textBlock("Flix ${update.version} đã sẵn sàng", notes ?: "Nhấn OK để cài đặt. Flix sẽ tự mở lại trong giây lát."),
                 LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
-            addView(text("Install", 14f, bold = true).apply {
+            addView(text("Cài đặt", 14f, bold = true).apply {
                 setTextColor(Color.BLACK)
                 background = GradientDrawable().apply { cornerRadius = 18 * dp; setColor(Color.WHITE) }
                 setPadding(px(18), px(8), px(18), px(8))
@@ -1075,20 +1075,20 @@ class SettingsActivity : Activity() {
 
     private fun updateNow() {
         if (!Updater.canInstall(this)) {
-            toast("Allow Flix Launcher to install apps, then come back")
+            toast("Cho phép Flix Launcher cài đặt ứng dụng, sau đó quay lại")
             Updater.askPermission(this)
             return
         }
-        Updater.ready(this)?.let { if (Updater.install(this)) toast("Updating to ${it.version}…"); return }
-        toast("Checking for updates…")
+        Updater.ready(this)?.let { if (Updater.install(this)) toast("Đang cập nhật lên ${it.version}…"); return }
+        toast("Đang kiểm tra bản cập nhật…")
         Thread {
             val found = runCatching { Updater.check(this, force = true) }
             runOnUiThread {
                 if (isDestroyed) return@runOnUiThread
                 found.onSuccess { r ->
-                    if (r == null) toast("Flix is up to date (${version()})")
-                    else { toast("Updating to ${r.version}…"); Updater.install(this) }
-                }.onFailure { toast("Couldn't check for updates") }
+                    if (r == null) toast("Flix đã ở phiên bản mới nhất (${version()})")
+                    else { toast("Đang cập nhật lên ${r.version}…"); Updater.install(this) }
+                }.onFailure { toast("Không thể kiểm tra bản cập nhật") }
             }
         }.start()
     }
@@ -1097,37 +1097,37 @@ class SettingsActivity : Activity() {
 
     private val stamp = java.text.SimpleDateFormat("d MMM yyyy, HH:mm", java.util.Locale.getDefault())
 
-    private fun backupSummary() = Backup.list(this).firstOrNull()?.let { "Last backup ${stamp.format(it.created)}" }
-        ?: "Everything except your Nuvio sign-in"
+    private fun backupSummary() = Backup.list(this).firstOrNull()?.let { "Bản sao lưu gần nhất: ${stamp.format(it.created)}" }
+        ?: "Mọi thứ ngoại trừ thông tin đăng nhập Nuvio"
 
     private fun backUp() = Thread {
         val result = runCatching { Backup.save(this) }
         runOnUiThread {
             if (isDestroyed) return@runOnUiThread
             result.onSuccess {
-                toast("Backed up. A copy is also in Download/FlixLauncher")
+                toast("Đã sao lưu. Một bản sao cũng được lưu tại Download/FlixLauncher")
                 refresh(animate = false)
                 // The rebuilt list would otherwise hand focus to the search box at the top.
-                content.post { focusRowTitled("Back up settings") }
+                content.post { focusRowTitled("Sao lưu cài đặt") }
             }
-                .onFailure { toast(it.message ?: "Couldn't back up") }
+                .onFailure { toast(it.message ?: "Không thể sao lưu") }
         }
     }.start()
 
     /** Lists backups newest first; picking one asks before replacing the current settings. */
     private fun pickBackup() {
         val backups = Backup.list(this)
-        if (backups.isEmpty()) return toast("No backups yet. Copy one into Android/data/$packageName/files/backups")
+        if (backups.isEmpty()) return toast("Chưa có bản sao lưu nào. Hãy sao chép vào Android/data/$packageName/files/backups")
         val dialog = sheet()
         val list = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         backups.forEachIndexed { i, backup ->
             val row = sheetRow(R.drawable.ic_restore, stamp.format(backup.created), ago(backup.created.time) + " · " + size(backup.file.length()),
-                badge = if (i == 0) "Latest" else null) { dialog.dismiss(); confirmRestore(backup) }
+                badge = if (i == 0) "Mới nhất" else null) { dialog.dismiss(); confirmRestore(backup) }
             list.addView(row, LinearLayout.LayoutParams(-1, -2).apply { if (i > 0) topMargin = px(8) })
         }
         val scroll = android.widget.ScrollView(this).apply { isVerticalScrollBarEnabled = false; addView(list) }
         // As tall as the backups need, up to about five rows; more scroll.
-        dialog.setContentView(sheetPanel(R.drawable.ic_restore, "Restore settings", "Pick a backup. You'll be asked before anything changes.", scroll,
+        dialog.setContentView(sheetPanel(R.drawable.ic_restore, "Khôi phục cài đặt", "Chọn một bản sao lưu. Bạn sẽ được hỏi xác nhận trước khi thay đổi.", scroll,
             maxListHeight = if (backups.size > 4) px(340) else -2))
         dialog.show()
         list.post { list.getChildAt(0)?.requestFocus() }
@@ -1140,23 +1140,23 @@ class SettingsActivity : Activity() {
             clipChildren = false; clipToPadding = false
             // Room for the focused button to grow without its edge being cut.
             setPadding(px(6), px(4), px(6), px(4))
-            val restore = sheetButton("Restore", primary = true) {
+            val restore = sheetButton("Khôi phục", primary = true) {
                 dialog.dismiss()
                 Thread {
                     val result = runCatching { Backup.restore(this@SettingsActivity, backup) }
                     runOnUiThread {
                         if (isDestroyed) return@runOnUiThread
-                        result.onSuccess { applyToHome(); recreate(); toast("Settings restored") }
-                            .onFailure { toast(it.message ?: "Couldn't restore that backup") }
+                        result.onSuccess { applyToHome(); recreate(); toast("Đã khôi phục cài đặt") }
+                            .onFailure { toast(it.message ?: "Không thể khôi phục bản sao lưu đó") }
                     }
                 }.start()
             }
             addView(restore)
-            addView(sheetButton("Cancel", primary = false) { dialog.dismiss() }, LinearLayout.LayoutParams(-2, -2).apply { marginStart = px(12) })
+            addView(sheetButton("Huỷ", primary = false) { dialog.dismiss() }, LinearLayout.LayoutParams(-2, -2).apply { marginStart = px(12) })
             post { restore.requestFocus() }
         }
-        dialog.setContentView(sheetPanel(R.drawable.ic_restore, "Restore from ${stamp.format(backup.created)}?",
-            "Your current settings, favourites, rows and profile pictures are replaced by the ones in this backup. Your Nuvio sign-in stays as it is.",
+        dialog.setContentView(sheetPanel(R.drawable.ic_restore, "Khôi phục từ ${stamp.format(backup.created)}?",
+            "Cài đặt hiện tại, mục yêu thích, các hàng phim và ảnh hồ sơ sẽ được thay thế bằng bản sao lưu này. Đăng nhập Nuvio vẫn được giữ nguyên.",
             buttons))
         dialog.show()
     }
@@ -1252,14 +1252,14 @@ class SettingsActivity : Activity() {
     private fun ago(time: Long): String {
         val days = ((System.currentTimeMillis() - time) / 86_400_000L).toInt()
         return when {
-            days <= 0 -> "Today"
-            days == 1 -> "Yesterday"
-            days < 30 -> "$days days ago"
-            else -> "${days / 30} months ago"
+            days <= 0 -> "Hôm nay"
+            days == 1 -> "Hôm qua"
+            days < 30 -> "$days ngày trước"
+            else -> "${days / 30} tháng trước"
         }
     }
 
-    private fun size(bytes: Long) = if (bytes < 1024) "$bytes bytes" else "${(bytes + 512) / 1024} KB"
+    private fun size(bytes: Long) = if (bytes < 1024) "$bytes byte" else "${(bytes + 512) / 1024} KB"
 
     /** Asks for the weather's city; a blank answer goes back to locating the TV automatically. */
     /**
@@ -1275,11 +1275,11 @@ class SettingsActivity : Activity() {
             background = GradientDrawable().apply { cornerRadius = 22 * dp; setColor(0xF2161A22.toInt()); setStroke(px(1), 0x1FFFFFFF) }
             setPadding(px(22), px(20), px(22), px(16))
         }
-        panel.addView(text("Weather city", 22f, bold = true))
-        panel.addView(text("Search for your town, then pick it from the list", 13f, alpha = 0.55f).apply { setPadding(0, px(4), 0, px(14)) })
+        panel.addView(text("Thành phố thời tiết", 22f, bold = true))
+        panel.addView(text("Tìm kiếm thành phố hoặc thị trấn, sau đó chọn từ danh sách", 13f, alpha = 0.55f).apply { setPadding(0, px(4), 0, px(14)) })
         val fieldBg = GradientDrawable().apply { cornerRadius = 14 * dp; setColor(0x14FFFFFF); setStroke(px(2), 0x26FFFFFF) }
         val input = EditText(this).apply {
-            hint = "Town or city"
+            hint = "Thành phố hoặc thị trấn"
             setHintTextColor(0x66FFFFFF)
             setTextColor(Color.WHITE)
             textSize = 17f
@@ -1312,7 +1312,7 @@ class SettingsActivity : Activity() {
         fun done() { applyToHome(); refresh(animate = false) }
         fun show(places: List<Weather.Place>) {
             list.removeAllViews()
-            list.addView(choice("Automatic", "From your internet connection", R.drawable.ic_o_tv, current.isEmpty()) {
+            list.addView(choice("Tự động", "Xác định từ kết nối mạng của bạn", R.drawable.ic_o_tv, current.isEmpty()) {
                 FlixSettings.setWeatherCity(this, ""); done()
             })
             for (p in places) list.addView(choice(p.name, p.area, R.drawable.ic_o_pin, p.name == current) {
@@ -1326,12 +1326,12 @@ class SettingsActivity : Activity() {
             val q = input.text.toString().trim()
             if (q.length < 2) { status.text = ""; show(emptyList()); return@Runnable }
             val mine = ++asked
-            status.text = "Searching…"
+            status.text = "Đang tìm kiếm…"
             Thread {
                 val places = Weather.search(q)
                 runOnUiThread {
                     if (mine != asked || !dialog.isShowing) return@runOnUiThread
-                    status.text = if (places.isEmpty()) "No place called \"$q\". Check the spelling" else "Pick your town"
+                    status.text = if (places.isEmpty()) "Không tìm thấy địa danh “$q”. Vui lòng kiểm tra lại chính tả" else "Chọn thành phố của bạn"
                     show(places)
                 }
             }.start()
@@ -1362,7 +1362,7 @@ class SettingsActivity : Activity() {
         dialog.setOnShowListener { input.requestFocus() }
         // The rows were rebuilt while the panel was open, so the row that opened it is gone and
         // focus would fall to the search box: put it back on the new Weather city row.
-        dialog.setOnDismissListener { content.post { focusRowTitled("Weather city") } }
+        dialog.setOnDismissListener { content.post { focusRowTitled("Thành phố thời tiết") } }
         dialog.show()
     }
 
@@ -1383,12 +1383,12 @@ class SettingsActivity : Activity() {
     /** Lists hidden apps; picking one brings it back to the All apps row. */
     private fun showHiddenApps() {
         val hidden = repo.hidden.toList()
-        if (hidden.isEmpty()) return toast("No hidden apps")
+        if (hidden.isEmpty()) return toast("Không có ứng dụng nào bị ẩn")
         val labels = hidden.map { pkg ->
             runCatching { packageManager.getApplicationLabel(packageManager.getApplicationInfo(pkg, 0)).toString() }.getOrDefault(pkg)
         }
         AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-            .setTitle("Tap an app to show it again")
+            .setTitle("Chọn một ứng dụng để hiển thị lại")
             .setItems(labels.toTypedArray()) { _, which ->
                 repo.unhide(hidden[which])
                 applyToHome(appsOnly = true)
@@ -1439,11 +1439,11 @@ class SettingsActivity : Activity() {
         private const val RED = 0xFFE50914.toInt()
         private const val INK = 0xFF141414.toInt()
         private val SECTIONS = listOf(
-            Section("Home screen", "Where Home takes you, and how your apps look", R.drawable.ic_s_home),
-            Section("Movies & shows", "What's waiting for you to watch: rows, the Top 10 and trailers", R.drawable.ic_s_film),
-            Section("Clock & weather", "What the top of the screen shows", R.drawable.ic_o_clock),
-            Section("Wallpaper", "The picture behind everything, and the screensaver", R.drawable.ic_o_image),
-            Section("About", "Backup, Flix Launcher and this TV", R.drawable.ic_s_info),
+            Section("Màn hình chính", "Nơi nút Home đưa bạn đến và giao diện ứng dụng", R.drawable.ic_s_home),
+            Section("Phim & chương trình", "Nội dung sẵn sàng xem: các hàng, Top 10 và trailer", R.drawable.ic_s_film),
+            Section("Đồng hồ & thời tiết", "Nội dung hiển thị ở phần trên màn hình", R.drawable.ic_o_clock),
+            Section("Hình nền", "Hình ảnh nền phía sau và trình bảo vệ màn hình", R.drawable.ic_o_image),
+            Section("Giới thiệu", "Sao lưu, Flix Launcher và thiết bị TV này", R.drawable.ic_s_info),
         )
     }
 }

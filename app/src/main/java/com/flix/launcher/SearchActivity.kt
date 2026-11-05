@@ -98,7 +98,7 @@ class SearchActivity : Activity() {
             gravity = Gravity.CENTER_VERTICAL
             addView(ImageView(context).apply { setImageResource(R.drawable.ic_search); setColorFilter(0x99FFFFFF.toInt()) }, LinearLayout.LayoutParams(px(20), px(20)))
             typed = text("", 20f, bold = true).apply {
-                hint = "Search"
+                hint = "Tìm kiếm"
                 setHintTextColor(0x66FFFFFF)
                 maxLines = 1
                 ellipsize = android.text.TextUtils.TruncateAt.START
@@ -111,7 +111,7 @@ class SearchActivity : Activity() {
         addView(LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
             addView(key(icon = R.drawable.ic_mic) { listen() }, LinearLayout.LayoutParams(0, px(KEY), 1f))
-            addView(key("␣  Space") { type(" ") }, LinearLayout.LayoutParams(0, px(KEY), 2f).apply { marginStart = px(GAP) })
+            addView(key("␣  Dấu cách") { type(" ") }, LinearLayout.LayoutParams(0, px(KEY), 2f).apply { marginStart = px(GAP) })
             addView(key("⌫") { delete() }.also { it.setOnLongClickListener { clear(); true } },
                 LinearLayout.LayoutParams(0, px(KEY), 1f).apply { marginStart = px(GAP) })
         }, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = px(GAP) })
@@ -127,8 +127,8 @@ class SearchActivity : Activity() {
                 })
             }
         })
-        addView(key("Clear") { clear() }, LinearLayout.LayoutParams(-1, px(KEY)).apply { topMargin = px(4) })
-        addView(text("Hold ⌫ to clear · OK on a title opens it in Nuvio", 11f, alpha = 0.4f), LinearLayout.LayoutParams(-2, -2).apply { topMargin = px(14) })
+        addView(key("Xoá tất cả") { clear() }, LinearLayout.LayoutParams(-1, px(KEY)).apply { topMargin = px(4) })
+        addView(text("Giữ ⌫ để xoá hết · Nhấn OK vào tựa phim để mở trong Nuvio", 11f, alpha = 0.4f), LinearLayout.LayoutParams(-2, -2).apply { topMargin = px(14) })
     }
 
     private fun key(label: String? = null, icon: Int? = null, onClick: () -> Unit): View {
@@ -177,7 +177,7 @@ class SearchActivity : Activity() {
         main.removeCallbacksAndMessages(null)
         if (q.trim().length < 2) { showRecommended(); return }
         val mine = ++token
-        status.text = "Searching…"
+        status.text = "Đang tìm kiếm…"
         status.visibility = View.VISIBLE
         // Wait for a pause between key presses before asking the addons.
         main.postDelayed({
@@ -186,14 +186,14 @@ class SearchActivity : Activity() {
                     Catalog.search(applicationContext, q) { partial ->
                         runOnUiThread {
                             if (mine != token || isDestroyed) return@runOnUiThread
-                            heading.text = "Results for “${q.trim()}”"
+                            heading.text = "Kết quả cho “${q.trim()}”"
                             results.items = partial.filter { it.poster?.startsWith("https://") == true }
                         }
                     }
                 }.getOrDefault(emptyList())
                 runOnUiThread {
                     if (mine != token || isDestroyed) return@runOnUiThread
-                    heading.text = if (found.isEmpty()) "No films or shows for “${q.trim()}”" else "Results for “${q.trim()}”"
+                    heading.text = if (found.isEmpty()) "Không có phim hoặc chương trình cho “${q.trim()}”" else "Kết quả cho “${q.trim()}”"
                     status.visibility = View.GONE
                     results.items = found.filter { it.poster?.startsWith("https://") == true }
                     grid.scrollToPosition(0)
@@ -205,7 +205,7 @@ class SearchActivity : Activity() {
     /** Before typing: titles from the user's own rows, interleaved so every row is represented. */
     private fun showRecommended() {
         val mine = ++token
-        heading.text = "Recommended"
+        heading.text = "Được đề xuất"
         status.visibility = View.GONE
         io.execute {
             val rows = Addons.rows(this).filter { it.enabled }.mapNotNull { Catalog.cached(this, it, null) }
@@ -223,7 +223,7 @@ class SearchActivity : Activity() {
         val intent = runCatching { title.nuvioStreamIntent() }.getOrNull()?.takeIf { it.resolveActivity(packageManager) != null }
             ?: Intent(Intent.ACTION_VIEW, Uri.parse(title.nuvioUri)).setPackage(MainActivity.NUVIO)
         if (intent.resolveActivity(packageManager) == null) {
-            Toast.makeText(this, "Install Nuvio to watch this", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Hãy cài đặt Nuvio để xem nội dung này", Toast.LENGTH_SHORT).show()
             return
         }
         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
@@ -234,12 +234,12 @@ class SearchActivity : Activity() {
     private fun listen() {
         val ask = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             .putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-            .putExtra(RecognizerIntent.EXTRA_PROMPT, "Say a film or show")
+            .putExtra(RecognizerIntent.EXTRA_PROMPT, "Nói tên phim hoặc chương trình")
         // Google's own recogniser, so no "Complete action using" chooser appears.
         ask.setPackage(GOOGLE_VOICE).takeIf { it.resolveActivity(packageManager) == null }?.setPackage(null)
         @Suppress("DEPRECATION")
         if (ask.resolveActivity(packageManager) == null || runCatching { startActivityForResult(ask, VOICE) }.isFailure) {
-            Toast.makeText(this, "Voice search isn't available on this TV", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Tìm kiếm giọng nói không khả dụng trên TV này", Toast.LENGTH_SHORT).show()
         }
     }
 

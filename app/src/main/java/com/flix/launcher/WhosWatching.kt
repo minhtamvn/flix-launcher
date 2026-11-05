@@ -28,7 +28,7 @@ object WhosWatching {
             ProfilePicture.into(face, p)
             val isCurrent = p.index == current?.index
             val name = TextView(activity).apply {
-                text = p.name.ifBlank { "Profile ${p.index}" }
+                text = p.name.ifBlank { "Hồ sơ ${p.index}" }
                 textSize = 17f
                 gravity = Gravity.CENTER
                 setTextColor(if (isCurrent) Color.WHITE else 0xFF9A9A9A.toInt())
@@ -61,7 +61,7 @@ object WhosWatching {
             clipChildren = false
             setBackgroundColor(0xF2101214.toInt())
             addView(TextView(activity).apply {
-                text = "Who's watching?"
+                text = "Ai đang xem?"
                 textSize = 36f
                 setTextColor(Color.WHITE)
                 typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)

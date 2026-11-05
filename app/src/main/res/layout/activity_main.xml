@@ -226,7 +226,7 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:background="@drawable/nav_pill"
-                    android:contentDescription="Search"
+                    android:contentDescription="Tìm kiếm"
                     android:focusable="true"
                     android:padding="9dp"
                     android:src="@drawable/ic_search"
@@ -235,15 +235,15 @@
                 <TextView
                     android:id="@+id/nav_home"
                     style="@style/Flix.NavTab"
-                    android:text="Home" />
+                    android:text="Trang chủ" />
                 <TextView
                     android:id="@+id/nav_movies"
                     style="@style/Flix.NavTab"
-                    android:text="Movies" />
+                    android:text="Phim lẻ" />
                 <TextView
                     android:id="@+id/nav_shows"
                     style="@style/Flix.NavTab"
-                    android:text="Shows" />
+                    android:text="Phim bộ" />
                 <TextView
                     android:id="@+id/nav_tv"
                     style="@style/Flix.NavTab"
@@ -252,7 +252,7 @@
                 <TextView
                     android:id="@+id/nav_apps"
                     style="@style/Flix.NavTab"
-                    android:text="Apps" />
+                    android:text="Ứng dụng" />
 
             </LinearLayout>
 
@@ -368,7 +368,7 @@
                         style="@style/Flix.Text.Muted"
                         android:layout_marginBottom="9dp"
                         android:alpha="0.7"
-                        android:text="Hold OK for options"
+                        android:text="Giữ OK để xem tuỳ chọn"
                         android:textSize="10sp" />
                 </LinearLayout>
 
@@ -404,25 +404,25 @@
                         <ImageButton
                             android:id="@+id/qs_inputs"
                             style="@style/Flix.QuickButton"
-                            android:contentDescription="Inputs"
+                            android:contentDescription="Ngõ vào"
                             android:src="@drawable/ic_input" />
 
                         <ImageButton
                             android:id="@+id/qs_wifi"
                             style="@style/Flix.QuickButton"
-                            android:contentDescription="Network"
+                            android:contentDescription="Mạng"
                             android:src="@drawable/ic_wifi" />
 
                         <ImageButton
                             android:id="@+id/qs_flix"
                             style="@style/Flix.QuickButton"
-                            android:contentDescription="Flix Launcher settings"
+                            android:contentDescription="Cài đặt Flix Launcher"
                             android:src="@drawable/ic_tune" />
 
                         <ImageButton
                             android:id="@+id/qs_settings"
                             style="@style/Flix.QuickButton"
-                            android:contentDescription="Settings"
+                            android:contentDescription="Cài đặt hệ thống"
                             android:src="@drawable/ic_settings" />
                     </LinearLayout>
                 </LinearLayout>
@@ -433,7 +433,7 @@
                     android:layout_marginStart="44dp"
                     android:layout_marginTop="2dp"
                     android:letterSpacing="0.12"
-                    android:text="ALL APPS"
+                    android:text="TẤT CẢ ỨNG DỤNG"
                     android:textSize="11sp" />
 
                 <androidx.recyclerview.widget.RecyclerView

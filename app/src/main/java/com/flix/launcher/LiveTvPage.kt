@@ -54,7 +54,7 @@ class LiveTvPage(private val activity: Activity, private val videoHost: FrameLay
         setPadding(px(10), px(6), px(10), px(6))
         addView(chipLogo, FrameLayout.LayoutParams(-1, -1))
     }
-    private val live = text(" LIVE ", 11f, bold = true).apply {
+    private val live = text(" TRỰC TIẾP ", 11f, bold = true).apply {
         letterSpacing = 0.12f
         background = GradientDrawable().apply { cornerRadius = 5 * dp; setColor(0xFFE50914.toInt()) }
         setPadding(px(7), px(2), px(7), px(2))
@@ -73,8 +73,8 @@ class LiveTvPage(private val activity: Activity, private val videoHost: FrameLay
         addView(bar, FrameLayout.LayoutParams(0, -1))
     }
     private val next = text("", 12.5f, alpha = 0.7f)
-    val watch = pill("▶   Watch", primary = true)
-    private val guideButton = pill("Guide", primary = false)
+    val watch = pill("▶   Xem", primary = true)
+    private val guideButton = pill("Lịch phát sóng", primary = false)
     private val message = text("", 15f, alpha = 0.85f).apply { visibility = View.GONE; setLineSpacing(0f, 1.25f) }
 
     /** The focused channel's details, over the live picture: no card, like the Movies tab's. */
@@ -164,10 +164,10 @@ class LiveTvPage(private val activity: Activity, private val videoHost: FrameLay
             rowsBox.removeAllViews(); rows.clear()
             android.util.Log.i("Flix", "Live TV: $state, lineup ${lineup != null}")
             showMessage(when (state) {
-                LiveTv.State.NOT_SIGNED_IN -> "Sign in to Nuvio in Flix settings to see your Nuvio+IPTV channels here."
-                LiveTv.State.NOT_INSTALLED -> "Install Nuvio+IPTV to watch live TV from here."
+                LiveTv.State.NOT_SIGNED_IN -> "Đăng nhập Nuvio trong Cài đặt Flix để xem các kênh Nuvio+IPTV của bạn tại đây."
+                LiveTv.State.NOT_INSTALLED -> "Cài đặt Nuvio+IPTV để xem truyền hình trực tiếp từ đây."
                 else -> if (!LiveTv.failed) ""
-                    else "Couldn't get your channels from Nuvio+IPTV.\nCheck the internet connection, and that Setup Sync is on in Nuvio+IPTV's Live TV settings."
+                    else "Không thể tải danh sách kênh từ Nuvio+IPTV.\nKiểm tra lại kết nối mạng và đảm bảo Đồng bộ thiết lập đã được bật trong cài đặt Truyền hình của Nuvio+IPTV."
             })
             return
         }
@@ -187,8 +187,8 @@ class LiveTvPage(private val activity: Activity, private val videoHost: FrameLay
         val recent = LiveTv.recent(activity).mapNotNull { byKey[it] }.filter { it.key !in LiveTv.hidden(activity) }
         val sections = buildList {
             // Recently watched first; until there is any, the favourites take its place.
-            if (recent.isNotEmpty()) add("Recently watched" to recent)
-            else if (lineup.favourites.isNotEmpty()) add("Your channels" to lineup.favourites)
+            if (recent.isNotEmpty()) add("Đã xem gần đây" to recent)
+            else if (lineup.favourites.isNotEmpty()) add("Kênh của bạn" to lineup.favourites)
             lineup.groups.forEach { add(pretty(it.name) to it.channels) }
         }.map { (n, l) -> n to l.filter { it.key !in hidden } }.filter { it.second.isNotEmpty() }
         sections.forEach { (name, list) -> addRow(name, list) }
@@ -200,11 +200,11 @@ class LiveTvPage(private val activity: Activity, private val videoHost: FrameLay
         message.text = text
         message.visibility = View.VISIBLE
         about.visibility = View.GONE
-        title.text = "Live TV"
+        title.text = "Truyền hình"
         times.text = ""; about.text = ""; next.text = ""; channelLine.text = "Nuvio+IPTV"
         track.visibility = View.INVISIBLE
         chip.visibility = View.GONE
-        watch.text = "Open Nuvio+IPTV"
+        watch.text = "Mở Nuvio+IPTV"
         info.findViewWithTag<View>("buttons")?.visibility = View.VISIBLE
         stopVideo()
     }
@@ -260,8 +260,8 @@ class LiveTvPage(private val activity: Activity, private val videoHost: FrameLay
         current = channel
         chip.visibility = if (channel.logo != null) View.VISIBLE else View.GONE
         track.visibility = View.VISIBLE
-        watch.text = "▶   Watch"
-        channelLine.text = "CH ${channel.number}  ·  ${pretty(channel.group)}"
+        watch.text = "▶   Xem"
+        channelLine.text = "KÊNH ${channel.number}  ·  ${pretty(channel.group)}"
         title.text = channel.name.substringAfter(": ").trim()
         times.text = ""; about.text = ""; next.text = ""
         setProgress(0f)
@@ -284,14 +284,14 @@ class LiveTvPage(private val activity: Activity, private val videoHost: FrameLay
         if (now != null) {
             title.text = now.title
             val left = ((now.end - System.currentTimeMillis()) / 60000).coerceAtLeast(0)
-            times.text = "${clock.format(Date(now.start))} – ${clock.format(Date(now.end))}   ·   ${left}m left"
+            times.text = "${clock.format(Date(now.start))} – ${clock.format(Date(now.end))}   ·   còn ${left}p"
             about.text = now.about.orEmpty()
             setProgress(now.progress())
         } else {
             title.text = channel.name.substringAfter(": ").trim()
-            times.text = "Live now"
+            times.text = "Đang phát trực tiếp"
         }
-        next.text = g?.next?.let { "Next  ${clock.format(Date(it.start))}   ${it.title}" }.orEmpty()
+        next.text = g?.next?.let { "Tiếp theo  ${clock.format(Date(it.start))}   ${it.title}" }.orEmpty()
     }
 
     private fun setProgress(f: Float) {
@@ -460,14 +460,14 @@ class LiveTvPage(private val activity: Activity, private val videoHost: FrameLay
         menuAt = now
         val count = LiveTv.hidden(activity).size
         OptionsMenu.show(activity, c.name.substringAfter(": ").trim(), buildList {
-            add("Watch" to { LiveTv.open(activity, c) })
-            add("Hide this channel" to {
+            add("Xem" to { LiveTv.open(activity, c) })
+            add("Ẩn kênh này" to {
                 LiveTv.hide(activity, c)
                 val focusRowIndex = rows.indexOfFirst { r -> (0 until r.childCount).any { r.getChildAt(it).hasFocus() } }.coerceAtLeast(0)
                 render()
                 focusRow(focusRowIndex.coerceAtMost(rows.lastIndex))
             })
-            if (count > 0) add("Show $count hidden channel${if (count == 1) "" else "s"}" to { LiveTv.unhideAll(activity); render() })
+            if (count > 0) add("Hiển thị lại $count kênh đã ẩn" to { LiveTv.unhideAll(activity); render() })
         })
     }
 

@@ -56,7 +56,7 @@ class AllAppsActivity : Activity() {
     private var query = ""
     private var searchToken = 0
 
-    private enum class Category(val label: String) { ALL("All"), WATCH("Watch"), MUSIC("Music"), GAMES("Games"), TOOLS("Tools"), SYSTEM("System") }
+    private enum class Category(val label: String) { ALL("Tất cả"), WATCH("Phim ảnh"), MUSIC("Âm nhạc"), GAMES("Trò chơi"), TOOLS("Công cụ"), SYSTEM("Hệ thống") }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,10 +70,10 @@ class AllAppsActivity : Activity() {
         val header = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.BOTTOM
-            addView(text("Library", 28f, bold = true))
+            addView(text("Thư viện", 28f, bold = true))
             addView(count, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { marginStart = px(12); bottomMargin = px(5) })
             addView(View(context), LinearLayout.LayoutParams(0, 0, 1f))
-            addView(text("Type to search · Menu or hold OK for options", 10.5f, alpha = 0.45f),
+            addView(text("Nhập để tìm kiếm · Phím Menu hoặc giữ OK để xem tuỳ chọn", 10.5f, alpha = 0.45f),
                 LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { bottomMargin = px(6) })
         }
         search = searchField()
@@ -86,7 +86,7 @@ class AllAppsActivity : Activity() {
         Category.values().forEach { chips.addView(chip(it)) }
 
         // Movies and shows found by the search sit above the app grid.
-        titlesLabel = text("Movies & shows", 14f, bold = true).apply { setPadding(px(4), 0, 0, px(2)) }
+        titlesLabel = text("Phim & chương trình", 14f, bold = true).apply { setPadding(px(4), 0, 0, px(2)) }
         titlesAdapter = PosterAdapter(px(76), px(114), dp, springy = true, onFocus = {}, onClick = ::openTitle, onLongClick = ::openTitle)
         val titlesList = RecyclerView(this).apply {
             layoutManager = LinearLayoutManager(this@AllAppsActivity, RecyclerView.HORIZONTAL, false)
@@ -175,7 +175,7 @@ class AllAppsActivity : Activity() {
         val idle = GradientDrawable().apply { cornerRadius = 23 * dp; setColor(0x1AFFFFFF); setStroke(px(1), 0x1FFFFFFF) }
         val active = GradientDrawable().apply { cornerRadius = 23 * dp; setColor(0x26FFFFFF); setStroke(px(2), 0xFF7AA2FF.toInt()) }
         return EditText(this).apply {
-            hint = "Search apps, movies and shows"
+            hint = "Tìm ứng dụng, phim và chương trình"
             setHintTextColor(0x8CFFFFFF.toInt())
             setTextColor(Color.WHITE)
             textSize = 13.5f
@@ -229,7 +229,7 @@ class AllAppsActivity : Activity() {
                 runOnUiThread {
                     if (token != searchToken || isDestroyed) return@runOnUiThread
                     titlesAdapter.items = found
-                    titlesLabel.text = if (found.isEmpty()) "No movies or shows for “$query”" else "Movies & shows · ${found.size}"
+                    titlesLabel.text = if (found.isEmpty()) "Không có phim hoặc chương trình cho “$query”" else "Phim & chương trình · ${found.size}"
                     titlesBlock.visibility = View.VISIBLE
                 }
             }
@@ -282,9 +282,9 @@ class AllAppsActivity : Activity() {
         val q = query.lowercase()
         val shown = apps.filter { (category == Category.ALL || categoryOf(it) == category) && (q.isEmpty() || q in it.label.lowercase()) }
         adapter.items = shown
-        count.text = if (q.isEmpty() && category == Category.ALL) "${apps.size} apps" else "${shown.size} of ${apps.size}"
+        count.text = if (q.isEmpty() && category == Category.ALL) "${apps.size} ứng dụng" else "${shown.size} / ${apps.size}"
         empty.visibility = if (shown.isEmpty()) View.VISIBLE else View.GONE
-        empty.text = if (q.isNotEmpty()) "No apps named “$query”" else "No ${category.label.lowercase()} apps"
+        empty.text = if (q.isNotEmpty()) "Không có ứng dụng nào tên “$query”" else "Không có ứng dụng ${category.label.lowercase()}"
     }
 
     private fun tileStyle(): TileStyle {
@@ -314,14 +314,14 @@ class AllAppsActivity : Activity() {
 
     private fun launch(app: AppEntry) {
         runCatching { startActivity(app.launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
-            .onFailure { Toast.makeText(this, "Couldn't open that", Toast.LENGTH_SHORT).show() }
+            .onFailure { Toast.makeText(this, "Không thể mở ứng dụng", Toast.LENGTH_SHORT).show() }
     }
 
     private fun openTitle(title: Catalog.Title) {
         val intent = runCatching { title.nuvioStreamIntent() }.getOrNull()?.takeIf { it.resolveActivity(packageManager) != null }
             ?: Intent(Intent.ACTION_VIEW, Uri.parse(title.nuvioUri)).setPackage(MainActivity.NUVIO)
         if (intent.resolveActivity(packageManager) == null) {
-            Toast.makeText(this, "Install Nuvio to watch this", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Hãy cài đặt Nuvio để xem nội dung này", Toast.LENGTH_SHORT).show()
             return
         }
         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
@@ -330,19 +330,19 @@ class AllAppsActivity : Activity() {
     private fun showMenu(app: AppEntry) {
         val favorite = app.packageName in repo.favorites
         OptionsMenu.show(this, app, listOf(
-            "Open" to { launch(app) },
-            (if (favorite) "Remove from favourites" else "Add to favourites") to {
+            "Mở" to { launch(app) },
+            (if (favorite) "Xoá khỏi mục yêu thích" else "Thêm vào mục yêu thích") to {
                 repo.toggleFavorite(app.packageName)
                 changed()
-                Toast.makeText(this, if (favorite) "Removed from favourites" else "Added to favourites", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, if (favorite) "Đã xoá khỏi mục yêu thích" else "Đã thêm vào mục yêu thích", Toast.LENGTH_SHORT).show()
             },
-            "Hide from All apps" to {
+            "Ẩn khỏi Tất cả ứng dụng" to {
                 repo.hide(app.packageName)
                 changed()
                 load()
             },
-            "App info" to { launch(app.copy(launchIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${app.packageName}")))) },
-            "Uninstall" to { launch(app.copy(launchIntent = Intent(Intent.ACTION_DELETE, Uri.parse("package:${app.packageName}")))) },
+            "Thông tin ứng dụng" to { launch(app.copy(launchIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${app.packageName}")))) },
+            "Gỡ cài đặt" to { launch(app.copy(launchIntent = Intent(Intent.ACTION_DELETE, Uri.parse("package:${app.packageName}")))) },
         ))
     }
 
@@ -389,7 +389,7 @@ class AllAppsActivity : Activity() {
     private fun listen(): Boolean {
         val ask = android.content.Intent(android.speech.RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             .putExtra(android.speech.RecognizerIntent.EXTRA_LANGUAGE_MODEL, android.speech.RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-            .putExtra(android.speech.RecognizerIntent.EXTRA_PROMPT, "Say a film, show or app")
+            .putExtra(android.speech.RecognizerIntent.EXTRA_PROMPT, "Nói tên phim, chương trình hoặc ứng dụng")
         if (ask.resolveActivity(packageManager) == null) return false
         // Google TV has two recognisers; use Google's own so no "Complete action using" chooser appears.
         ask.setPackage(GOOGLE_VOICE).takeIf { it.resolveActivity(packageManager) == null }?.setPackage(null)

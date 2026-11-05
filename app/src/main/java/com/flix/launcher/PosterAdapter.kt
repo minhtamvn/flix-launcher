@@ -387,7 +387,7 @@ class PosterAdapter(
             watched.visibility = if (inProgress) View.VISIBLE else View.GONE
             if (progress != null) {
                 watchedBar.layoutParams = watchedBar.layoutParams.apply { width = (WATCHED_W * density * progress.coerceIn(0.03f, 1f)).toInt() }
-                watchedText.text = "${(progress * 100).toInt().coerceIn(1, 99)}% watched"
+                watchedText.text = "Đã xem ${(progress * 100).toInt().coerceIn(1, 99)}%"
             }
             fallback.text = title.name
             // The name underneath is only for posters that don't exist; drawing it under a real
@@ -448,8 +448,8 @@ class PosterAdapter(
     /** Small pill labels for the focused card, each led by a coloured dot like Netflix's. */
     private fun badges(title: Catalog.Title, position: Int, accent: Int): CharSequence {
         val labels = buildList {
-            if (ranked && position in 0..9) add("#${position + 1} in Top 10" to accent)
-            if (title.year == thisYear) add("Recently added" to 0xFF46D369.toInt())
+            if (ranked && position in 0..9) add("#${position + 1} trong Top 10" to accent)
+            if (title.year == thisYear) add("Mới thêm gần đây" to 0xFF46D369.toInt())
             if (title.progress != null) title.episodeLabel?.let { add(it to 0xFF5AA9FF.toInt()) }
         }
         return android.text.SpannableStringBuilder().apply {

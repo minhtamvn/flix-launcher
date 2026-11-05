@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_key_service_label">Nút Home của Flix Launcher</string>
+    <string name="home_key_service_description">Mở Flix Launcher khi bạn nhấn nút Home trên điều khiển.</string>
+</resources>

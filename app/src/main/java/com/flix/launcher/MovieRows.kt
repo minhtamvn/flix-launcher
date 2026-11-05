@@ -85,7 +85,7 @@ class MovieRows(
         val mine = sources.firstOrNull { it.type == "movie" }
         val topSource = when {
             topSetting == "world" -> TOP_TEN
-            topSetting == "mine" && mine != null -> mine.copy(title = "Top 10 in ${mine.title}").also { topFrom = mine }
+            topSetting == "mine" && mine != null -> mine.copy(title = "Top 10 phim ${mine.title}").also { topFrom = mine }
             else -> null
         }
         if (topSource != null) {
@@ -312,14 +312,14 @@ class MovieRows(
         private const val STAGGER = 120L
 
         /** Stand-in source for the Continue watching row, which comes from the Nuvio account rather than an addon. */
-        val CONTINUE = Addons.Row("nuvio:continue", "Nuvio", "movie", "continue", "Continue watching")
+        val CONTINUE = Addons.Row("nuvio:continue", "Nuvio", "movie", "continue", "Tiếp tục xem")
 
         /** Cinemeta's most popular films right now, shown as Netflix's numbered Top 10 row. */
-        val TOP_TEN = Addons.Row(Addons.CINEMETA, "Cinemeta", "movie", "top", "Top 10 Movies Today")
+        val TOP_TEN = Addons.Row(Addons.CINEMETA, "Cinemeta", "movie", "top", "Top 10 phim hôm nay")
 
         /** Placeholder card shown in Continue watching while signed out; opening it starts sign-in. */
-        val SIGN_IN = Catalog.Title("flix:signin", "movie", "Sign in to Nuvio to see what you were watching",
-            null, null, null, null, null, null, emptyList(), "Scan a code with your phone — it takes a few seconds.")
+        val SIGN_IN = Catalog.Title("flix:signin", "movie", "Đăng nhập vào Nuvio để xem nội dung bạn đang xem dở",
+            null, null, null, null, null, null, emptyList(), "Quét mã QR bằng điện thoại — chỉ mất vài giây.")
     }
 
     /**
@@ -469,7 +469,7 @@ class Hero(root: View) {
         info.animate().cancel()
         info.animate().alpha(0f).setDuration(120).withEndAction {
             name.text = title.name
-            kind.text = if (title.type == "series") "SERIES" else "FILM"
+            kind.text = if (title.type == "series") "PHIM BỘ" else "PHIM LẺ"
             // Netflix leads with a highlighted score; ours is the rating, in gold.
             val rating = Rating.text(title.rating)
             val rest = listOfNotNull(title.year, runtimeText(title.runtime),

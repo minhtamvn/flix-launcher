@@ -49,10 +49,10 @@ object HomeButton {
 
     /** One line for Settings and bug reports. */
     fun describe(context: Context): String = when (state(context)) {
-        State.SERVICE -> "Working: Flix's Home switch is on"
-        State.DEFAULT_HOME -> "Working: Flix is the default home app"
-        State.BLOCKED -> "Blocked: Android won't start Flix's Home switch"
-        State.OFF -> if (isGoogleTv(context)) "Not set up: Home opens Google TV" else "Not set up: Home opens another app"
+        State.SERVICE -> "Đang hoạt động: Phím Home của Flix đang bật"
+        State.DEFAULT_HOME -> "Đang hoạt động: Flix là ứng dụng trang chủ mặc định"
+        State.BLOCKED -> "Bị chặn: Android không thể khởi chạy phím Home của Flix"
+        State.OFF -> if (isGoogleTv(context)) "Chưa thiết lập: Nút Home mở Google TV" else "Chưa thiết lập: Nút Home mở ứng dụng khác"
     }
 
     /** Opens the screen that fixes it: the home app picker on plain Android TV, otherwise Accessibility. */
@@ -77,24 +77,24 @@ object HomeButton {
         val settings = Intent(Settings.ACTION_HOME_SETTINGS)
         if (settings.resolveActivity(activity.packageManager) != null && runCatching { activity.startActivity(settings) }.isSuccess) return
         AlertDialog.Builder(activity, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-            .setTitle("Make Flix your home app")
-            .setMessage("This TV has no setting for the home app. Press Home now: if the TV asks which app to use, choose Flix Launcher, then Always.\n\n" +
-                "If it doesn't ask, run this once from a computer on the same network:\n\n$DEFAULT_COMMAND\n\n" +
-                "Or use Flix's Home switch in Accessibility instead.")
-            .setPositiveButton("Open Accessibility") { _, _ -> openAccessibility(activity) }
-            .setNegativeButton("Close", null)
+            .setTitle("Đặt Flix làm ứng dụng trang chủ")
+            .setMessage("TV này không có mục cài đặt ứng dụng trang chủ. Hãy nhấn phím Home ngay bây giờ: nếu TV hỏi dùng ứng dụng nào, hãy chọn Flix Launcher và chọn Luôn luôn.\n\n" +
+                "Nếu TV không hỏi, hãy chạy lệnh sau một lần từ máy tính trong cùng mạng:\n\n$DEFAULT_COMMAND\n\n" +
+                "Hoặc bật phím Home của Flix trong phần Trợ năng.")
+            .setPositiveButton("Mở Trợ năng") { _, _ -> openAccessibility(activity) }
+            .setNegativeButton("Đóng", null)
             .show()
     }
 
     fun showBlockedHelp(activity: Activity) {
         val dialog = AlertDialog.Builder(activity, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-            .setTitle("Android is blocking the Home switch")
-            .setMessage("Flix Launcher is switched on in Accessibility, but this TV won't start it. Android does this for apps installed from a downloaded APK.\n\n" +
-                "To allow it, run this once from a computer on the same network, then switch Flix Launcher off and on again in Accessibility:\n\n$UNBLOCK_COMMAND" +
-                if (!isGoogleTv(activity)) "\n\nOr skip the switch: this TV can simply use Flix as its default home app." else "")
-            .setNegativeButton("Close", null)
-        if (!isGoogleTv(activity)) dialog.setPositiveButton("Make Flix the home app") { _, _ -> chooseDefault(activity) }
-        else dialog.setPositiveButton("Open Accessibility") { _, _ -> openAccessibility(activity) }
+            .setTitle("Android đang chặn phím Home")
+            .setMessage("Flix Launcher đã được bật trong Trợ năng, nhưng TV này chưa khởi chạy được. Android có thể áp dụng hạn chế này đối với ứng dụng cài từ file APK ngoài.\n\n" +
+                "Để cho phép, hãy chạy lệnh sau một lần từ máy tính trong cùng mạng, sau đó tắt đi và bật lại Flix Launcher trong Trợ năng:\n\n$UNBLOCK_COMMAND" +
+                if (!isGoogleTv(activity)) "\n\nHoặc bỏ qua bước này: chiếc TV này có thể trực tiếp đặt Flix làm ứng dụng trang chủ mặc định." else "")
+            .setNegativeButton("Đóng", null)
+        if (!isGoogleTv(activity)) dialog.setPositiveButton("Đặt Flix làm màn hình chính") { _, _ -> chooseDefault(activity) }
+        else dialog.setPositiveButton("Mở Trợ năng") { _, _ -> openAccessibility(activity) }
         dialog.show()
     }
 }

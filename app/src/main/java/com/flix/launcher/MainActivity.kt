@@ -139,12 +139,12 @@ class MainActivity : Activity() {
         rowsScroll.scrollTo(0, 0)
         val rows = findViewById<ViewGroup>(R.id.movie_rows)
         CoachMarks.show(this, listOfNotNull(
-            CoachMarks.Mark(findViewById(R.id.favorites), "Your apps", "The ones you picked. Hold OK on any of them to move or remove it."),
-            CoachMarks.Mark(findViewById(R.id.nav_tabs), if (LiveTv.available(this)) "Movies, Shows, TV, Apps" else "Movies, Shows, Apps",
-                if (LiveTv.available(this)) "Switch what the screen shows. TV has your live channels, playing as you browse."
-                else "Switch what the screen shows. Search is on the left."),
-            CoachMarks.Mark(findViewById(R.id.qs_flix), "Flix settings", "Wallpapers, themes, rows and your apps, whenever you want to change them."),
-            rows.getChildAt(0)?.let { CoachMarks.Mark(it, "Press OK to watch", "Films and shows open in Nuvio. Home brings you back.") },
+            CoachMarks.Mark(findViewById(R.id.favorites), "Ứng dụng của bạn", "Những ứng dụng bạn đã chọn. Nhấn giữ OK trên bất kỳ ứng dụng nào để di chuyển hoặc xoá."),
+            CoachMarks.Mark(findViewById(R.id.nav_tabs), if (LiveTv.available(this)) "Phim lẻ, Phim bộ, TV, Ứng dụng" else "Phim lẻ, Phim bộ, Ứng dụng",
+                if (LiveTv.available(this)) "Chuyển đổi nội dung hiển thị trên màn hình. Kênh TV phát trực tiếp ngay khi bạn duyệt danh sách."
+                else "Chuyển đổi nội dung hiển thị trên màn hình. Tìm kiếm nằm ở bên trái."),
+            CoachMarks.Mark(findViewById(R.id.qs_flix), "Cài đặt Flix", "Hình nền, chủ đề, các hàng phim và ứng dụng của bạn, bất cứ khi nào bạn muốn thay đổi."),
+            rows.getChildAt(0)?.let { CoachMarks.Mark(it, "Nhấn OK để xem", "Phim lẻ và phim bộ sẽ mở trong Nuvio. Nút Home sẽ đưa bạn trở lại đây.") },
         ))
     }
 
@@ -250,7 +250,7 @@ class MainActivity : Activity() {
             isFocusable = true
             background = border
             setPadding(px(14f), 0, px(16f), 0)
-            contentDescription = "Install Flix ${update.version}"
+            contentDescription = "Cài đặt Flix ${update.version}"
         }
         val icon = ImageView(this).apply { setImageResource(R.drawable.ic_o_download); alpha = 0.95f }
         val words = TextView(this).apply {
@@ -270,7 +270,7 @@ class MainActivity : Activity() {
         pill.addView(version, LinearLayout.LayoutParams(-2, -2).apply { marginStart = px(8f) })
         fun label(focused: Boolean) {
             // Short in the bar, so the clock and greeting keep their room; a word more on focus.
-            words.text = if (focused) "Install" else "Update"
+            words.text = if (focused) "Cài đặt" else "Cập nhật"
             words.typeface = android.graphics.Typeface.create("sans-serif-medium", if (focused) android.graphics.Typeface.BOLD else android.graphics.Typeface.NORMAL)
         }
         label(false)
@@ -294,7 +294,7 @@ class MainActivity : Activity() {
         pill.setOnClickListener {
             when {
                 !Updater.canInstall(this) -> openFlixSettings()
-                Updater.install(this) -> Toast.makeText(this, "Updating to ${update.version}…", Toast.LENGTH_SHORT).show()
+                Updater.install(this) -> Toast.makeText(this, "Đang cập nhật lên ${update.version}…", Toast.LENGTH_SHORT).show()
                 else -> openFlixSettings()
             }
         }
@@ -505,10 +505,10 @@ class MainActivity : Activity() {
             homeBanner = this
         }
         banner.text = when {
-            canFix -> "⚠  The Home button isn't going to Flix.  Press OK to fix it"
-            state == HomeButton.State.BLOCKED -> "⚠  Android is blocking Flix's Home switch.  Press OK for the fix"
-            !HomeButton.isGoogleTv(this) -> "⚠  The Home button isn't going to Flix.  Press OK to make Flix your home app"
-            else -> "⚠  The Home button isn't going to Flix.  Press OK, then turn on Flix Launcher"
+            canFix -> "⚠  Nút Home không mở Flix. Nhấn OK để khắc phục"
+            state == HomeButton.State.BLOCKED -> "⚠  Android đang chặn phím Home của Flix. Nhấn OK để khắc phục"
+            !HomeButton.isGoogleTv(this) -> "⚠  Nút Home không mở Flix. Nhấn OK để đặt Flix làm ứng dụng trang chủ"
+            else -> "⚠  Nút Home không mở Flix. Nhấn OK, sau đó bật Flix Launcher"
         }
         banner.setOnClickListener {
             if (canFix && state != HomeButton.State.BLOCKED) {
@@ -540,7 +540,7 @@ class MainActivity : Activity() {
             val profiles = runCatching { NuvioAccount.profiles(this) }.getOrNull()
             main.post {
                 if (isFinishing) return@post
-                if (profiles.isNullOrEmpty()) { Toast.makeText(this, "Couldn't reach Nuvio", Toast.LENGTH_SHORT).show(); return@post }
+                if (profiles.isNullOrEmpty()) { Toast.makeText(this, "Không thể kết nối với Nuvio", Toast.LENGTH_SHORT).show(); return@post }
                 WhosWatching.show(this, profiles, current) { p ->
                     if (p.index != current?.index) {
                         NuvioAccount.setProfile(this, p)
@@ -690,7 +690,7 @@ class MainActivity : Activity() {
         val intent = (if (details) null else runCatching { title.nuvioStreamIntent() }.getOrNull()?.takeIf { it.resolveActivity(packageManager) != null })
             ?: Intent(Intent.ACTION_VIEW, Uri.parse(title.nuvioUri)).setPackage(MainActivity.NUVIO)
         if (intent.resolveActivity(packageManager) == null) {
-            Toast.makeText(this, "Install Nuvio to watch this", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Hãy cài đặt Nuvio để xem nội dung này", Toast.LENGTH_SHORT).show()
             return
         }
         // Nuvio is a heavy app to start; give it the TV's full attention. Stop the trailer
@@ -704,15 +704,15 @@ class MainActivity : Activity() {
             // last film again), so start its task afresh to make it read this one.
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
                 android.app.ActivityOptions.makeCustomAnimation(this, android.R.anim.fade_in, android.R.anim.fade_out).toBundle())
-        }.onFailure { Toast.makeText(this, "Couldn't open that", Toast.LENGTH_SHORT).show() }
+        }.onFailure { Toast.makeText(this, "Không thể mở ứng dụng", Toast.LENGTH_SHORT).show() }
     }
 
     private fun showTitleMenu(title: Catalog.Title) {
         if (title.id == MovieRows.SIGN_IN.id) return openInNuvio(title)
         OptionsMenu.show(this, title, listOf(
-            "Watch in Nuvio" to { openInNuvio(title) },
-            "More info" to { openInNuvio(title, details = true) },
-            "Hide this title" to {
+            "Mở trong Nuvio" to { openInNuvio(title) },
+            "Thông tin thêm" to { openInNuvio(title, details = true) },
+            "Ẩn tựa phim này" to {
                 Catalog.hideTitle(this, title.id)
                 movieRows.refreshHidden()
             },
@@ -833,10 +833,10 @@ class MainActivity : Activity() {
     }
 
     private fun greetingFor(hour: Int) = when (hour) {
-        in 5..11 -> "Good morning"
-        in 12..16 -> "Good afternoon"
-        in 17..21 -> "Good evening"
-        else -> "Good night"
+        in 5..11 -> "Chào buổi sáng"
+        in 12..16 -> "Chào buổi chiều"
+        in 17..21 -> "Chào buổi tối"
+        else -> "Chúc ngủ ngon"
     }
 
     override fun onStart() {
@@ -1201,22 +1201,22 @@ class MainActivity : Activity() {
         if (app.packageName == AppRepository.ALL_APPS_TILE) return
         val isFavorite = app.packageName in repo.favorites
         val actions = buildList<Pair<String, () -> Unit>> {
-            add("Open" to { launch(app) })
-            add((if (isFavorite) "Remove from favourites" else "Add to favourites") to {
+            add("Mở" to { launch(app) })
+            add((if (isFavorite) "Xoá khỏi mục yêu thích" else "Thêm vào mục yêu thích") to {
                 repo.toggleFavorite(app.packageName)
                 bindRows()
             })
             if (isFavorite) {
-                add("Move left" to { moveFavorite(app, -1) })
-                add("Move right" to { moveFavorite(app, 1) })
+                add("Di chuyển sang trái" to { moveFavorite(app, -1) })
+                add("Di chuyển sang phải" to { moveFavorite(app, 1) })
             } else {
-                add("Hide from All apps" to {
+                add("Ẩn khỏi Tất cả ứng dụng" to {
                     repo.hide(app.packageName)
                     loadApps()
                 })
             }
-            add("App info" to { open(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${app.packageName}"))) })
-            add("Uninstall" to { open(Intent(Intent.ACTION_DELETE, Uri.parse("package:${app.packageName}"))) })
+            add("Thông tin ứng dụng" to { open(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${app.packageName}"))) })
+            add("Gỡ cài đặt" to { open(Intent(Intent.ACTION_DELETE, Uri.parse("package:${app.packageName}"))) })
         }
         OptionsMenu.show(this, app, actions)
     }
@@ -1276,7 +1276,7 @@ class MainActivity : Activity() {
         runCatching { startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), options) }
             .onFailure {
                 playReturn()
-                Toast.makeText(this, "Couldn't open that", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Không thể mở ứng dụng", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -1316,7 +1316,7 @@ class MainActivity : Activity() {
         findViewById<TextView>(R.id.weather_temp).text = "${t(report.temperature)}°"
         findViewById<TextView>(R.id.weather_condition).text = report.condition
         findViewById<TextView>(R.id.weather_details).text =
-            "Feels ${t(report.feelsLike)}°"
+            "Cảm giác như ${t(report.feelsLike)}°"
         sunArc.visibility = View.GONE
 
         val forecast = findViewById<LinearLayout>(R.id.forecast)

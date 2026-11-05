@@ -86,7 +86,7 @@ class SetupActivity : Activity() {
             gravity = Gravity.CENTER_VERTICAL
             addView(text("FLIX", 22f, bold = true, color = RED).apply { letterSpacing = 0.06f; typeface = Typeface.create("sans-serif-black", Typeface.BOLD) })
             addView(View(context).apply { setBackgroundColor(0x33FFFFFF) }, LinearLayout.LayoutParams(px(1), px(22)).apply { marginStart = px(16); marginEnd = px(16) })
-            addView(text("Setup", 15f, alpha = 0.7f))
+            addView(text("Thiết lập", 15f, alpha = 0.7f))
             addView(View(context), LinearLayout.LayoutParams(0, 1, 1f))
             progressLabel = text("", 13f, bold = true, alpha = 0.6f).apply { letterSpacing = 0.12f }.also { addView(it) }
             progress = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL }
@@ -164,7 +164,7 @@ class SetupActivity : Activity() {
         if (step == 1 && NuvioAccount.profile(this) == null) { step = if (forward) 2 else 0 }
         // Live TV is a step only when Nuvio+IPTV is on this TV.
         if (step == 5 && !LiveTv.installed(this)) return finishSetup()
-        kicker.text = "STEP ${step + 1}"
+        kicker.text = "BƯỚC ${step + 1}"
         progressLabel.text = "${step + 1} / ${total()}"
         pulse?.cancel(); pulse = null
         // The faces strip lives in the left column only on its own step (and is rebuilt on return).
@@ -177,47 +177,47 @@ class SetupActivity : Activity() {
         when (step) {
             0 -> {
                 val signedIn = NuvioAccount.isSignedIn(this)
-                title.text = "Pick up where\nyou left off"
-                body.text = "Connect Nuvio and what you were watching waits on the home screen, one press from playing. " +
-                    "Your addons fill the rows. You scan a code with your phone, no typing on the TV."
-                status(if (signedIn) "Signed in as ${NuvioAccount.profile(this)?.name.orEmpty()}" else null)
-                primary(if (signedIn) "Continue" else "Connect Nuvio") {
+                title.text = "Tiếp tục xem\nnội dung dở dang"
+                body.text = "Kết nối Nuvio để nội dung bạn đang xem chờ sẵn trên màn hình chính, chỉ cần một nút bấm là phát. " +
+                    "Các addon của bạn sẽ lấp đầy các hàng phim. Bạn quét mã QR bằng điện thoại, không cần nhập liệu trên TV."
+                status(if (signedIn) "Đã đăng nhập với tư cách ${NuvioAccount.profile(this)?.name.orEmpty()}" else null)
+                primary(if (signedIn) "Tiếp tục" else "Kết nối Nuvio") {
                     if (signedIn) next() else startActivity(Intent(this, NuvioLoginActivity::class.java))
                 }
-                secondary(if (signedIn) null else "Skip for now") { next() }
+                secondary(if (signedIn) null else "Bỏ qua lúc này") { next() }
                 visual.addView(phone(signedIn), FrameLayout.LayoutParams(-2, -2, Gravity.CENTER))
             }
             1 -> {
                 val profile = NuvioAccount.profile(this)!!
-                title.text = "Pick your face"
-                body.text = "Choose a picture for ${profile.name.ifBlank { "your profile" }}. It sits at the top of the home screen " +
-                    "and in Who's watching. Change it any time in Settings."
+                title.text = "Chọn ảnh đại diện"
+                body.text = "Chọn một ảnh đại diện cho ${profile.name.ifBlank { "hồ sơ của bạn" }}. Ảnh sẽ xuất hiện ở trên cùng màn hình chính " +
+                    "và trong mục Ai đang xem. Có thể đổi bất cứ lúc nào trong Cài đặt."
                 status(null)
-                primary("Continue") { next() }
+                primary("Tiếp tục") { next() }
                 secondary(null) {}
                 faces(profile)
             }
             2 -> {
                 val rows = Addons.rows(this).count { it.enabled }
-                title.text = "Choose\nwhat's on"
-                body.text = "Pick the film and series rows you actually browse, and their order. " +
-                    "Your Nuvio addons' catalogues are listed for you; everything else stays off the screen."
-                status(if (rows > 0) "$rows rows on your home screen" else null)
+                title.text = "Tuỳ chọn\nnội dung hiển thị"
+                body.text = "Chọn các hàng phim lẻ và phim bộ mà bạn thực sự muốn xem cùng thứ tự sắp xếp của chúng. " +
+                    "Danh mục từ các addon Nuvio sẽ được liệt kê sẵn; những thứ khác sẽ được ẩn đi."
+                status(if (rows > 0) "$rows hàng trên màn hình chính" else null)
                 if (rows > 0) {
-                    primary("Continue") { next() }
-                    secondary("Change rows") { startActivity(Intent(this, RowsActivity::class.java)) }
+                    primary("Tiếp tục") { next() }
+                    secondary("Thay đổi hàng") { startActivity(Intent(this, RowsActivity::class.java)) }
                 } else {
-                    primary("Choose rows") { startActivity(Intent(this, RowsActivity::class.java)) }
-                    secondary("Skip for now") { next() }
+                    primary("Chọn hàng") { startActivity(Intent(this, RowsActivity::class.java)) }
+                    secondary("Bỏ qua lúc này") { next() }
                 }
                 visual.addView(miniHome(), FrameLayout.LayoutParams(-1, -2, Gravity.CENTER))
             }
             3 -> {
-                title.text = "Your apps,\none press away"
-                body.text = "Pick the apps for the row at the top of the home screen. They appear in the order you pick them. " +
-                    "Everything else stays in All apps."
+                title.text = "Ứng dụng của bạn,\nchỉ một nút bấm"
+                body.text = "Chọn các ứng dụng cho hàng trên cùng của màn hình chính. Chúng sẽ xuất hiện theo đúng thứ tự bạn chọn. " +
+                    "Các ứng dụng khác sẽ ở trong Tất cả ứng dụng."
                 status(null)
-                primary("Continue") { next() }
+                primary("Tiếp tục") { next() }
                 secondary(null) {}
                 apps()
             }
@@ -226,32 +226,32 @@ class SetupActivity : Activity() {
                 val state = HomeButton.state(this)
                 val on = HomeButton.works(this)
                 val googleTv = HomeButton.isGoogleTv(this)
-                title.text = "One press\nto your show"
+                title.text = "Một nút bấm\nđể xem ngay"
                 body.text = when {
-                    state == HomeButton.State.BLOCKED -> "Flix is switched on in Accessibility, but this TV won't start it. " +
-                        "Android does this for apps installed from a downloaded APK. There's a one-time fix."
-                    googleTv -> "Google TV sends Home to its own screen, full of things to buy. Switch on \"Flix Launcher\" in " +
-                        "Accessibility and Home brings you back here instead. It only listens for the Home key."
-                    else -> "Make Flix your home app and the Home button brings you straight back to what you watch. " +
-                        "Choose Flix Launcher, then Always."
+                    state == HomeButton.State.BLOCKED -> "Flix Launcher đã được bật trong Trợ năng, nhưng TV này chưa khởi chạy. " +
+                        "Android có thể hạn chế đối với ứng dụng cài từ file APK ngoài. Có cách khắc phục một lần."
+                    googleTv -> "Google TV chuyển hướng nút Home về màn hình mặc định có nhiều quảng cáo. Bật \"Flix Launcher\" trong " +
+                        "Trợ năng để nút Home đưa bạn thẳng về đây. Ứng dụng chỉ lắng nghe duy nhất phím Home."
+                    else -> "Đặt Flix làm ứng dụng trang chủ mặc định để nút Home đưa bạn thẳng về nội dung đang xem. " +
+                        "Chọn Flix Launcher, sau đó chọn Luôn chọn."
                 }
-                status(if (on) "Home opens Flix" else null)
+                status(if (on) "Nút Home mở Flix" else null)
                 when {
-                    on -> primary("Continue") { next() }
-                    state == HomeButton.State.BLOCKED -> primary("Show me the fix") { HomeButton.showBlockedHelp(this) }
-                    googleTv -> primary("Open Accessibility") { HomeButton.openAccessibility(this) }
-                    else -> primary("Make Flix the home app") { HomeButton.chooseDefault(this) }
+                    on -> primary("Tiếp tục") { next() }
+                    state == HomeButton.State.BLOCKED -> primary("Xem cách khắc phục") { HomeButton.showBlockedHelp(this) }
+                    googleTv -> primary("Mở Trợ năng") { HomeButton.openAccessibility(this) }
+                    else -> primary("Đặt Flix làm màn hình chính") { HomeButton.chooseDefault(this) }
                 }
-                secondary(if (on) null else "Skip for now") { next() }
+                secondary(if (on) null else "Bỏ qua lúc này") { next() }
                 visual.addView(remote(on), FrameLayout.LayoutParams(-2, -2, Gravity.CENTER))
             }
             5 -> {
-                title.text = "Live TV,\nright here"
-                body.text = "Your Nuvio+IPTV channels get their own TV tab, with the channel playing live as you browse. " +
-                    "Flix reads them through Nuvio+IPTV's Setup Sync, with the Nuvio sign-in you already have."
+                title.text = "Truyền hình trực tiếp,\nngay tại đây"
+                body.text = "Các kênh Nuvio+IPTV của bạn sẽ có tab TV riêng, với kênh đang phát trực tiếp khi bạn duyệt danh sách. " +
+                    "Flix đọc danh sách kênh thông qua Đồng bộ thiết lập của Nuvio+IPTV, sử dụng tài khoản Nuvio bạn đã có."
                 status(null)
-                primary("Checking…") {}
-                secondary("Skip for now") { finishSetup() }
+                primary("Đang kiểm tra…") {}
+                secondary("Bỏ qua lúc này") { finishSetup() }
                 liveChannels()
             }
             else -> finishSetup()
@@ -333,7 +333,7 @@ class SetupActivity : Activity() {
                         ProfilePicture.circle(this)
                     }, LinearLayout.LayoutParams(px(84), px(84)))
                     addView(text(profile?.name.orEmpty().ifBlank { "Nuvio" }, 16f, bold = true).apply { gravity = Gravity.CENTER }, lp(top = 14))
-                    addView(text("Connected", 12f, bold = true, color = GREEN).apply { letterSpacing = 0.1f }, lp(top = 4))
+                    addView(text("Đã kết nối", 12f, bold = true, color = GREEN).apply { letterSpacing = 0.1f }, lp(top = 4))
                 }, FrameLayout.LayoutParams(-2, -2, Gravity.CENTER))
             } else {
                 addView(LinearLayout(context).apply {
@@ -345,7 +345,7 @@ class SetupActivity : Activity() {
                         background = GradientDrawable().apply { cornerRadius = 12 * dp; setColor(Color.WHITE) }
                         setPadding(px(10), px(10), px(10), px(10))
                     }, LinearLayout.LayoutParams(px(118), px(118)))
-                    addView(text("Scan to sign in", 13f, bold = true, alpha = 0.8f), lp(top = 14))
+                    addView(text("Quét để đăng nhập", 13f, bold = true, alpha = 0.8f), lp(top = 14))
                 }, FrameLayout.LayoutParams(-2, -2, Gravity.CENTER))
             }
             // The camera notch.
@@ -364,7 +364,7 @@ class SetupActivity : Activity() {
     /** Your face, big, with the sixteen to choose from in a strip under the words. */
     private fun faces(profile: NuvioAccount.Profile) {
         val big = ImageView(this).apply { ProfilePicture.into(this, profile) }
-        val name = text(profile.name.ifBlank { "You" }, 22f, bold = true).apply { gravity = Gravity.CENTER }
+        val name = text(profile.name.ifBlank { "Bạn" }, 22f, bold = true).apply { gravity = Gravity.CENTER }
         visual.addView(LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER_HORIZONTAL
@@ -413,7 +413,7 @@ class SetupActivity : Activity() {
                 }
                 setOnClickListener {
                     ProfilePicture.set(this@SetupActivity, profile, i)
-                    status("Picture saved")
+                    status("Đã lưu ảnh đại diện")
                     primary.requestFocus()
                 }
             }
@@ -459,7 +459,7 @@ class SetupActivity : Activity() {
                         badge.text = (i + 1).toString()
                         (badge.parent as View).findViewWithTag<View>("icon")?.alpha = if (i >= 0) 1f else 0.55f
                     }
-                    count.text = "${fav.size} IN YOUR ROW"
+                    count.text = "${fav.size} TRONG HÀNG CỦA BẠN"
                 }
                 all.forEach { app ->
                     val badge = text("", 11f, bold = true).apply {
@@ -532,8 +532,8 @@ class SetupActivity : Activity() {
             runOnUiThread {
                 if (isDestroyed || step != 5) return@runOnUiThread
                 if (lineup != null && lineup.all.isNotEmpty()) {
-                    status("${lineup.all.size} channels found")
-                    primary("Continue") { finishSetup() }
+                    status("${lineup.all.size} kênh tìm thấy")
+                    primary("Tiếp tục") { finishSetup() }
                     secondary(null) {}
                     wall.removeAllViews()
                     (lineup.favourites + lineup.all).distinctBy { it.key }.filter { it.logo != null }.take(6).forEachIndexed { i, c ->
@@ -543,10 +543,10 @@ class SetupActivity : Activity() {
                         }, android.widget.GridLayout.LayoutParams().apply { width = px(124); height = px(70); setMargins(px(7), px(7), px(7), px(7)) })
                     }
                 } else {
-                    body.text = "In Nuvio+IPTV, add your playlist, then turn on Setup Sync in Settings → Live TV. " +
-                        "Come back here and your channels appear."
-                    primary("Open Nuvio+IPTV") { LiveTv.openApp(this) }
-                    secondary("Skip for now") { finishSetup() }
+                    body.text = "Trong Nuvio+IPTV, hãy thêm danh sách phát của bạn, sau đó bật Đồng bộ thiết lập trong Cài đặt → Kênh TV. " +
+                        "Quay lại đây và các kênh của bạn sẽ xuất hiện."
+                    primary("Mở Nuvio+IPTV") { LiveTv.openApp(this) }
+                    secondary("Bỏ qua lúc này") { finishSetup() }
                 }
                 primary.requestFocus()
             }
@@ -559,7 +559,7 @@ class SetupActivity : Activity() {
     private fun miniHome(): View {
         val names = listOf("Midnight Run", "Sunlit", "Odyssey", "Harbour", "Neon City", "Wildwood", "Echo", "Atlas", "Northbound",
             "Velvet", "Ember", "Lagoon", "Paper Moon", "Drift", "Orbit")
-        val labels = listOf("Continue watching", "Top 10 today", "Your addons")
+        val labels = listOf("Tiếp tục xem", "Top 10 hôm nay", "Addon của bạn")
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             clipChildren = false
@@ -646,7 +646,7 @@ class SetupActivity : Activity() {
             clipChildren = false
             addView(body, FrameLayout.LayoutParams(px(130), px(330), Gravity.CENTER))
             // A label beside the Home button, to its right.
-            addView(text(if (on) "Home  →  Flix" else "Press Home", 13f, bold = true, color = if (on) GREEN else Color.WHITE).apply {
+            addView(text(if (on) "Home  →  Flix" else "Nhấn Home", 13f, bold = true, color = if (on) GREEN else Color.WHITE).apply {
                 background = GradientDrawable().apply { cornerRadius = 100 * dp; setColor(if (on) 0x264ADE80 else 0x33FFFFFF) }
                 setPadding(px(12), px(6), px(12), px(6))
             }, FrameLayout.LayoutParams(-2, -2, Gravity.CENTER).apply { leftMargin = px(150); topMargin = px(40) })

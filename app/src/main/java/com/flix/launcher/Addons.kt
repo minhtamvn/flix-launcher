@@ -30,9 +30,9 @@ object Addons {
     const val CINEMETA = "https://v3-cinemeta.strem.io/manifest.json"
 
     private val DEFAULT_ROWS = listOf(
-        Row(CINEMETA, "Cinemeta", "movie", "top", "Popular movies", supportsGenre = true),
-        Row(CINEMETA, "Cinemeta", "series", "top", "Popular series", supportsGenre = true),
-        Row(CINEMETA, "Cinemeta", "movie", "imdbRating", "Featured movies", supportsGenre = true),
+        Row(CINEMETA, "Cinemeta", "movie", "top", "Phim lẻ phổ biến", supportsGenre = true),
+        Row(CINEMETA, "Cinemeta", "series", "top", "Phim bộ phổ biến", supportsGenre = true),
+        Row(CINEMETA, "Cinemeta", "movie", "imdbRating", "Phim lẻ nổi bật", supportsGenre = true),
     )
 
     /**
@@ -143,7 +143,7 @@ object Addons {
             val existing = rows(context)
             val fresh = found.filter { f -> existing.none { it.key == f.key } }
             if (fresh.isEmpty()) throw IllegalArgumentException(
-                if (found.isEmpty()) "$name has no catalogues Flix Launcher can show" else "$name's rows are already added"
+                if (found.isEmpty()) "$name không có danh mục nào Flix Launcher có thể hiển thị" else "Các hàng của $name đã được thêm rồi"
             )
             // A big addon would flood the home screen; add its rows hidden so the user picks the few they want.
             save(context, existing + if (fresh.size > MAX_SHOWN_ON_ADD) fresh.map { it.copy(enabled = false) } else fresh)
@@ -174,7 +174,7 @@ object Addons {
     /** An addon's name and one row per browsable catalogue (ones that need a search term are skipped). */
     private fun catalogues(manifestUrl: String): Pair<String, List<Row>> {
         // Plain http would let anyone on the path swap the rows' content; the app only allows cleartext to sylvan.apple.com.
-        if (!manifestUrl.startsWith("https://")) throw IllegalArgumentException("Addon URLs must start with https://")
+        if (!manifestUrl.startsWith("https://")) throw IllegalArgumentException("Đường dẫn URL của Addon phải bắt đầu bằng https://")
         val conn = URL(manifestUrl).openConnection() as HttpURLConnection
         conn.connectTimeout = 8000
         conn.readTimeout = 10000
@@ -182,7 +182,7 @@ object Addons {
         val manifest = try {
             JSONObject(SafeIo.readText(conn))
         } catch (e: Exception) {
-            throw IllegalArgumentException("Couldn't read that addon (${e.javaClass.simpleName})")
+            throw IllegalArgumentException("Không thể đọc thông tin addon (${e.javaClass.simpleName})")
         } finally {
             conn.disconnect()
         }

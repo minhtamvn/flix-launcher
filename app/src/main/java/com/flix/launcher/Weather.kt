@@ -37,7 +37,7 @@ object Weather {
     /** Places matching [query], for the city picker: name plus region and country to tell them apart. */
     fun search(query: String): List<Place> = runCatching {
         val enc = java.net.URLEncoder.encode(query.trim(), "UTF-8").replace("+", "%20")
-        val results = getJson("https://geocoding-api.open-meteo.com/v1/search?name=$enc&count=6").optJSONArray("results") ?: return emptyList()
+        val results = getJson("https://geocoding-api.open-meteo.com/v1/search?name=$enc&count=6&language=vi").optJSONArray("results") ?: return emptyList()
         (0 until results.length()).map { i ->
             val o = results.getJSONObject(i)
             Place(o.getString("name"), listOf(o.optString("admin1"), o.optString("country")).filter { it.isNotBlank() }.joinToString(", "),
@@ -55,18 +55,18 @@ object Weather {
 
     private fun wttr(city: String): Report? = runCatching {
         val place = java.net.URLEncoder.encode(city.trim(), "UTF-8").replace("+", "%20")
-        val json = getJson("https://wttr.in/$place?format=j1", 4000, 5000)
+        val json = getJson("https://wttr.in/$place?format=j1&lang=vi", 4000, 5000)
         val now = json.getJSONArray("current_condition").getJSONObject(0)
         val area = json.optJSONArray("nearest_area")?.optJSONObject(0)
             ?.optJSONArray("areaName")?.optJSONObject(0)?.optString("value").orEmpty()
         val parse = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val dayName = SimpleDateFormat("EEE", Locale.getDefault())
+        val dayName = SimpleDateFormat("EEE", Locale("vi"))
         val forecast = json.getJSONArray("weather")
         val days = (0 until forecast.length()).map { i ->
             val day = forecast.getJSONObject(i)
             val midday = day.getJSONArray("hourly").let { it.getJSONObject(minOf(4, it.length() - 1)) }
             Day(
-                name = if (i == 0) "Today" else dayName.format(parse.parse(day.getString("date"))!!),
+                name = if (i == 0) "Hôm nay" else dayName.format(parse.parse(day.getString("date"))!!),
                 icon = icon(midday.getInt("weatherCode")),
                 high = day.getInt("maxtempC"),
                 low = day.getInt("mintempC"),
@@ -79,11 +79,14 @@ object Weather {
         val clock = SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.US)
         val date = today.optString("date").ifBlank { parse.format(java.util.Date()) }
         fun sunTime(key: String) = astronomy?.optString(key)?.let { runCatching { clock.parse("$date $it") }.getOrNull() }
+        val descVi = now.optJSONArray("lang_vi")?.optJSONObject(0)?.optString("value")?.trim()
+        val descRaw = now.getJSONArray("weatherDesc").getJSONObject(0).getString("value").trim()
+        val condition = if (!descVi.isNullOrBlank()) descVi else wwoText(now.getInt("weatherCode"), descRaw)
         Report(
             icon = icon(now.getInt("weatherCode")),
             temperature = now.getInt("temp_C"),
             feelsLike = now.getInt("FeelsLikeC"),
-            condition = now.getJSONArray("weatherDesc").getJSONObject(0).getString("value").trim(),
+            condition = condition,
             humidity = now.getInt("humidity"),
             windKmh = now.getInt("windspeedKmph"),
             place = area,
@@ -100,7 +103,7 @@ object Weather {
     private fun openMeteo(city: String, coords: Pair<Double, Double>? = null): Report? = runCatching {
         val enc = java.net.URLEncoder.encode(city.trim(), "UTF-8").replace("+", "%20")
         val (lat, lon, place) = if (coords != null) Triple(coords.first, coords.second, city) else if (city.isNotBlank()) {
-            val hit = getJson("https://geocoding-api.open-meteo.com/v1/search?name=$enc&count=1").getJSONArray("results").getJSONObject(0)
+            val hit = getJson("https://geocoding-api.open-meteo.com/v1/search?name=$enc&count=1&language=vi").getJSONArray("results").getJSONObject(0)
             Triple(hit.getDouble("latitude"), hit.getDouble("longitude"), hit.optString("name"))
         } else {
             val ip = getJson("https://ipwho.is/")
@@ -113,10 +116,10 @@ object Weather {
         val daily = json.getJSONObject("daily")
         val dates = daily.getJSONArray("time")
         val parse = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val dayName = SimpleDateFormat("EEE", Locale.getDefault())
+        val dayName = SimpleDateFormat("EEE", Locale("vi"))
         val days = (0 until dates.length()).map { i ->
             Day(
-                name = if (i == 0) "Today" else dayName.format(parse.parse(dates.getString(i))!!),
+                name = if (i == 0) "Hôm nay" else dayName.format(parse.parse(dates.getString(i))!!),
                 icon = wmoIcon(daily.getJSONArray("weather_code").getInt(i)),
                 high = Math.round(daily.getJSONArray("temperature_2m_max").getDouble(i)).toInt(),
                 low = Math.round(daily.getJSONArray("temperature_2m_min").getDouble(i)).toInt(),
@@ -154,17 +157,31 @@ object Weather {
     }
 
     private fun wmoText(code: Int): String = when (code) {
-        0 -> "Clear"
-        1 -> "Mostly clear"
-        2 -> "Partly cloudy"
-        3 -> "Overcast"
-        45, 48 -> "Fog"
-        51, 53, 55, 56, 57 -> "Drizzle"
-        61, 63, 66, 80, 81 -> "Rain"
-        65, 67, 82 -> "Heavy rain"
-        71, 73, 75, 77, 85, 86 -> "Snow"
-        95, 96, 99 -> "Thunderstorm"
-        else -> "Fair"
+        0 -> "Quang đãng"
+        1 -> "Trời quang"
+        2 -> "Có mây rải rác"
+        3 -> "U ám"
+        45, 48 -> "Sương mù"
+        51, 53, 55, 56, 57 -> "Mưa phùn"
+        61, 63, 66, 80, 81 -> "Mưa"
+        65, 67, 82 -> "Mưa to"
+        71, 73, 75, 77, 85, 86 -> "Tuyết"
+        95, 96, 99 -> "Dông bão"
+        else -> "Thời tiết đẹp"
+    }
+
+    /** Maps WorldWeatherOnline condition codes (used by wttr.in) to Vietnamese description. */
+    private fun wwoText(code: Int, fallback: String): String = when (code) {
+        113 -> "Quang đãng"
+        116 -> "Có mây rải rác"
+        119 -> "Nhiều mây"
+        122 -> "U ám"
+        143, 248 -> "Sương mù"
+        260 -> "Sương mù băng giá"
+        176, 263, 266, 293, 296, 353 -> "Mưa phùn / Mưa nhẹ"
+        299, 302, 305, 308, 356, 359 -> "Mưa to"
+        200, 386, 389, 392, 395 -> "Dông bão"
+        else -> if (code in 179..377) "Tuyết rơi" else fallback
     }
 
     /** Maps WorldWeatherOnline condition codes (used by wttr.in) to an emoji. */

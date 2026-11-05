@@ -19,82 +19,82 @@ object FlixSettings {
     }
 
     private fun toggle(key: String, title: String, default: Boolean = true, summary: String? = null) =
-        Option(key, title, listOf("on" to "On", "off" to "Off"), if (default) "on" else "off", summary)
+        Option(key, title, listOf("on" to "Bật", "off" to "Tắt"), if (default) "on" else "off", summary)
 
     // Look
-    val THEME = Option("theme", "Theme",
-        listOf("cinema" to "Cinema", "glass" to "Glass", "midnight" to "Midnight", "minimal" to "Minimal"), "cinema",
-        summary = "Colours and shapes of the home screen")
+    val THEME = Option("theme", "Giao diện",
+        listOf("cinema" to "Rạp phim", "glass" to "Kính mờ", "midnight" to "Nửa đêm", "minimal" to "Tối giản"), "cinema",
+        summary = "Màu sắc và kiểu dáng của màn hình chính")
 
     // What the Home button lands on
-    val HOME_FOCUS = Option("home_focus", "Home opens on",
-        listOf("apps" to "Your apps", "watching" to "What you were watching"), "apps",
-        summary = "Start on your apps, or on Resume for your last show")
+    val HOME_FOCUS = Option("home_focus", "Nút Home mở tại",
+        listOf("apps" to "Ứng dụng của bạn", "watching" to "Nội dung đang xem dở"), "apps",
+        summary = "Bắt đầu tại hàng ứng dụng hoặc Xem tiếp bộ phim gần nhất")
 
     // Icons
-    val ICON_SHAPE = Option("icon_shape", "Icon shape",
-        listOf("circle" to "Circle", "squircle" to "Squircle", "rounded" to "Rounded square", "banner" to "Wide banner"), "circle",
-        summary = "How app tiles are drawn")
-    val ICON_SIZE = Option("icon_size", "Icon size", listOf("small" to "Small", "medium" to "Medium", "large" to "Large"), "medium")
-    val LABELS = Option("labels", "App names", listOf("always" to "Always", "focus" to "When selected", "never" to "Hidden"), "always")
-    val GLOW = toggle("glow", "Colour glow", summary = "Selected apps glow in their own colour")
-    val MOTION = Option("motion", "Focus animation", listOf("spring" to "Springy", "smooth" to "Smooth", "none" to "Off"), "spring")
+    val ICON_SHAPE = Option("icon_shape", "Hình dạng biểu tượng",
+        listOf("circle" to "Hình tròn", "squircle" to "Vuông bo góc", "rounded" to "Chữ nhật bo góc", "banner" to "Biểu ngữ ngang"), "circle",
+        summary = "Cách hiển thị các ô ứng dụng")
+    val ICON_SIZE = Option("icon_size", "Kích thước biểu tượng", listOf("small" to "Nhỏ", "medium" to "Vừa", "large" to "Lớn"), "medium")
+    val LABELS = Option("labels", "Tên ứng dụng", listOf("always" to "Luôn hiện", "focus" to "Khi chọn", "never" to "Ẩn"), "always")
+    val GLOW = toggle("glow", "Hiệu ứng phát sáng", summary = "Ứng dụng được chọn sẽ phát sáng theo màu riêng")
+    val MOTION = Option("motion", "Hiệu ứng chuyển động", listOf("spring" to "Độ nảy", "smooth" to "Mượt mà", "none" to "Tắt"), "spring")
 
     // Clock & widgets
-    val CLOCK_STYLE = Option("clock_style", "Clock style", listOf("duo" to "Duo", "thin" to "Thin", "bold" to "Bold"), "duo")
-    val CLOCK_FORMAT = Option("clock_format", "Time format", listOf("system" to "System", "12" to "12-hour", "24" to "24-hour"), "system")
-    val GREETING = toggle("greeting", "Greeting")
-    val DATE = toggle("date", "Date")
-    val SUN_ARC = toggle("sun_arc", "Sunrise & sunset arc")
-    val WEATHER = toggle("weather", "Weather", summary = "Chip at the top right")
-    val FORECAST = toggle("forecast", "3-day forecast")
-    val UNITS = Option("units", "Temperature", listOf("c" to "Celsius", "f" to "Fahrenheit"), "c")
+    val CLOCK_STYLE = Option("clock_style", "Kiểu đồng hồ", listOf("duo" to "Hai tông màu", "thin" to "Nét mảnh", "bold" to "Nét đậm"), "duo")
+    val CLOCK_FORMAT = Option("clock_format", "Định dạng giờ", listOf("system" to "Hệ thống", "12" to "12 giờ", "24" to "24 giờ"), "system")
+    val GREETING = toggle("greeting", "Lời chào")
+    val DATE = toggle("date", "Ngày tháng")
+    val SUN_ARC = toggle("sun_arc", "Vòng cung bình minh & hoàng hôn")
+    val WEATHER = toggle("weather", "Thời tiết", summary = "Thẻ thời tiết ở góc trên bên phải")
+    val FORECAST = toggle("forecast", "Dự báo 3 ngày")
+    val UNITS = Option("units", "Đơn vị nhiệt độ", listOf("c" to "Độ C", "f" to "Độ F"), "c")
 
     // Wallpaper
-    val WALLPAPER = Option("wallpaper", "Background", listOf(
-        "nature" to "Nature photos", "cities" to "City photos",
-        "wildlife" to "Wildlife photos", "beaches" to "Beach photos", "winter" to "Winter photos",
-        "deserts" to "Desert photos", "flowers" to "Flower photos", "night" to "Night sky photos", "castles" to "Castles & temples",
-        "films" to "Blockbusters", "films_scifi" to "Sci-fi films", "films_action" to "Action films", "films_animation" to "Animated films", "films_fantasy" to "Fantasy films", "films_horror" to "Horror films", "scifi" to "Sci-fi art", "gaming" to "Gaming art",
-        "video" to "All aerial videos", "v_nature" to "Landscapes video", "v_sea" to "Oceans video",
-        "v_city" to "Cities video", "v_space" to "Earth from space", "v_art" to "Colour art video",
-        "v_underwater" to "Underwater video", "v_beaches" to "Beaches video", "v_wildlife" to "Wildlife video",
-        "v_snow" to "Snow & aurora video", "v_deserts" to "Deserts video", "v_nightsky" to "Night sky video",
-        "v_fireplace" to "Fireplace", "v_calm" to "Calm colour",
-        "v_scifi" to "Deep space video", "v_gaming" to "Game trailers", "v_films" to "Open movies",
-        "gradient" to "Plain dark"), "nature",
-        summary = "A new Bing photo every minute, or aerial films from Apple TV and Fire TV")
-    val SHUFFLE = toggle("shuffle", "Shuffle scenes")
-    val DIM = Option("dim", "Background dimming", listOf("low" to "Low", "medium" to "Medium", "high" to "High"), "medium")
-    val SCENE_NAME = toggle("scene_name", "Scene name")
+    val WALLPAPER = Option("wallpaper", "Hình nền", listOf(
+        "nature" to "Ảnh thiên nhiên", "cities" to "Ảnh thành phố",
+        "wildlife" to "Ảnh động vật hoang dã", "beaches" to "Ảnh bãi biển", "winter" to "Ảnh mùa đông",
+        "deserts" to "Ảnh sa mạc", "flowers" to "Ảnh các loài hoa", "night" to "Ảnh bầu trời đêm", "castles" to "Lâu đài & đền chùa",
+        "films" to "Phim bom tấn", "films_scifi" to "Phim viễn tưởng", "films_action" to "Phim hành động", "films_animation" to "Phim hoạt hình", "films_fantasy" to "Phim kỳ ảo", "films_horror" to "Phim kinh dị", "scifi" to "Nghệ thuật viễn tưởng", "gaming" to "Nghệ thuật trò chơi",
+        "video" to "Tất cả video trên không", "v_nature" to "Video phong cảnh", "v_sea" to "Video đại dương",
+        "v_city" to "Video thành phố", "v_space" to "Trái đất từ không gian", "v_art" to "Video nghệ thuật màu sắc",
+        "v_underwater" to "Video dưới đáy biển", "v_beaches" to "Video bãi biển", "v_wildlife" to "Video động vật hoang dã",
+        "v_snow" to "Video tuyết & cực quang", "v_deserts" to "Video sa mạc", "v_nightsky" to "Video bầu trời đêm",
+        "v_fireplace" to "Lò sưởi ấm cúng", "v_calm" to "Màu sắc êm dịu",
+        "v_scifi" to "Video vũ trụ sâu thẳm", "v_gaming" to "Trailer trò chơi", "v_films" to "Phim mã nguồn mở",
+        "gradient" to "Tối giản đơn sắc"), "nature",
+        summary = "Ảnh Bing mới mỗi phút hoặc video trên không từ Apple TV và Fire TV")
+    val SHUFFLE = toggle("shuffle", "Xáo trộn hình nền")
+    val DIM = Option("dim", "Độ tối hình nền", listOf("low" to "Nhẹ", "medium" to "Vừa", "high" to "Mạnh"), "medium")
+    val SCENE_NAME = toggle("scene_name", "Tên địa danh")
 
     // Behaviour
-    val IDLE = Option("idle", "Fade to scenery after",
-        listOf("off" to "Never", "30" to "30 seconds", "60" to "1 minute", "120" to "2 minutes", "300" to "5 minutes"), "60")
-    val ALL_APPS = toggle("all_apps", "All apps row", default = false)
-    val ALL_APPS_TILE = toggle("all_apps_tile", "All apps tile", summary = "A tile at the end of favourites that opens every app")
+    val IDLE = Option("idle", "Chuyển sang phong cảnh sau",
+        listOf("off" to "Không bao giờ", "30" to "30 giây", "60" to "1 phút", "120" to "2 phút", "300" to "5 phút"), "60")
+    val ALL_APPS = toggle("all_apps", "Hàng tất cả ứng dụng", default = false)
+    val ALL_APPS_TILE = toggle("all_apps_tile", "Ô tất cả ứng dụng", summary = "Một ô ở cuối mục yêu thích để mở tất cả ứng dụng")
 
     // Movies & shows
-    val SUGGESTIONS = toggle("suggestions", "Movie & show rows", summary = "Rows from your addons; OK opens in Nuvio")
+    val SUGGESTIONS = toggle("suggestions", "Hàng phim & chương trình", summary = "Các hàng từ addon của bạn; nhấn OK để mở trong Nuvio")
     /** The TV tab with Nuvio+IPTV's channels (shown only when Nuvio+IPTV is installed). */
-    val LIVE_TV = toggle("live_tv", "TV tab", true, "Your Nuvio+IPTV channels, with a live preview")
-    val BILLBOARD = toggle("billboard", "Featured carousel", summary = "Big rotating posters above the rows")
-    val CONTINUE_WATCHING = toggle("continue_watching", "Continue watching", summary = "From your Nuvio account")
-    val GENRE = Option("genre", "Genre filter", listOf("all" to "All genres", "Action" to "Action", "Comedy" to "Comedy", "Drama" to "Drama",
-        "Thriller" to "Thriller", "Horror" to "Horror", "Romance" to "Romance", "Sci-Fi" to "Sci-Fi", "Animation" to "Animation",
-        "Crime" to "Crime", "Family" to "Family"), "all", summary = "Only for rows whose addon supports it")
-    val RATING_BADGE = toggle("rating_badge", "Rating on posters", summary = "Off if your addon's posters already show a rating")
-    val TYPE_TABS = toggle("type_tabs", "Movies and Shows tabs", summary = "Home already shows both")
-    val POSTER_SIZE = Option("poster_size", "Poster size", listOf("small" to "Small", "medium" to "Medium", "large" to "Large"), "medium")
-    val BACKDROP = toggle("backdrop", "Backdrop preview", summary = "Show the focused title's artwork behind the rows")
-    val TOP_TEN = Option("top_ten_from", "Top 10 row",
-        listOf("mine" to "From my first row", "world" to "Worldwide (mostly English)", "off" to "Off"), "mine",
-        summary = "Numbered row of the ten most popular films")
-    val TRAILERS = toggle("trailers", "Play trailers", summary = "Plays behind the preview when a poster stays selected")
-    val TRAILER_DELAY = Option("trailer_delay", "Trailer starts after",
-        listOf("1" to "1 second", "2" to "2 seconds", "3" to "3 seconds", "5" to "5 seconds", "8" to "8 seconds"), "2",
-        summary = "How long a poster stays selected before its trailer plays")
-    val TRAILER_SOUND = toggle("trailer_sound_v2", "Trailer sound", summary = "Off keeps trailers silent")
+    val LIVE_TV = toggle("live_tv", "Tab TV", true, "Kênh Nuvio+IPTV của bạn, kèm xem trước trực tiếp")
+    val BILLBOARD = toggle("billboard", "Băng chuyền nổi bật", summary = "Áp phích xoay lớn phía trên các hàng")
+    val CONTINUE_WATCHING = toggle("continue_watching", "Tiếp tục xem", summary = "Từ tài khoản Nuvio của bạn")
+    val GENRE = Option("genre", "Lọc theo thể loại", listOf("all" to "Tất cả thể loại", "Action" to "Hành động", "Comedy" to "Hài hước", "Drama" to "Chính kịch",
+        "Thriller" to "Giật gân", "Horror" to "Kinh dị", "Romance" to "Lãng mạn", "Sci-Fi" to "Khoa học viễn tưởng", "Animation" to "Hoạt hình",
+        "Crime" to "Tội phạm", "Family" to "Gia đình"), "all", summary = "Chỉ áp dụng cho các hàng có hỗ trợ addon")
+    val RATING_BADGE = toggle("rating_badge", "Huy hiệu đánh giá trên áp phích", summary = "Tắt nếu áp phích từ addon đã có sẵn điểm")
+    val TYPE_TABS = toggle("type_tabs", "Tab Phim lẻ và Phim bộ", summary = "Màn hình chính đã hiển thị cả hai")
+    val POSTER_SIZE = Option("poster_size", "Kích thước áp phích", listOf("small" to "Nhỏ", "medium" to "Vừa", "large" to "Lớn"), "medium")
+    val BACKDROP = toggle("backdrop", "Xem trước ảnh nền", summary = "Hiển thị ảnh nền của tựa phim đang chọn phía sau các hàng")
+    val TOP_TEN = Option("top_ten_from", "Hàng Top 10",
+        listOf("mine" to "Từ hàng đầu tiên", "world" to "Toàn cầu (chủ yếu tiếng Anh)", "off" to "Tắt"), "mine",
+        summary = "Hàng được đánh số của 10 bộ phim phổ biến nhất")
+    val TRAILERS = toggle("trailers", "Phát trailer", summary = "Tự động phát trailer khi dừng chọn áp phích")
+    val TRAILER_DELAY = Option("trailer_delay", "Trailer phát sau",
+        listOf("1" to "1 giây", "2" to "2 giây", "3" to "3 giây", "5" to "5 giây", "8" to "8 giây"), "2",
+        summary = "Thời gian dừng ở áp phích trước khi trailer bắt đầu phát")
+    val TRAILER_SOUND = toggle("trailer_sound_v2", "Âm thanh trailer", summary = "Tắt để phát trailer ở chế độ im lặng")
 
 
     private fun prefs(context: Context) = context.getSharedPreferences("flix_settings", Context.MODE_PRIVATE)
