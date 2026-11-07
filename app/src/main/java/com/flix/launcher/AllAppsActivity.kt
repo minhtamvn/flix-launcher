@@ -82,8 +82,20 @@ class AllAppsActivity : Activity() {
             addView(ImageView(context).apply { setImageResource(R.drawable.ic_search); setColorFilter(0xB3FFFFFF.toInt()) },
                 FrameLayout.LayoutParams(px(18), px(18), Gravity.CENTER_VERTICAL).apply { marginStart = px(16) })
         }
-        chips = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+        chips = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            clipChildren = false
+            clipToPadding = false
+        }
         Category.values().forEach { chips.addView(chip(it)) }
+        val chipsScroll = android.widget.HorizontalScrollView(this).apply {
+            isHorizontalScrollBarEnabled = false
+            overScrollMode = View.OVER_SCROLL_NEVER
+            clipChildren = false
+            clipToPadding = false
+            isFocusable = false
+            addView(chips, FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+        }
 
         // Movies and shows found by the search sit above the app grid.
         titlesLabel = text("Phim & chương trình", 14f, bold = true).apply { setPadding(px(4), 0, 0, px(2)) }
@@ -129,11 +141,12 @@ class AllAppsActivity : Activity() {
             addView(LinearLayout(context).apply {
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.CENTER_VERTICAL
-                addView(searchBox, LinearLayout.LayoutParams(px(360), px(46)))
+                clipChildren = false
+                addView(searchBox, LinearLayout.LayoutParams(px(280), px(46)))
                 // Speak instead of typing: Google TV's own speech recogniser fills the box.
                 addView(ImageView(context).apply {
                     setImageResource(R.drawable.ic_mic)
-                    contentDescription = "Search by voice"
+                    contentDescription = "Tìm kiếm bằng giọng nói"
                     isFocusable = true
                     setPadding(px(11), px(11), px(11), px(11))
                     background = android.graphics.drawable.StateListDrawable().apply {
@@ -146,10 +159,13 @@ class AllAppsActivity : Activity() {
                     }
                     setOnFocusChangeListener { v, has -> (v as ImageView).setColorFilter(if (has) android.graphics.Color.BLACK else android.graphics.Color.WHITE) }
                     setColorFilter(android.graphics.Color.WHITE)
-                    setOnClickListener { if (!listen()) Toast.makeText(context, "Voice search isn't available on this TV", Toast.LENGTH_SHORT).show() }
+                    setOnClickListener { if (!listen()) Toast.makeText(context, "Tìm kiếm bằng giọng nói không khả dụng trên TV này", Toast.LENGTH_SHORT).show() }
                 }, LinearLayout.LayoutParams(px(46), px(46)).apply { marginStart = px(10) })
-                addView(chips, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { marginStart = px(18) })
-            }, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = px(18) })
+                addView(chipsScroll, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply {
+                    marginStart = px(16)
+                    gravity = Gravity.CENTER_VERTICAL
+                })
+            }, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, px(46)).apply { topMargin = px(18) })
             addView(titlesBlock, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = px(16) })
             addView(FrameLayout(context).apply {
                 clipChildren = false
@@ -251,13 +267,19 @@ class AllAppsActivity : Activity() {
 
     private fun chip(c: Category): View {
         val bg = GradientDrawable().apply { cornerRadius = 18 * dp }
-        val label = text(c.label, 12.5f, bold = true)
+        val label = text(c.label, 12f, bold = true).apply {
+            setSingleLine()
+            gravity = Gravity.CENTER
+        }
         return FrameLayout(this).apply {
             isFocusable = true
             background = bg
-            setPadding(px(16), px(8), px(16), px(8))
+            setPadding(px(12), px(7), px(12), px(7))
             addView(label)
-            layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { marginEnd = px(8) }
+            layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                marginEnd = px(6)
+                gravity = Gravity.CENTER_VERTICAL
+            }
             val paint = {
                 val selected = category == c
                 bg.setColor(when { isFocused -> 0xF2FFFFFF.toInt(); selected -> 0x40FFFFFF; else -> 0x14FFFFFF })
