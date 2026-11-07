@@ -754,7 +754,7 @@ class MainActivity : Activity() {
         if (show) {
             appsGridAdapter.style = gridStyle()
             appsGridAdapter.items = allApps
-            appsGridLabel.text = "All apps  ·  ${allApps.size}"
+            appsGridLabel.text = "Tất cả ứng dụng  ·  ${allApps.size}"
         }
         appsGridLabel.visibility = v
         appsGrid.visibility = v

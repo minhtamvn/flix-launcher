@@ -24,7 +24,7 @@ import java.net.URL
  * updating itself installs silently; earlier versions show Android's confirmation.
  */
 object Updater {
-    private const val LATEST = "https://api.github.com/repos/HatriGt/flix-launcher/releases/latest"
+    private const val LATEST = "https://api.github.com/repos/minhtamvn/flix-launcher/releases/latest"
     private const val CHECK_EVERY_MS = 12 * 3600_000L
 
     class Release(val version: String, val apkUrl: String, val notes: String)
